@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xml-stylesheet href="YahooSearchResult.xsl" type="text/xsl" ?>
+
+<ResultSet xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:yahoo:srch http://api.search.yahoo.com/WebSearchService/V1/WebSearchResponse.xsd" totalResultsAvailable="2940" firstResultPosition="1" totalResultsReturned="10">
+<Result><Title>Axis 2.0 - RESTful Web Services Support</Title><Summary>... are a reduced subset of the usual Web service stack. The Axis2 REST implementation assumes the following properties: REST Web services are Synchronous and Request Response in nature ...</Summary><Url>http://ws.apache.org/axis2/0_94/rest-ws.html</Url><ClickUrl>http://ws.apache.org/axis2/0_94/rest-ws.html</ClickUrl><ModificationDate>1138176000</ModificationDate><MimeType>text/html</MimeType>
+<Cache><Url>http://66.218.69.11/search/cache?ei=UTF-8&amp;query=Axis2+REST&amp;appid=ApacheRestDemo&amp;u=ws.apache.org/axis2/0_94/rest-ws.html&amp;w=axis2+rest&amp;d=IJ-3vkaqMjnL&amp;icp=1&amp;.intl=us</Url><Size>8225</Size></Cache>
+</Result>
+
+<Result><Title>Davanum Srinivas' weblog: SOAP vs REST</Title><Summary>... you do want to engage, show us specifically how we could bridge the gap between REST and SOAP ... RESTful "echo" example from http://ws.apache.org/axis2/rest-ws.html ...</Summary><Url>http://blogs.cocoondev.org/dims/archives/003292.html</Url><ClickUrl>http://blogs.cocoondev.org/dims/archives/003292.html</ClickUrl><ModificationDate>1146294000</ModificationDate><MimeType>text/html</MimeType>
+<Cache><Url>http://66.218.69.11/search/cache?ei=UTF-8&amp;query=Axis2+REST&amp;appid=ApacheRestDemo&amp;u=blogs.cocoondev.org/dims/archives/003292.html&amp;w=axis2+rest&amp;d=GpJfK0aqMtBk&amp;icp=1&amp;.intl=us</Url><Size>18752</Size></Cache>
+</Result>
+
+<Result><Title>Axis 2.0 - Apache Axis2 - Next Generation Web Services</Title><Summary>Last published: 24 March 2006 | Doc for 0.95. Axis 2.0. Welcome to Apache Axis2. "SOAP is a lightweight protocol for exchange of information in a decentralized, distributed environment. ... Apache Axis2 is an effort to re-implement both Axis/Java and Axis/C++ on a new architecture ... WSDL2Java and Java2WSDL. REST (REpresentational State Transfer) Support. Transports ...</Summary><Url>http://ws.apache.org/axis2</Url><ClickUrl>http://ws.apache.org/axis2</ClickUrl><ModificationDate>1143446400</ModificationDate><MimeType>text/html</MimeType>
+<Cache><Url>http://66.218.69.11/search/cache?ei=UTF-8&amp;query=Axis2+REST&amp;appid=ApacheRestDemo&amp;u=ws.apache.org/axis2&amp;w=axis2+rest&amp;d=Em_1ZkaqMugK&amp;icp=1&amp;.intl=us</Url><Size>17897</Size></Cache>
+</Result>
+
+<Result><Title>Axis2 0.94 released</Title><Summary>... The Apache Axis2 team is proud to announce the release of Axis2 0.94 version ... Improved and user friendly Client API. WSDL2Java. REST (REpresentational State Transfer) Support ...</Summary><Url>http://www.theserverside.com/news/thread.tss?thread_id=38516</Url><ClickUrl>http://www.theserverside.com/news/thread.tss?thread_id=38516</ClickUrl><ModificationDate>1145084400</ModificationDate><MimeType>text/html</MimeType>
+<Cache><Url>http://66.218.69.11/search/cache?ei=UTF-8&amp;query=Axis2+REST&amp;appid=ApacheRestDemo&amp;u=www.theserverside.com/news/thread.tss%3Fthread_id%3D38516&amp;w=axis2+rest&amp;d=MS-1wUaqMnii&amp;icp=1&amp;.intl=us</Url><Size>78023</Size></Cache>
+</Result>
+
+<Result><Title>Re: [Axis2] REST Support</Title><Summary>axis-dev. Re: [Axis2] REST Support. Eran Chinthaka. Sun, 27 Nov 2005 06:49:16 -0800. Srinath Perera wrote: Hi Eran; If we use two servlets .. user need to aware about the endpoint change.. Making users aware abt it explicitly is good, IMO. ... are not going to make Axis2 a REST engine, but we are going to ... ip:port/axis2/services/bar/foo/* using REST : htto://ip:port/axis2/rest/bar/foo/* Thoughts ...</Summary><Url>http://www.mail-archive.com/axis-dev@ws.apache.org/msg12204.html</Url><ClickUrl>http://www.mail-archive.com/axis-dev@ws.apache.org/msg12204.html</ClickUrl><ModificationDate>1143014400</ModificationDate><MimeType>text/html</MimeType>
+<Cache><Url>http://66.218.69.11/search/cache?ei=UTF-8&amp;query=Axis2+REST&amp;appid=ApacheRestDemo&amp;u=www.mail-archive.com/axis-dev@ws.apache.org/msg12204.html&amp;w=axis2+rest&amp;d=VusrP0aqMjBx&amp;icp=1&amp;.intl=us</Url><Size>10097</Size></Cache>
+</Result>
+
+<Result><Title>Apache Axis2 1.0</Title><Summary>... The Apache Axis2 development team have announced the release of version 1.0 ... interface as well as a REST style interface simultaneously. Apache Axis2 is more efficient, more modular ...</Summary><Url>http://today.java.net/pub/n/4364</Url><ClickUrl>http://today.java.net/pub/n/4364</ClickUrl><ModificationDate>1146812400</ModificationDate><MimeType>text/html</MimeType>
+<Cache><Url>http://66.218.69.11/search/cache?ei=UTF-8&amp;query=Axis2+REST&amp;appid=ApacheRestDemo&amp;u=today.java.net/pub/n/4364&amp;w=axis2+rest&amp;d=b6FrHUaqMugt&amp;icp=1&amp;.intl=us</Url><Size>10438</Size></Cache>
+</Result>
+
+<Result><Title>&amp;lt;savas:weblog/&amp;gt;</Title><Summary>... "REST is providing access to the resources through the two methods GET and POST ... subset of the usual Web Service stack, and the Axis2 REST implementation assumes following properties ...</Summary><Url>http://savas.parastatidis.name/2005/08/02/6489ea7d-12d6-4ec5-9593-c1a5fb463190.aspx</Url><ClickUrl>http://savas.parastatidis.name/2005/08/02/6489ea7d-12d6-4ec5-9593-c1a5fb463190.aspx</ClickUrl><ModificationDate>1145862000</ModificationDate><MimeType>text/html</MimeType>
+<Cache><Url>http://66.218.69.11/search/cache?ei=UTF-8&amp;query=Axis2+REST&amp;appid=ApacheRestDemo&amp;u=savas.parastatidis.name/2005/08/02/6489ea7d-12d6-4ec5-9593-c1a5fb463190.aspx&amp;w=axis2+rest&amp;d=d5GCM0aqMrT5&amp;icp=1&amp;.intl=us</Url><Size>24687</Size></Cache>
+</Result>
+
+<Result><Title>Apache Axis2 v0.9 Released</Title><Summary>Login. 524383 members! Sign up to stay informed. Sponsored Links. Resources. Apache Axis2 v0.9 Released. Posted by: Floyd Marinescu on July 06, 2005 @ 01:50 PM ... Axis2 is an effort to re-design and totally re-implement Axis/Java, moving away from RPC towards a more document ... * Client API. * REST Web Service Support ...</Summary><Url>http://www.theserverside.com/news/thread.tss?thread_id=35030</Url><ClickUrl>http://www.theserverside.com/news/thread.tss?thread_id=35030</ClickUrl><ModificationDate>1146294000</ModificationDate><MimeType>text/html</MimeType>
+<Cache><Url>http://66.218.69.11/search/cache?ei=UTF-8&amp;query=Axis2+REST&amp;appid=ApacheRestDemo&amp;u=www.theserverside.com/news/thread.tss%3Fthread_id%3D35030&amp;w=axis2+rest&amp;d=CN-yI0aqMsiF&amp;icp=1&amp;.intl=us</Url><Size>54173</Size></Cache>
+</Result>
+
+<Result><Title>La Cara Oscura del Desarrollo de Software</Title><Summary>... Apache Axis2 adem?s de soportar SOAP 1.1 y SOAP 1.2, tambien integra soporte para servicios Web estilo REST: la ... Taggeado con: axis, axis2, rest, servicios web, soap, web services ...</Summary><Url>http://www.lacaraoscura.com/</Url><ClickUrl>http://www.lacaraoscura.com/</ClickUrl><ModificationDate>1146812400</ModificationDate><MimeType>text/html</MimeType>
+<Cache><Url>http://66.218.69.11/search/cache?ei=UTF-8&amp;query=Axis2+REST&amp;appid=ApacheRestDemo&amp;u=www.lacaraoscura.com/&amp;w=axis2+rest&amp;d=ATIFJUaqMuig&amp;icp=1&amp;.intl=us</Url><Size>52500</Size></Cache>
+</Result>
+
+<Result><Title>Re: [Axis2] REST Support</Title><Summary>axis-dev. Re: [Axis2] REST Support. Eran Chinthaka. Sun, 27 Nov 2005 20:25:05 -0800. Sanjiva Weerawarana wrote: &amp;gt; &amp;gt;On a related note, can we stop forcing people to use /services/* for the &amp;gt;service names?</Summary><Url>http://www.mail-archive.com/axis-dev@ws.apache.org/msg12211.html</Url><ClickUrl>http://www.mail-archive.com/axis-dev@ws.apache.org/msg12211.html</ClickUrl><ModificationDate>1143014400</ModificationDate><MimeType>text/html</MimeType>
+<Cache><Url>http://66.218.69.11/search/cache?ei=UTF-8&amp;query=Axis2+REST&amp;appid=ApacheRestDemo&amp;u=www.mail-archive.com/axis-dev@ws.apache.org/msg12211.html&amp;w=axis2+rest&amp;d=GFJOi0aqMkzc&amp;icp=1&amp;.intl=us</Url><Size>5464</Size></Cache>
+</Result>
+</ResultSet>
