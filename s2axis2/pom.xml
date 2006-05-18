@@ -46,7 +46,7 @@
   <scm>
     <connection>scm:svn:https://www.seasar.org/svn/s2axis/trunk/s2axis2/</connection>
     <developerConnection>scm:svn:https://www.seasar.org/svn/s2axis/trunk/s2axis2/</developerConnection>
-    <url>http://www.seasar.org/websvn/listing.php?repname=s2axis</url>
+    <url>http://www.seasar.org/websvn/listing.php?repname=s2axis2</url>
   </scm>
   <organization>
     <name>The Seasar Foundation</name>

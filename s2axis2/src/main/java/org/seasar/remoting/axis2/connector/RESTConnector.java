@@ -20,14 +20,20 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.axiom.om.OMElement;
+import org.apache.axis2.AxisFault;
 import org.apache.axis2.Constants;
 import org.apache.axis2.addressing.EndpointReference;
 import org.apache.axis2.client.Options;
 import org.apache.axis2.client.RESTCall;
+import org.apache.axis2.databinding.utils.BeanUtil;
 import org.apache.commons.beanutils.BeanUtils;
+import org.seasar.remoting.axis2.util.OMElementUtil;
+import org.seasar.remoting.axis2.xml.OMElementDeserializer;
+import org.seasar.remoting.axis2.xml.XMLBindException;
 import org.seasar.remoting.common.connector.impl.TargetSpecificURLBasedConnector;
 
 /**
@@ -37,42 +43,57 @@ import org.seasar.remoting.common.connector.impl.TargetSpecificURLBasedConnector
  */
 public class RESTConnector extends TargetSpecificURLBasedConnector {
 
-    public static final String DEFAULT_ENCODE = "UTF-8";
+    private static final String REST_GET_OPERATION  = "get";
+
+    private static final String REST_POST_OPERATION = "post";
+
+    private String              encode              = OMElementUtil.DEFAULT_ENCODE;
+
+    private Map                 deserializerMap     = new HashMap();
 
     public RESTConnector() {}
 
     protected Object invoke(URL url, Method method, Object[] args)
             throws Throwable {
 
-        String targetUrl = target(args);
+        String targetUrl = createTarget(args);
         EndpointReference targetEPR = new EndpointReference(targetUrl);
 
-        Options options = new Options();
+        Options options = createOptions(method.getName());
         options.setTo(targetEPR);
-        options.setTransportInProtocol(Constants.TRANSPORT_HTTP);
-        options.setProperty(Constants.Configuration.ENABLE_REST,
-                            Constants.VALUE_TRUE);
-        options.setProperty(Constants.Configuration.ENABLE_REST_THROUGH_GET,
-                            Constants.VALUE_TRUE);
 
         RESTCall call = new RESTCall();
         call.setOptions(options);
 
         OMElement response = call.sendReceive();
 
-        Class retunType = method.getReturnType();
-        Object result;
-        if (retunType.equals(String.class)) {
-            result = response.toString();
-        }
-        else {
-            result = response;
-        }
+        Class returnType = method.getReturnType();
+        Object result = deserialize(returnType, response);
 
         return result;
     }
 
-    protected String target(Object[] args)
+    private Options createOptions(String methodName) {
+        Options options = new Options();
+        options.setTransportInProtocol(Constants.TRANSPORT_HTTP);
+        options.setProperty(Constants.Configuration.ENABLE_REST,
+                            Constants.VALUE_TRUE);
+        options.setProperty(Constants.Configuration.ENABLE_REST_THROUGH_GET,
+                            Constants.VALUE_TRUE);
+
+        String opeProp;
+        if (methodName.toLowerCase().startsWith(REST_POST_OPERATION)) {
+            opeProp = Constants.Configuration.HTTP_METHOD_POST;
+        }
+        else {
+            opeProp = Constants.Configuration.HTTP_METHOD_GET;
+        }
+        options.setProperty(Constants.Configuration.HTTP_METHOD, opeProp);
+
+        return options;
+    }
+
+    protected String createTarget(Object[] args)
             throws IllegalArgumentException,
                 IllegalAccessException,
                 InvocationTargetException,
@@ -98,7 +119,7 @@ public class RESTConnector extends TargetSpecificURLBasedConnector {
         return target;
     }
 
-    protected String createRestParameter(Object bean)
+    private String createRestParameter(Object bean)
             throws IllegalAccessException,
                 InvocationTargetException,
                 NoSuchMethodException,
@@ -121,13 +142,56 @@ public class RESTConnector extends TargetSpecificURLBasedConnector {
 
                 buff.append(key);
                 buff.append("=");
-                buff.append(URLEncoder.encode(value.toString(), DEFAULT_ENCODE));
+                buff.append(URLEncoder.encode(value.toString(), encode));
             }
         }
 
         String restParam = buff.toString();
 
         return restParam.toString();
+    }
+
+    private Object deserialize(Class returnType, OMElement om)
+            throws XMLBindException {
+
+        Object result;
+
+        OMElementDeserializer deserializer = (OMElementDeserializer) this.deserializerMap.get(returnType);
+
+        if (deserializer != null) {
+            // Bind by deserializer
+            result = deserializer.deserialize(om);
+        }
+        else if (returnType.equals(String.class)) {
+            // Convert to String
+            result = OMElementUtil.toString(om);
+        }
+        else if (returnType.isAssignableFrom(OMElement.class)) {
+            result = om;
+        }
+        else {
+            // Bind by BeanUtil(expect simple JavaBeans)
+            try {
+                result = BeanUtil.deserialize(returnType, om);
+            }
+            catch (AxisFault ex) {
+                throw new XMLBindException(ex);
+            }
+        }
+
+        return result;
+    }
+
+    public void addUnmarshaller(Class clazz, OMElementDeserializer deserializer) {
+        this.deserializerMap.put(clazz, deserializer);
+    }
+
+    public String getEncode() {
+        return encode;
+    }
+
+    public void setEncode(String encode) {
+        this.encode = encode;
     }
 
 }

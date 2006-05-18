@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="S2Axis2" default="dist" basedir=".">
-	<property name="ver" value="0.1.0"/>
+  <property name="ver" value="0.1.0"/>
 
-	<target name="dist">
-		<zip zipfile="target/S2Axis2-${ver}.zip">
-			<zipfileset prefix="s2axis2" dir=".">
-				<exclude name="**/target/**"/>
-				<exclude name=".settings"/>
-				<exclude name=".settings/**"/>
-			</zipfileset>
-			<zipfileset prefix="s2axis2/lib" dir="target">
-				<include name="s2axis2-${ver}.jar"/>
-			</zipfileset>
-			<zipfileset prefix="s2axis2/resources" dir="src/test/resources">
-				<include name="log4j.properties"/>
-			</zipfileset>
-			<zipfileset prefix="s2axis2/doc" dir="../s2axis2-www">
-				<exclude name="**/download/**"/>
-				<exclude name=".project"/>
-			</zipfileset>
-		</zip>
-	</target>
+  <target name="dist">
+    <zip zipfile="target/S2Axis2-${ver}.zip">
+      <zipfileset prefix="s2axis2" dir=".">
+        <exclude name="**/target/**"/>
+        <exclude name=".settings"/>
+        <exclude name=".settings/**"/>
+      </zipfileset>
+      <zipfileset prefix="s2axis2/lib" dir="target">
+        <include name="s2axis2-${ver}.jar"/>
+      </zipfileset>
+      <zipfileset prefix="s2axis2/resources" dir="src/test/resources">
+        <include name="log4j.properties"/>
+      </zipfileset>
+      <zipfileset prefix="s2axis2/doc" dir="../s2axis-www">
+        <exclude name="**/download/**"/>
+        <exclude name=".project"/>
+      </zipfileset>
+    </zip>
+  </target>
 
-	<target name="jar">
-		<jar destfile="target/s2axis2-${ver}.jar"
-			basedir="target/classes"
-			excludes="**/*Test.class"/>
-	</target>
+  <target name="jar">
+    <jar destfile="target/s2axis2-${ver}.jar"
+      basedir="target/classes"
+      excludes="**/*Test.class"/>
+  </target>
 
 </project>
 

@@ -41,13 +41,13 @@ public class AxisInOutConnector extends AbstractAxisConnector {
         OMElement request = createRequest(method, args);
         OMElement response = client.sendReceive(request);
 
-        Class retunType = method.getReturnType();
+        Class returnType = method.getReturnType();
         Object result;
-        if (retunType.equals(void.class)) {
+        if (returnType.equals(void.class)) {
             result = null;
         }
         else {
-            Object[] returnTypes = new Object[] { retunType };
+            Object[] returnTypes = new Object[] { returnType };
             Object[] returnValue = BeanUtil.deserialize(response, returnTypes);
 
             result = returnValue[0];
