@@ -6,7 +6,7 @@
 
 	<component name="connector" class="org.seasar.remoting.axis2.connector.RESTConnector">
 		<property name="baseURL">
-			new java.net.URL("http://api.search.yahoo.com/WebSearchService/V1/webSearch")
+			new java.net.URL("http://api.search.yahoo.co.jp/WebSearchService/V1/webSearch")
 		</property>
 	</component>
 

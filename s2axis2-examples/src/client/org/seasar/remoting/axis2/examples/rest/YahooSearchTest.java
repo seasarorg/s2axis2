@@ -15,6 +15,8 @@
  */
 package org.seasar.remoting.axis2.examples.rest;
 
+import org.apache.axiom.om.OMElement;
+import org.apache.axis2.AxisFault;
 import org.seasar.extension.unit.S2TestCase;
 
 /**
@@ -29,23 +31,52 @@ public class YahooSearchTest extends S2TestCase {
     public void testPost() {
 
         YahooSearch rest = (YahooSearch) getComponent(YahooSearch.class);
+        YahooSearchDto dto = createDto();
 
+        try
+        {
+            String result = rest.postSearch(dto);
+            System.out.println(result);
+            
+            fail();
+        }catch(Exception ex)
+        {
+            System.out.println(ex);
+        }
+    }
+
+    public void testGet() {
+
+        YahooSearch rest = (YahooSearch) getComponent(YahooSearch.class);
+        YahooSearchDto dto = createDto();
+
+        String result = rest.getSearchResult(dto);
+        System.out.println(result);
+    }
+
+    public void testGetByOMElement() {
+
+        YahooSearch rest = (YahooSearch) getComponent(YahooSearch.class);
+        YahooSearchDto dto = createDto();
+
+        OMElement result = rest.getSearchResultByOMElement(dto);
+        try {
+            String resultStr = new String(result.toString().getBytes(), "UTF-8");
+            System.out.println(resultStr);
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+
+            fail();
+        }
+    }
+
+    private YahooSearchDto createDto() {
         YahooSearchDto dto = new YahooSearchDto();
         dto.setAppid("ApacheRestDemo");
         dto.setQuery("Axis2 REST");
 
-        String result = rest.post(dto);
-        try {
-            result = new String(result.getBytes(), "UTF-8");
-            System.out.println(result);
-        }
-        catch (Exception ex) {
-            ex.printStackTrace();
-            
-            fail();
-        }
-
-       
+        return dto;
     }
 
 }

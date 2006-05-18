@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="S2Axis2Examples" default="dist" basedir=".">
-    <property name="ver" value="0.1.0"/>
+  <property name="ver" value="0.1.0"/>
 
-    <path id="axis.classpath">
-        <pathelement location="build/classes" />
-        <fileset dir="WebContent/WEB-INF/lib">
-            <include name="**/*.jar" />
-        </fileset>
-    </path>
-    <taskdef resource="axis-tasks.properties" classpathref="axis.classpath" />
+  <path id="axis.classpath">
+    <pathelement location="build/classes" />
+    <fileset dir="WebContent/WEB-INF/lib">
+      <include name="**/*.jar" />
+    </fileset>
+  </path>
 
-    <target name="dist">
-        <mkdir dir="target" />
-        <zip destfile="target/S2Axis2Examples-${ver}.zip">
-            <zipfileset dir="."
-                        prefix="s2axis2-examples"
-                        includes="* .settings/** src/** WebContent/**"
-                        excludes="target"
-            />
-        </zip>
-    </target>
+  <taskdef resource="axis-tasks.properties" classpathref="axis.classpath" />
+
+  <target name="dist">
+    <mkdir dir="target" />
+    <zip destfile="target/S2Axis2Examples-${ver}.zip">
+    <zipfileset dir="."
+                prefix="s2axis2-examples"
+                includes="* .settings/** src/** WebContent/**"
+                excludes="target"/>
+    </zip>
+  </target>
 
 </project>

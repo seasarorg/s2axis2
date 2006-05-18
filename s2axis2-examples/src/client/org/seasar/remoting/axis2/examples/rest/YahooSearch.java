@@ -15,11 +15,17 @@
  */
 package org.seasar.remoting.axis2.examples.rest;
 
+import org.apache.axiom.om.OMElement;
+
 /**
  * @author takanori
  */
 public interface YahooSearch {
 
-    String post(YahooSearchDto dto);
+    String postSearch(YahooSearchDto dto);
+    
+    String getSearchResult(YahooSearchDto dto);
+    
+    OMElement getSearchResultByOMElement(YahooSearchDto dto);
     
 }
