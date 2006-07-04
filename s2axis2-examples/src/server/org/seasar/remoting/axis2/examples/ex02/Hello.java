@@ -13,15 +13,11 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.remoting.axis2.examples.rest;
+package org.seasar.remoting.axis2.examples.ex02;
 
 /**
  * @author takanori
  */
-public interface YahooSearch {
-
-    String postSearch(YahooSearchDto dto);
-    
-    String getSearchResult(YahooSearchDto dto);
-    
+public interface Hello {
+    String say();
 }

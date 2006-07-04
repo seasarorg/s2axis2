@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+    "http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component name="ioRemoting"
+               class="org.seasar.remoting.common.interceptor.RemotingInterceptor">
+        <property name="connector">ioConnector</property>
+    </component>
+
+    <component name="ioConnector"
+               class="org.seasar.remoting.axis2.connector.AxisInOutConnector">
+        <property name="baseURL">baseURL</property>
+    </component>
+
+    
+    <component name="oneWayRemoting"
+               class="org.seasar.remoting.common.interceptor.RemotingInterceptor">
+        <property name="connector">oneWayConnector</property>
+    </component>
+
+    <component name="oneWayConnector"
+               class="org.seasar.remoting.axis2.connector.AxisOnewayConnector">
+        <property name="baseURL">baseURL</property>
+    </component>
+
+    <component class="org.apache.axis2.description.AxisService" autoBinding="none"/>
+    
+    <component name="baseURL" class="java.net.URL" autoBinding="none">
+        <arg>"http://localhost:8080/s2axis2-examples/services/"</arg>
+    </component>
+    
+</components>

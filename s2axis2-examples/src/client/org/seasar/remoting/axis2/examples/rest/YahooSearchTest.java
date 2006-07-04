@@ -15,8 +15,6 @@
  */
 package org.seasar.remoting.axis2.examples.rest;
 
-import org.apache.axiom.om.OMElement;
-import org.apache.axis2.AxisFault;
 import org.seasar.extension.unit.S2TestCase;
 
 /**
@@ -52,23 +50,6 @@ public class YahooSearchTest extends S2TestCase {
 
         String result = rest.getSearchResult(dto);
         System.out.println(result);
-    }
-
-    public void testGetByOMElement() {
-
-        YahooSearch rest = (YahooSearch) getComponent(YahooSearch.class);
-        YahooSearchDto dto = createDto();
-
-        OMElement result = rest.getSearchResultByOMElement(dto);
-        try {
-            String resultStr = new String(result.toString().getBytes(), "UTF-8");
-            System.out.println(resultStr);
-        }
-        catch (Exception ex) {
-            ex.printStackTrace();
-
-            fail();
-        }
     }
 
     private YahooSearchDto createDto() {

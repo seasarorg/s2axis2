@@ -13,15 +13,29 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.remoting.axis2.examples.rest;
+package org.seasar.remoting.axis2.examples.ex03;
+
+import org.seasar.extension.unit.S2TestCase;
 
 /**
  * @author takanori
  */
-public interface YahooSearch {
+public class BeanEchoTest extends S2TestCase {
+    public BeanEchoTest(String name) {
+        super(name);
+    }
 
-    String postSearch(YahooSearchDto dto);
-    
-    String getSearchResult(YahooSearchDto dto);
-    
+    public void setUp() {
+        include("BeanEchoTest.dicon");
+    }
+
+    public void test() {
+        EchoDto expected = new EchoDto();
+        expected.setStrParam("echo");
+        
+        BeanEcho beanEcho = (BeanEcho) getComponent(BeanEcho.class);
+        EchoDto actual = beanEcho.echo(expected);
+        
+        assertEquals(expected.getStrParam(), actual.getStrParam());
+    }
 }

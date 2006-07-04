@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
 	"http://www.seasar.org/dtd/components21.dtd">
-<components namespace="axis">
-	<component name="deployer" class="org.seasar.remoting.axis2.deployer.AxisDeployer">
-		<initMethod name="deploy"/>
+<components>
+	<include path="s2-axis-client.dicon"/>
+
+    <component class="org.seasar.remoting.axis2.examples.ex02.Hello">
+		<aspect>ioRemoting</aspect>
 	</component>
 </components>

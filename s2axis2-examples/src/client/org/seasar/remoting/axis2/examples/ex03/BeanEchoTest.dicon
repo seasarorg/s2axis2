@@ -4,7 +4,7 @@
 <components>
 	<include path="s2-axis-client.dicon"/>
 
-    <component class="org.seasar.remoting.axis2.examples.ex01.Echo">
+    <component class="org.seasar.remoting.axis2.examples.ex03.BeanEcho">
 		<aspect>ioRemoting</aspect>
 	</component>
 </components>

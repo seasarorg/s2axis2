@@ -13,15 +13,25 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.remoting.axis2.examples.rest;
+package org.seasar.remoting.axis2.examples.ex02.impl;
+
+import org.seasar.remoting.axis2.examples.ex02.MessageSettable;
+import org.seasar.remoting.axis2.examples.ex02.Hello;
 
 /**
  * @author takanori
  */
-public interface YahooSearch {
+public class HelloImpl implements Hello, MessageSettable {
+    
+    private String message;
+    
+    public HelloImpl() {};
 
-    String postSearch(YahooSearchDto dto);
+    public String say() {
+        return message;
+    }
     
-    String getSearchResult(YahooSearchDto dto);
-    
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }
