@@ -13,28 +13,31 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.remoting.axis2;
-
-import org.seasar.framework.exception.SRuntimeException;
+package org.seasar.remoting.axis2.receivers;
 
 /**
  * 
  * @author takanori
- * 
+ *
  */
-public class DeployFailedException extends SRuntimeException {
+public class NotFoundServiceException extends Exception {
 
     private static final long serialVersionUID = 1L;
 
-    public DeployFailedException(String code) {
-        super(code);
+    public NotFoundServiceException() {
+        super();
     }
 
-    public DeployFailedException(String code, Object[] args) {
-        super(code, args);
+    public NotFoundServiceException(String arg0) {
+        super(arg0);
     }
 
-    public DeployFailedException(String code, Object[] args, Throwable cause) {
-        super(code, args, cause);
+    public NotFoundServiceException(Throwable arg0) {
+        super(arg0);
     }
+
+    public NotFoundServiceException(String arg0, Throwable arg1) {
+        super(arg0, arg1);
+    }
+
 }

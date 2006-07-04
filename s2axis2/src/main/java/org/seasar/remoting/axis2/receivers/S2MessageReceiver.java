@@ -13,28 +13,10 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.remoting.axis2;
+package org.seasar.remoting.axis2.receivers;
 
-import org.seasar.framework.exception.SRuntimeException;
+import org.apache.axis2.engine.MessageReceiver;
 
-/**
- * 
- * @author takanori
- * 
- */
-public class DeployFailedException extends SRuntimeException {
-
-    private static final long serialVersionUID = 1L;
-
-    public DeployFailedException(String code) {
-        super(code);
-    }
-
-    public DeployFailedException(String code, Object[] args) {
-        super(code, args);
-    }
-
-    public DeployFailedException(String code, Object[] args, Throwable cause) {
-        super(code, args, cause);
-    }
+public interface S2MessageReceiver extends MessageReceiver {
+    void setServiceHolder(ServiceHolder serviceHolder);
 }

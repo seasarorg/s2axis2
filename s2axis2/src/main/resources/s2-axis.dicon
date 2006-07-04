@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
-	"http://www.seasar.org/dtd/components21.dtd">
+    "http://www.seasar.org/dtd/components21.dtd">
 <components namespace="axis">
-	<component name="deployer" class="org.seasar.remoting.axis2.deployer.AxisDeployer">
-		<initMethod name="deploy"/>
-	</component>
+    <component name="deployer" class="org.seasar.remoting.axis2.deployer.AxisDeployer">
+        <initMethod name="deploy"/>
+    </component>
+    
+    <component name="serviceDeployer"
+               class="org.seasar.remoting.axis2.deployer.ServiceDeployer">
+    </component>
+    
+    <component name="serviceBuilder"
+               class="org.seasar.remoting.axis2.deployment.impl.S2ServiceBuilderImpl">
+        <arg>serviceHolder</arg>
+    </component>
+    
+    <component name="serviceHolder"
+               class="org.seasar.remoting.axis2.receivers.ServiceHolder">
+    </component>
+    
 </components>

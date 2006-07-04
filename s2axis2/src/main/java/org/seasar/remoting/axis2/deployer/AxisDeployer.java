@@ -41,7 +41,7 @@ public class AxisDeployer {
 
     protected AxisConfiguration    axisConfig        = null;
 
-    private ServiceDeployer        serviceDeployer   = new ServiceDeployer(this);
+    private ServiceDeployer        serviceDeployer   = null;
 
     public AxisDeployer() {}
 
@@ -52,8 +52,8 @@ public class AxisDeployer {
     }
 
     protected void forEach(final S2Container container) {
-        //TODO WSDLからのデプロイ
-        
+        // TODO WSDLからのデプロイ
+
         final int componentDefSize = container.getComponentDefSize();
         for (int i = 0; i < componentDefSize; ++i) {
             process(container.getComponentDef(i));
@@ -71,8 +71,8 @@ public class AxisDeployer {
         if (serviceMetaDef != null) {
             serviceDeployer.deploy(componentDef, serviceMetaDef);
         }
-        
-        //TODO ハンドラのデプロイ
+
+        // TODO ハンドラのデプロイ
     }
 
     protected MetaDef getMetaDef(final MetaDefAware metaDefSupport,
@@ -91,6 +91,10 @@ public class AxisDeployer {
         return matcher.matches() ? matcher.group(1) : null;
     }
 
+    public AxisConfiguration getAxisConfig() {
+        return axisConfig;
+    }
+
     public void setContainer(final S2Container container) {
         this.container = container;
     }
@@ -99,11 +103,18 @@ public class AxisDeployer {
         ConfigurationContext configContext;
 
         configContext = (ConfigurationContext) servletContext.getAttribute(S2AxisConstants.ATTR_CONFIGURATION_CONTEXT);
-        this.axisConfig = configContext.getAxisConfiguration();
+
+        if (configContext != null) {
+            this.axisConfig = configContext.getAxisConfiguration();
+        }
     }
 
-    public AxisConfiguration getAxisConfig() {
-        return axisConfig;
+    public ServiceDeployer getServiceDeployer() {
+        return serviceDeployer;
+    }
+
+    public void setServiceDeployer(ServiceDeployer serviceDeployer) {
+        this.serviceDeployer = serviceDeployer;
     }
 
 }

@@ -15,35 +15,29 @@
  */
 package org.seasar.remoting.axis2.deployer;
 
-import java.util.ArrayList;
-
 import org.apache.axis2.AxisFault;
-import org.apache.axis2.Constants;
-import org.apache.axis2.deployment.util.Utils;
 import org.apache.axis2.description.AxisService;
-import org.apache.axis2.description.Parameter;
-import org.apache.axis2.rpc.receivers.RPCInOnlyMessageReceiver;
-import org.apache.axis2.rpc.receivers.RPCMessageReceiver;
-import org.apache.axis2.wsdl.WSDLConstants;
+import org.apache.axis2.engine.AxisConfiguration;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.MetaDef;
 import org.seasar.framework.log.Logger;
 import org.seasar.remoting.axis2.DeployFailedException;
+import org.seasar.remoting.axis2.ServiceDef;
+import org.seasar.remoting.axis2.deployment.ServiceBuilder;
 
 /**
  * 
  * @author takanori
- * 
  */
 public class ServiceDeployer implements ItemDeployer {
 
-    private AxisDeployer        deployer = null;
+    private AxisDeployer        deployer       = null;
 
-    private static final Logger logger   = Logger.getLogger(ServiceDeployer.class);
+    private ServiceBuilder      serviceBuilder = null;
 
-    public ServiceDeployer(AxisDeployer deployer) {
-        this.deployer = deployer;
-    }
+    private static final Logger logger         = Logger.getLogger(ServiceDeployer.class);
+
+    public ServiceDeployer() {}
 
     public void deploy(ComponentDef componentDef, MetaDef metaDef) {
 
@@ -52,11 +46,13 @@ public class ServiceDeployer implements ItemDeployer {
             this.deployer.getAxisConfig().addService(service);
 
             if (logger.isDebugEnabled()) {
-                logger.log("DAXS0003", new Object[] { service.getName() });
+                logger.log("DAXS0001", new Object[] { service.getName() });
             }
         }
         catch (AxisFault ex) {
-            throw new DeployFailedException(ex);
+            throw new DeployFailedException("EAXS0002",
+                                            new Object[] { service.getName() },
+                                            ex);
         }
 
     }
@@ -64,29 +60,43 @@ public class ServiceDeployer implements ItemDeployer {
     protected AxisService createService(ComponentDef componentDef,
             MetaDef metaDef) {
 
-        String className = componentDef.getComponentClass().getName();
-        Parameter parameter = new Parameter(Constants.SERVICE_CLASS, className);
-        AxisService service = new AxisService(componentDef.getComponentName());
+        Object metaData = metaDef.getValue();
 
-        service.addMessageReceiver(WSDLConstants.MEP_URI_IN_OUT,
-                                   new RPCMessageReceiver());
-        service.addMessageReceiver(WSDLConstants.MEP_URI_IN_ONLY,
-                                   new RPCInOnlyMessageReceiver());
+        AxisConfiguration axisConfig = this.deployer.getAxisConfig();
+        AxisService service;
 
-        try {
-            service.addParameter(parameter);
-            service.setClassLoader(Thread.currentThread().getContextClassLoader());
-
-            Utils.fillAxisService(service, this.deployer.getAxisConfig(), new ArrayList());
+        if (metaData == null) {
+            service = this.serviceBuilder.populateService(axisConfig,
+                                                          componentDef);
         }
-        catch (AxisFault ex) {
-            throw new DeployFailedException(ex);
+        else if (metaData instanceof ServiceDef) {
+            ServiceDef serviceDef = (ServiceDef) metaData;
+            service = this.serviceBuilder.populateService(axisConfig,
+                                                          componentDef,
+                                                          serviceDef);
         }
-        catch (Exception ex) {
-            throw new DeployFailedException(ex);
+        else {
+            throw new DeployFailedException("EAXS0002",
+                                            new Object[] { componentDef.getComponentName() });
         }
 
         return service;
+    }
+
+    public AxisDeployer getDeployer() {
+        return this.deployer;
+    }
+
+    public void setDeployer(AxisDeployer deployer) {
+        this.deployer = deployer;
+    }
+
+    public ServiceBuilder getServiceBuilder() {
+        return this.serviceBuilder;
+    }
+
+    public void setServiceBuilder(ServiceBuilder serviceBuilder) {
+        this.serviceBuilder = serviceBuilder;
     }
 
 }

@@ -13,28 +13,12 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.remoting.axis2;
+package org.seasar.remoting.axis2.mock;
 
-import org.seasar.framework.exception.SRuntimeException;
+public interface ServiceMock {
+    
+    void method1();
+    
+    void method2();
 
-/**
- * 
- * @author takanori
- * 
- */
-public class DeployFailedException extends SRuntimeException {
-
-    private static final long serialVersionUID = 1L;
-
-    public DeployFailedException(String code) {
-        super(code);
-    }
-
-    public DeployFailedException(String code, Object[] args) {
-        super(code, args);
-    }
-
-    public DeployFailedException(String code, Object[] args, Throwable cause) {
-        super(code, args, cause);
-    }
 }

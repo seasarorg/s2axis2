@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components namespace="axis">
+
+	<include path="s2-axis.dicon"/>
+
+	<component name="ServiceMock" class="org.seasar.remoting.axis2.mock.impl.ServiceMockImpl">
+		<meta name="axis-service"/>
+	</component>
+	
+	<component name="ServiceDefTest" class="org.seasar.remoting.axis2.mock.impl.ServiceMockImpl">
+		<meta name="axis-service">
+			<component class="org.seasar.remoting.axis2.ServiceDef">
+				<property name="serviceType">@org.seasar.remoting.axis2.mock.ServiceMock@class</property>
+				<property name="targetNamespace">"http://ws.apache.org/axis2"</property>
+				<property name="schemaNamespace">"http://examples/xsd"</property>
+				<property name="excludeOperations">{"method1", "method2"}</property>
+				
+				<initMethod name="addMessageReceiver">
+					<arg>"http://www.w3.org/2004/08/wsdl/in-out"</arg>
+					<arg>new org.seasar.remoting.axis2.receivers.S2RPCMessageReceiver()</arg>
+				</initMethod>
+				<initMethod name="addMessageReceiver">
+					<arg>"http://www.w3.org/2004/08/wsdl/in-only"</arg>
+					<arg>new org.seasar.remoting.axis2.receivers.S2RPCInOnlyMessageReceiver()</arg>
+				</initMethod>
+			</component>
+		</meta>
+	</component>
+	
+</components>
