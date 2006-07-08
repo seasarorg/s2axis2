@@ -161,6 +161,9 @@ public class S2ServiceBuilderImpl implements ServiceBuilder {
             String opName = (String) excludeOperations.get(i);
             service.removeOperation(new QName(opName));
         }
+        
+        // WSDLの公開設定
+        service.setWsdlfound(true);
 
         return service;
     }
