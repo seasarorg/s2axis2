@@ -74,6 +74,11 @@
       <url>http://maven.seasar.org/maven2</url>
     </repository>
     <repository>
+      <id>repo1.maven.org</id>
+      <name>Maven2 Repository</name>
+      <url>http://repo1.maven.org/maven2</url>
+    </repository>
+    <repository>
       <id>local</id>
       <name>The Seasar Foundation Maven2 local Repository</name>
       <url>file:repo</url>
@@ -115,6 +120,18 @@
       <groupId>ws-commons</groupId>
       <artifactId>axiom-api</artifactId>
       <version>1.0</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>stax</groupId>
+      <artifactId>stax-api</artifactId>
+      <version>1.0</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>commons-beanutils</groupId>
+      <artifactId>commons-beanutils</artifactId>
+      <version>1.7.0</version>
       <type>jar</type>
     </dependency>
   </dependencies>
