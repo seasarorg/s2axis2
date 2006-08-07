@@ -27,11 +27,11 @@ import org.apache.axiom.om.OMNamespace;
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.addressing.EndpointReference;
 import org.apache.axis2.client.Options;
-import org.apache.axis2.databinding.utils.BeanUtil;
 import org.apache.axis2.description.AxisService;
 import org.apache.axis2.transport.http.HTTPConstants;
 import org.apache.ws.java2wsdl.Java2WSDLUtils;
 import org.apache.ws.java2wsdl.SchemaGenerator;
+import org.seasar.remoting.axis2.util.BeanUtil;
 import org.seasar.remoting.common.connector.impl.TargetSpecificURLBasedConnector;
 
 /**

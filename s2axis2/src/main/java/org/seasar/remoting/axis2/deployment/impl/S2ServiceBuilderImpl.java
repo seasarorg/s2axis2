@@ -67,7 +67,7 @@ public class S2ServiceBuilderImpl implements ServiceBuilder {
                                          ioReceiver);
 
         S2MessageReceiver inOnlyReceiver = new S2RPCInOnlyMessageReceiver();
-        ioReceiver.setServiceHolder(serviceHolder);
+        inOnlyReceiver.setServiceHolder(serviceHolder);
         this.defaultMessageReceivers.put(WSDLConstants.MEP_URI_IN_ONLY,
                                          inOnlyReceiver);
     }
