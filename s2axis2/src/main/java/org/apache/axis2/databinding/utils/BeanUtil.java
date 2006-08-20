@@ -13,7 +13,7 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.remoting.axis2.util;
+package org.apache.axis2.databinding.utils;
 
 
 import org.apache.axiom.om.OMAbstractFactory;
@@ -95,7 +95,9 @@ public class BeanUtil {
                     Object value = propDesc.getReadMethod().invoke(beanObject,
                             (Object[]) null);
                     object.add(propDesc.getName());
-                    object.add(value.toString());
+                    
+                    // mod for s2axis2
+                    object.add(SimpleTypeMapper.getStringValue(value));
                 } else if (ptype.isArray()) {
                     Object value [] = (Object[]) propDesc.getReadMethod().invoke(beanObject,
                             (Object[]) null);
@@ -103,7 +105,9 @@ public class BeanUtil {
                         for (int j = 0; j < value.length; j++) {
                             Object o = value[j];
                             object.add(propDesc.getName());
-                            object.add(o.toString());
+                            
+                            // mod for s2axis2
+                            object.add(SimpleTypeMapper.getStringValue(o));
                         }
                     } else {
                         for (int j = 0; j < value.length; j++) {
@@ -462,6 +466,8 @@ public class BeanUtil {
                     Object o = array[j];
                     if (SimpleTypeMapper.isSimpleType(o)) {
                         objects.add("item" + argCount);
+                        
+                        // mod for s2axis2
                         objects.add(SimpleTypeMapper.getStringValue(o));
                     } else {
                         objects.add(new QName("item" + argCount));
@@ -488,6 +494,7 @@ public class BeanUtil {
                     } else {
                         objects.add(partName);
                     }
+                    // mod for s2axis2
                     objects.add(SimpleTypeMapper.getStringValue(arg));
                 } else {
                     if (partName == null) {

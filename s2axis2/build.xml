@@ -26,6 +26,9 @@
     <jar destfile="target/s2axis2-${ver}.jar"
       basedir="target/classes"
       excludes="**/*Test.class"/>
+    <jar destfile="target/axis2-1.0-patch.jar"
+      basedir="target/classes"
+      includes="**/org/apache/axis2/**"/>
   </target>
 
 </project>
