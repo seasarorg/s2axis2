@@ -9,4 +9,8 @@
 	<component name="Ping" class="org.seasar.remoting.axis2.examples.ex01.PingImpl">
 		<meta name="axis-service"/>
 	</component>
+	
+	<component name="SimpleTypeService" class="org.seasar.remoting.axis2.examples.ex01.SimpleTypeServiceImpl">
+		<meta name="axis-service"/>
+	</component>
 </components>

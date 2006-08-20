@@ -1,22 +1,27 @@
 package org.seasar.remoting.axis2.examples.ex03;
 
+import java.util.Calendar;
+
 public class EchoDto {
 
-    private String  strParam    = "";
+    private String   strParam    = "";
 
-    private short   shortParam  = 1;
+    private short    shortParam  = 1;
 
-    private int     intParam    = 2;
+    private int      intParam    = 2;
 
-    private long    longParam   = 3L;
+    private long     longParam   = 3L;
 
-    private float   floatParam  = 1.0f;
+    private float    floatParam  = 1.0f;
 
-    private double  doubleParam = 1.1;
+    private double   doubleParam = 1.1;
 
-    private boolean boolParam   = true;
+    private boolean  boolParam   = true;
 
-    public EchoDto() {}
+    private Calendar cal         = Calendar.getInstance();
+
+    public EchoDto() {
+    }
 
     public String getStrParam() {
         return this.strParam;
@@ -72,6 +77,14 @@ public class EchoDto {
 
     public void setBoolParam(boolean boolParam) {
         this.boolParam = boolParam;
+    }
+
+    public Calendar getCal() {
+        return cal;
+    }
+
+    public void setCal(Calendar cal) {
+        this.cal = cal;
     }
 
 }
