@@ -13,51 +13,36 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.remoting.axis2.examples.rest;
+package org.seasar.remoting.axis2.examples.rest.amazon;
 
 import org.seasar.extension.unit.S2TestCase;
 
-/**
- * @author takanori
- */
-public class YahooSearchTest extends S2TestCase {
-
+public class AmazonSearchTest extends S2TestCase {
+    
     public void setUp() {
-        include("YahooSearchTest.dicon");
-    }
-
-    public void testPost() {
-
-        YahooSearch rest = (YahooSearch) getComponent(YahooSearch.class);
-        YahooSearchDto dto = createDto();
-
-        try
-        {
-            String result = rest.postSearch(dto);
-            System.out.println(result);
-            
-            fail();
-        }catch(Exception ex)
-        {
-            System.out.println(ex);
-        }
+        include("AmazonSearchTest.dicon");
     }
 
     public void testGet() {
-
-        YahooSearch rest = (YahooSearch) getComponent(YahooSearch.class);
-        YahooSearchDto dto = createDto();
-
+        AmazonSearch rest = (AmazonSearch) getComponent(AmazonSearch.class);
+        AmazonSearchDto dto = createDto();
         String result = rest.getSearchResult(dto);
         System.out.println(result);
     }
 
-    private YahooSearchDto createDto() {
-        YahooSearchDto dto = new YahooSearchDto();
-        dto.setAppid("ApacheRestDemo");
-        dto.setQuery("Axis2 REST");
-
+    private AmazonSearchDto createDto() {
+        AmazonSearchDto dto = new AmazonSearchDto();
+        // アソシエイトID
+        // See: http://affiliate.amazon.co.jp/gp/associates/join/main.html
+        dto.setT("featianet-22");
+        // デベロッパー・トークン
+        // See:
+        // http://www.amazon.co.jp/exec/obidos/subst/associates/join/webservices.html
+        dto.setDevT("0QW6Q9VXEVRRC5DC2ZG2");
+        dto.setAsinSearch("4774128554");
+        dto.setLocale("jp");
+        dto.setType("heavy");
+        dto.setF("xml");
         return dto;
     }
-
 }

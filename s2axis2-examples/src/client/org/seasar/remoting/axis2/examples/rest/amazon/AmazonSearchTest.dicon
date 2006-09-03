@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+    "http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component name="remoting" class="org.seasar.remoting.common.interceptor.RemotingInterceptor"/>
+
+    <component name="connector" class="org.seasar.remoting.axis2.connector.RESTConnector">
+        <property name="baseURL">
+            new java.net.URL("http://xml-jp.amznxslt.com/onca/xml3")
+        </property>
+    </component>
+
+    <component class="org.seasar.remoting.axis2.examples.rest.amazon.AmazonSearch">
+        <aspect>remoting</aspect>
+    </component>
+</components>

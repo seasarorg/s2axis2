@@ -13,15 +13,33 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.remoting.axis2.examples.rest;
+package org.seasar.remoting.axis2.examples.rest.yahoo;
 
 /**
  * @author takanori
  */
-public interface YahooSearch {
+public class YahooSearchDto {
 
-    String postSearch(YahooSearchDto dto);
-    
-    String getSearchResult(YahooSearchDto dto);
-    
+    private String appid;
+
+    private String query;
+
+    public YahooSearchDto() {}
+
+    public String getAppid() {
+        return this.appid;
+    }
+
+    public void setAppid(String appid) {
+        this.appid = appid;
+    }
+
+    public String getQuery() {
+        return this.query;
+    }
+
+    public void setQuery(String query) {
+        this.query = query;
+    }
+
 }
