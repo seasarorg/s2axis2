@@ -2,21 +2,24 @@
 <!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
     "http://www.seasar.org/dtd/components21.dtd">
 <components namespace="axis">
-    <component name="deployer" class="org.seasar.remoting.axis2.deployer.AxisDeployer">
+    <!-- for server -->
+    <component name="deployer"
+        class="org.seasar.remoting.axis2.deployer.AxisDeployer">
         <initMethod name="deploy"/>
     </component>
-    
     <component name="serviceDeployer"
-               class="org.seasar.remoting.axis2.deployer.ServiceDeployer">
+        class="org.seasar.remoting.axis2.deployer.ServiceDeployer">
     </component>
-    
     <component name="serviceBuilder"
-               class="org.seasar.remoting.axis2.deployment.impl.S2ServiceBuilderImpl">
+        class="org.seasar.remoting.axis2.deployment.impl.S2ServiceBuilderImpl">
         <arg>serviceHolder</arg>
     </component>
-    
     <component name="serviceHolder"
-               class="org.seasar.remoting.axis2.receivers.ServiceHolder">
+        class="org.seasar.remoting.axis2.receivers.ServiceHolder">
     </component>
     
+    <!-- for client -->
+    <component
+        class="org.seasar.remoting.axis2.annotation.impl.FieldAnnotationReaderFactory">
+    </component>
 </components>
