@@ -34,11 +34,11 @@ public class AmazonSearchTest extends S2TestCase {
         AmazonSearchDto dto = new AmazonSearchDto();
         // アソシエイトID
         // See: http://affiliate.amazon.co.jp/gp/associates/join/main.html
-        dto.setT("featianet-22");
+        dto.setT("webservice-20");
         // デベロッパー・トークン
         // See:
         // http://www.amazon.co.jp/exec/obidos/subst/associates/join/webservices.html
-        dto.setDevT("0QW6Q9VXEVRRC5DC2ZG2");
+        dto.setDevT("0Y6WJGPB6TW8AVAHGFR2");
         dto.setAsinSearch("4774128554");
         dto.setLocale("jp");
         dto.setType("heavy");
