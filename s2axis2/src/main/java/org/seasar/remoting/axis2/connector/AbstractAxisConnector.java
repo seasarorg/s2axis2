@@ -15,23 +15,8 @@
  */
 package org.seasar.remoting.axis2.connector;
 
-import java.lang.reflect.Method;
-import java.net.URL;
-
-import javax.xml.namespace.QName;
-
-import org.apache.axiom.om.OMAbstractFactory;
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
-import org.apache.axis2.AxisFault;
-import org.apache.axis2.addressing.EndpointReference;
 import org.apache.axis2.client.Options;
-import org.apache.axis2.databinding.utils.BeanUtil;
 import org.apache.axis2.description.AxisService;
-import org.apache.axis2.transport.http.HTTPConstants;
-import org.apache.ws.java2wsdl.Java2WSDLUtils;
-import org.apache.ws.java2wsdl.SchemaGenerator;
 import org.seasar.remoting.common.connector.impl.TargetSpecificURLBasedConnector;
 
 /**
@@ -45,100 +30,23 @@ public abstract class AbstractAxisConnector extends
     /** AxisService */
     protected AxisService service;
 
+    /** Axis2 のオプション */
+    protected Options     options;
+
     /** タイムアウト値 */
-    private int           timeout = 0;
+    protected int         timeout = 0;
 
     /**
      * デフォルトのコンストラクタ。
      */
     public AbstractAxisConnector() {}
 
-    /**
-     * Webサービスを呼び出します。
-     * 
-     * @param options
-     *            オプション
-     * @param method
-     *            Webサービスの実行メソッド
-     * @param args
-     *            Webサービスの引数
-     * @return Webサービスの呼び出し結果
-     * @throws AxisFault
-     *             通信に失敗した場合
-     */
-    abstract protected Object execute(Options options, Method method,
-            Object[] args) throws AxisFault;
-
-    /**
-     * 共通の設定を行い、executeを呼び出します。
-     * 
-     * @param url
-     *            接続先のURL
-     * @param method
-     *            Webサービスの実行メソッド
-     * @param args
-     *            Webサービスの引数
-     * @return Webサービスの呼び出し結果
-     * @throws Throwable
-     *             通信に失敗した場合
-     */
-    protected Object invoke(URL url, Method method, Object[] args)
-            throws Throwable {
-
-        EndpointReference targetEPR = new EndpointReference(url.toString());
-
-        Options options = new Options();
-        options.setTo(targetEPR);
-
-        if (this.timeout > 0) {
-
-            if (options.isUseSeparateListener()) {
-                options.setTimeOutInMilliSeconds(timeout);
-            }
-            else {
-                // HTTPプロトコルに対する設定
-                options.setProperty(HTTPConstants.SO_TIMEOUT,
-                                    new Integer(timeout));
-                options.setProperty(HTTPConstants.CONNECTION_TIMEOUT,
-                                    new Integer(timeout));
-            }
-        }
-
-        Object returnValue = execute(options, method, args);
-
-        return returnValue;
-    }
-
-    /**
-     * リクエストを生成します。
-     * 
-     * @param method
-     *            Webサービスの実行メソッド
-     * @param args
-     *            Webサービスの引数
-     * @return リクエスト
-     */
-    protected OMElement createRequest(Method method, Object[] args) {
-        OMFactory fac = OMAbstractFactory.getOMFactory();
-
-        String packageName = method.getDeclaringClass().getPackage().getName();
-
-        StringBuffer nsBuff = Java2WSDLUtils.schemaNamespaceFromPackageName(packageName);
-        String schemaTargetNameSpace = nsBuff.toString();
-
-        OMNamespace omNs = fac.createOMNamespace(schemaTargetNameSpace,
-                                                 SchemaGenerator.SCHEMA_NAMESPACE_PRFIX);
-
-        QName qName = new QName(method.getName());
-
-        OMElement request = BeanUtil.getOMElement(qName, args, null);
-        request.setNamespace(omNs);
-
-        return request;
-    }
-
     public void setService(AxisService service) {
         this.service = service;
+    }
+
+    public void setOptions(Options options) {
+        this.options = options;
     }
 
     public void setTimeout(int timeout) {

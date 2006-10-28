@@ -30,7 +30,6 @@ import org.apache.axis2.client.Options;
 import org.apache.axis2.client.RESTCall;
 import org.apache.axis2.databinding.utils.BeanUtil;
 import org.apache.commons.beanutils.BeanUtils;
-import org.seasar.extension.dxo.converter.impl.SetConverter;
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.PropertyDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
@@ -41,20 +40,19 @@ import org.seasar.remoting.axis2.annotation.impl.AnnotationReaderFactoryImpl;
 import org.seasar.remoting.axis2.util.OMElementUtil;
 import org.seasar.remoting.axis2.xml.OMElementDeserializer;
 import org.seasar.remoting.axis2.xml.XMLBindException;
-import org.seasar.remoting.common.connector.impl.TargetSpecificURLBasedConnector;
 
 /**
  * RESTをサポートしているWebサービスと通信するためのコネクタです。
  * 
  * @author takanori
  */
-public class RESTConnector extends TargetSpecificURLBasedConnector {
+public class RESTConnector extends AbstractAxisConnector {
 
     /** GETを行う際の指定子 */
-    private static final String     REST_GET_OPERATION      = "get";
+    public static final String      REST_GET_OPERATION      = "get";
 
     /** POSTを行う際の指定子 */
-    private static final String     REST_POST_OPERATION     = "post";
+    public static final String      REST_POST_OPERATION     = "post";
 
     /** エンコード */
     private String                  encode                  = OMElementUtil.DEFAULT_ENCODE;
@@ -76,25 +74,26 @@ public class RESTConnector extends TargetSpecificURLBasedConnector {
     /**
      * RESTサービスを呼び出します。
      * 
-     * @param url
-     *            呼び出し先のURL
-     * @param method
-     *            呼び出し先のメソッド
-     * @param args
-     *            リクエストに設定するパラメータ
+     * @param url 呼び出し先のURL
+     * @param method 呼び出し先のメソッド
+     * @param args リクエストに設定するパラメータ
      * @return RESTサービスの呼び出し結果
      */
     protected Object invoke(URL url, Method method, Object[] args)
             throws Throwable {
+        
+        if (super.options == null) {
+            super.options = new Options();
+        }
+
+        fillRestOptions(super.options, method.getName());
 
         String targetUrl = createTarget(args);
         EndpointReference targetEPR = new EndpointReference(targetUrl);
-
-        Options options = createOptions(method.getName());
-        options.setTo(targetEPR);
+        super.options.setTo(targetEPR);
 
         RESTCall call = new RESTCall();
-        call.setOptions(options);
+        call.setOptions(super.options);
 
         OMElement response = call.sendReceive();
 
@@ -105,14 +104,16 @@ public class RESTConnector extends TargetSpecificURLBasedConnector {
     }
 
     /**
-     * REST形式の呼び出しを行う際のAxis2のOptionを生成します。
+     * REST形式の呼び出しを行う際のAxis2のOptionを設定します。
      * 
-     * @param methodName
-     *            メソッド名
-     * @return Axis2のオプション
+     * @param options Axis2のOption
+     * @param methodName メソッド名
      */
-    private Options createOptions(String methodName) {
-        Options options = new Options();
+    protected void fillRestOptions(Options options, String methodName) {
+        if (options == null) {
+            return;
+        }
+
         options.setTransportInProtocol(Constants.TRANSPORT_HTTP);
         options.setProperty(Constants.Configuration.ENABLE_REST,
                 Constants.VALUE_TRUE);
@@ -126,15 +127,12 @@ public class RESTConnector extends TargetSpecificURLBasedConnector {
             opeProp = Constants.Configuration.HTTP_METHOD_GET;
         }
         options.setProperty(Constants.Configuration.HTTP_METHOD, opeProp);
-
-        return options;
     }
 
     /**
      * RESTリクエストを生成します。
      * 
-     * @param args
-     *            リクエストに設定するパラメータ
+     * @param args リクエストに設定するパラメータ
      * @return RESTリクエスト（指定するURL）
      * @throws IllegalArgumentException
      * @throws IllegalAccessException
@@ -168,8 +166,7 @@ public class RESTConnector extends TargetSpecificURLBasedConnector {
     /**
      * RESTリクエストを作成します。
      * 
-     * @param bean
-     *            パラメータを保持するオブジェクト
+     * @param bean パラメータを保持するオブジェクト
      * @return RESTリクエスト
      * @throws IllegalAccessException
      * @throws InvocationTargetException
@@ -262,10 +259,8 @@ public class RESTConnector extends TargetSpecificURLBasedConnector {
     /**
      * OMElemnt をデシアライズします。
      * 
-     * @param returnType
-     *            戻り値の型
-     * @param om
-     *            OMElemnt
+     * @param returnType 戻り値の型
+     * @param om OMElemnt
      * @return 戻り値
      * @throws XMLBindException
      */

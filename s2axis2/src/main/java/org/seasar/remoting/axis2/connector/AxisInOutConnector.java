@@ -28,7 +28,7 @@ import org.apache.axis2.databinding.utils.BeanUtil;
  * @author takanori
  * 
  */
-public class AxisInOutConnector extends AbstractAxisConnector {
+public class AxisInOutConnector extends AbstractRPCConnector {
 
     public AxisInOutConnector() {}
 

@@ -27,7 +27,7 @@ import org.apache.axis2.client.ServiceClient;
  * @author takanori
  * 
  */
-public class AxisOnewayConnector extends AbstractAxisConnector {
+public class AxisOnewayConnector extends AbstractRPCConnector {
 
     public AxisOnewayConnector() {}
 
