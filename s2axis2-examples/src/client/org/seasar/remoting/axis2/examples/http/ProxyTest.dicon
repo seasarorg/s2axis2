@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <include path="s2-axis-client.dicon"/>
+    
+    <component name="proxyProperties"
+               class="org.apache.axis2.transport.http.HttpTransportProperties$ProxyProperties">
+        <arg>new org.apache.axis2.transport.http.HttpTransportProperties()</arg>
+        <property name="proxyName">"axis2"</property>
+        <property name="proxyPort">9762</property>
+        <property name="domain">"axis2/anon"</property>
+        <property name="userName">"usernm"</property>
+        <property name="passWord">"passwd"</property>
+    </component>
+    
+    <component name="options"
+               class="org.apache.axis2.client.Options">
+        <property name="properties">#{@org.apache.axis2.transport.http.HTTPConstants@PROXY : proxyProperties}</property>
+    </component>
+    
+    <component name="proxyRemoting"
+               class="org.seasar.remoting.common.interceptor.RemotingInterceptor">
+        <property name="connector">proxyConnector</property>
+    </component>
+	
+    <component name="proxyConnector"
+               class="org.seasar.remoting.axis2.connector.AxisInOutConnector">
+        <property name="baseURL">baseURL</property>
+        <property name="options">options</property>
+    </component>
+
+    <component class="org.seasar.remoting.axis2.examples.ex03.BeanEcho">
+		<aspect>proxyRemoting</aspect>
+	</component>
+</components>

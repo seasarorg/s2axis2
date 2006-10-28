@@ -1,6 +1,7 @@
 package org.seasar.remoting.axis2.examples.ex03;
 
 import java.util.Calendar;
+import java.util.TimeZone;
 
 public class EchoDto {
 
@@ -18,10 +19,9 @@ public class EchoDto {
 
     private boolean  boolParam   = true;
 
-    private Calendar cal         = Calendar.getInstance();
+    private Calendar cal         = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 
-    public EchoDto() {
-    }
+    public EchoDto() {}
 
     public String getStrParam() {
         return this.strParam;
@@ -85,6 +85,19 @@ public class EchoDto {
 
     public void setCal(Calendar cal) {
         this.cal = cal;
+    }
+
+    public String toString() {
+        StringBuffer buf = new StringBuffer("[");
+        buf.append(strParam).append(", ");
+        buf.append(shortParam).append(", ");
+        buf.append(intParam).append(", ");
+        buf.append(longParam).append(", ");
+        buf.append(floatParam).append(", ");
+        buf.append(doubleParam).append(", ");
+        buf.append(boolParam).append(", ");
+        buf.append(cal).append("]");
+        return buf.toString();
     }
 
 }

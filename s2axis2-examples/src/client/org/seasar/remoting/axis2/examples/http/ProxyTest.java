@@ -13,20 +13,23 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.remoting.axis2.examples.ex03;
+package org.seasar.remoting.axis2.examples.http;
 
 import org.seasar.extension.unit.S2TestCase;
+import org.seasar.remoting.axis2.examples.ex03.BeanEcho;
+import org.seasar.remoting.axis2.examples.ex03.EchoDto;
 
 /**
  * @author takanori
  */
-public class BeanEchoTest extends S2TestCase {
-    public BeanEchoTest(String name) {
+public class ProxyTest extends S2TestCase {
+
+    public ProxyTest(String name) {
         super(name);
     }
 
     public void setUp() {
-        include("BeanEchoTest.dicon");
+        include("ProxyTest.dicon");
     }
 
     public void test() {
