@@ -10,7 +10,15 @@
 		<meta name="axis-service"/>
 	</component>
 	
-	<component name="SimpleTypeService" class="org.seasar.remoting.axis2.examples.ex01.SimpleTypeServiceImpl">
+	<component name="SimpleTypeService"
+		class="org.seasar.remoting.axis2.examples.ex01.SimpleTypeServiceImpl"
+		instance="singleton">
+		<meta name="axis-service"/>
+	</component>
+	
+	<component name="SimpleWrapTypeService"
+		class="org.seasar.remoting.axis2.examples.ex01.SimpleWrapTypeServiceImpl"
+		instance="singleton">
 		<meta name="axis-service"/>
 	</component>
 </components>

@@ -15,52 +15,38 @@
  */
 package org.seasar.remoting.axis2.examples.ex01;
 
-import java.util.Calendar;
+interface SimpleTypeService {
 
-public interface SimpleTypeService {
+    byte getByteParam();
 
-    boolean registerString(String value);
+    char getCharParam();
 
-    String readString();
+    double getDoubleParam();
 
-    boolean registerCharacter(Character value);
+    float getFloatParam();
 
-    Character readCharacter();
+    int getIntParam();
 
-    boolean registerBoolean(Boolean value);
+    long getLongParam();
 
-    Boolean readBoolean();
+    short getShortParam();
 
-    boolean registerByte(Byte value);
+    boolean isBooleanParam();
 
-    Byte readByte();
+    boolean setBooleanParam(boolean booleanParam);
 
-    boolean registerShort(Short value);
+    boolean setByteParam(byte byteParam);
 
-    Short readShort();
+    boolean setCharParam(char charParm);
 
-    boolean registerInteger(Integer value);
+    boolean setDoubleParam(double doubleParam);
 
-    Integer readInteger();
+    boolean setFloatParam(float floatParam);
 
-    boolean registerLong(Long value);
+    boolean setIntParam(int intParam);
 
-    Long readLong();
+    boolean setLongParam(long longParam);
 
-    boolean registerDouble(Double value);
-
-    Double readDouble();
-
-    boolean registerFloat(Float value);
-
-    Float readFloat();
-    
-    boolean registerStringArray(String[] value);
-
-    String[] readStringArray();
-
-    boolean registerCalendar(Calendar value);
-
-    Calendar readCalendar();
+    boolean setShortParam(short shortParam);
 
 }

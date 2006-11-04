@@ -15,15 +15,13 @@
  */
 package org.seasar.remoting.axis2.examples.ex01;
 
-import java.util.Calendar;
-
 import org.seasar.extension.unit.S2TestCase;
 
 /**
  * @author takanori
  */
 public class SimpleTypeServiceTest extends S2TestCase {
-    
+
     private SimpleTypeService service;
 
     public SimpleTypeServiceTest(String name) {
@@ -35,97 +33,60 @@ public class SimpleTypeServiceTest extends S2TestCase {
         this.service = (SimpleTypeService) getComponent(SimpleTypeService.class);
     }
 
-    public void testString() {
-        this.service.registerString("test");
-        String value = this.service.readString();
-        System.out.println(value);
-        
-        assertTrue(true);
-    }
-    
-    public void testCharacter() {
-        this.service.registerCharacter(new Character('a'));
-        Character value = this.service.readCharacter();
-        System.out.println(value);
-        
-        assertTrue(true);
-    }
-    
     public void testBoolean() {
-        this.service.registerBoolean(new Boolean(true));
-        Boolean value = this.service.readBoolean();
-        System.out.println(value);
-        
-        assertTrue(true);
+        boolean expected = true;
+        this.service.setBooleanParam(expected);
+        boolean actual = this.service.isBooleanParam();
+        assertEquals(expected, actual);
     }
-    
+
     public void testByte() {
-        this.service.registerByte(new Byte((byte)1));
-        Byte value = this.service.readByte();
-        System.out.println(value);
-        
-        assertTrue(true);
+        byte expected = Byte.MAX_VALUE;
+        this.service.setByteParam(expected);
+        byte actual = this.service.getByteParam();
+        assertEquals(expected, actual);
     }
-    
-    public void testShort() {
-        this.service.registerShort(new Short((short)1));
-        Short value = this.service.readShort();
-        System.out.println(value);
-        
-        assertTrue(true);
+
+    public void testChar() {
+        char expected = 'a';
+        this.service.setCharParam(expected);
+        char actual = this.service.getCharParam();
+        assertEquals(expected, actual);
     }
-    
-    public void testInteger() {
-        this.service.registerInteger(new Integer(1));
-        Integer value = this.service.readInteger();
-        System.out.println(value);
-        
-        assertTrue(true);
-    }
-    
-    public void testLong() {
-        this.service.registerLong(new Long(1));
-        Long value = this.service.readLong();
-        System.out.println(value);
-        
-        assertTrue(true);
-    }
-    
+
     public void testDouble() {
-        this.service.registerDouble(new Double(1.1));
-        Double value = this.service.readDouble();
-        System.out.println(value);
-        
-        assertTrue(true);
+        double expected = Double.MAX_VALUE;
+        this.service.setDoubleParam(expected);
+        double actual = this.service.getDoubleParam();
+        assertEquals(expected, actual, 0);
     }
-    
+
     public void testFloat() {
-        this.service.registerFloat(new Float(1.1));
-        Float value = this.service.readFloat();
-        System.out.println(value);
-        
-        assertTrue(true);
+        float expected = Float.MAX_VALUE;
+        this.service.setFloatParam(expected);
+        float actual = this.service.getFloatParam();
+        assertEquals(expected, actual, 0);
     }
-    
-    public void testStringArray() {
-        String[] array = new String[3];
-        array[0] = "value0";
-        array[1] = "value1";
-        array[2] = "value2";
-        
-        this.service.registerStringArray(array);
-        String[] value = this.service.readStringArray();
-        System.out.println(value);
-        
-        assertTrue(true);
+
+    public void testInt() {
+        int expected = Integer.MAX_VALUE;
+        this.service.setIntParam(expected);
+        int actual = this.service.getIntParam();
+        assertEquals(expected, actual);
     }
-    
-    public void testCalendar() {
-        this.service.registerCalendar(Calendar.getInstance());
-        Calendar value = this.service.readCalendar();
-        System.out.println(value);
-        
-        assertTrue(true);
+
+    public void testLong() {
+        long expected = Long.MAX_VALUE;
+        this.service.setLongParam(expected);
+        long actual = this.service.getLongParam();
+        assertEquals(expected, actual);
+    }
+
+    public void testShort() {
+        short expected = Short.MAX_VALUE;
+        this.service.setShortParam(expected);
+        short actual = this.service.getShortParam();
+        assertEquals(expected, actual);
     }
 
 }

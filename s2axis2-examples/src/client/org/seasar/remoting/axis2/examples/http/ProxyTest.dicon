@@ -6,7 +6,6 @@
     
     <component name="proxyProperties"
                class="org.apache.axis2.transport.http.HttpTransportProperties$ProxyProperties">
-        <arg>new org.apache.axis2.transport.http.HttpTransportProperties()</arg>
         <property name="proxyName">"axis2"</property>
         <property name="proxyPort">9762</property>
         <property name="domain">"axis2/anon"</property>
