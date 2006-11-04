@@ -32,7 +32,8 @@ import org.apache.axis2.description.AxisService;
 import org.apache.axis2.description.Parameter;
 import org.apache.axis2.engine.AxisConfiguration;
 import org.apache.axis2.engine.MessageReceiver;
-import org.apache.axis2.wsdl.WSDLConstants;
+import org.apache.axis2.wsdl.WSDLConstants.WSDL20_2004Constants;
+import org.apache.ws.java2wsdl.DefaultNamespaceGenerator;
 import org.apache.ws.java2wsdl.Java2WSDLUtils;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.log.Logger;
@@ -63,13 +64,13 @@ public class S2ServiceBuilderImpl implements ServiceBuilder {
     public S2ServiceBuilderImpl(ServiceHolder serviceHolder) {
         S2MessageReceiver ioReceiver = new S2RPCMessageReceiver();
         ioReceiver.setServiceHolder(serviceHolder);
-        this.defaultMessageReceivers.put(WSDLConstants.MEP_URI_IN_OUT,
-                                         ioReceiver);
+        this.defaultMessageReceivers.put(WSDL20_2004Constants.MEP_URI_IN_OUT,
+                ioReceiver);
 
         S2MessageReceiver inOnlyReceiver = new S2RPCInOnlyMessageReceiver();
         inOnlyReceiver.setServiceHolder(serviceHolder);
-        this.defaultMessageReceivers.put(WSDLConstants.MEP_URI_IN_ONLY,
-                                         inOnlyReceiver);
+        this.defaultMessageReceivers.put(WSDL20_2004Constants.MEP_URI_IN_ONLY,
+                inOnlyReceiver);
     }
 
     /*
@@ -80,7 +81,7 @@ public class S2ServiceBuilderImpl implements ServiceBuilder {
      *      org.seasar.framework.container.ComponentDef)
      */
     public AxisService populateService(AxisConfiguration axisConfig,
-            ComponentDef componentDef) {
+                                       ComponentDef componentDef) {
 
         AxisService service = populateService(axisConfig, componentDef, null);
 
@@ -96,7 +97,8 @@ public class S2ServiceBuilderImpl implements ServiceBuilder {
      *      org.seasar.remoting.axis2.ServiceDef)
      */
     public AxisService populateService(AxisConfiguration axisConfig,
-            ComponentDef componentDef, ServiceDef serviceDef) {
+                                       ComponentDef componentDef,
+                                       ServiceDef serviceDef) {
 
         if (serviceDef == null) {
             serviceDef = new ServiceDef();
@@ -107,25 +109,33 @@ public class S2ServiceBuilderImpl implements ServiceBuilder {
         Parameter parameter = new Parameter(Constants.SERVICE_CLASS, className);
         AxisService service = new AxisService(componentDef.getComponentName());
 
+        ClassLoader loader = axisConfig.getServiceClassLoader();
+        
+        // Service Interface
         Class serviceType = serviceDef.getServiceType();
         if (serviceType == null) {
             serviceType = getServiceType(serviceClass);
         }
 
-        String targetNamespace = serviceDef.getTargetNamespace();
-        if (StringUtil.isEmpty(targetNamespace) == false) {
-            service.setTargetNamespace(targetNamespace);
+        // targetNamespace
+        String targetNamespace;
+        if (StringUtil.isEmpty(serviceDef.getTargetNamespace()) == false) {
+            targetNamespace = serviceDef.getTargetNamespace();
+        } else {
+            targetNamespace = createTargetNamespace(serviceType, loader);
         }
+        service.setTargetNamespace(targetNamespace);
 
+        // schemaNamespace
         String schemaNamespace;
         if (StringUtil.isEmpty(serviceDef.getSchemaNamespace()) == false) {
             schemaNamespace = serviceDef.getSchemaNamespace();
-        }
-        else {
-            schemaNamespace = createSchemaNamespace(serviceType);
+        } else {
+            schemaNamespace = createSchemaNamespace(serviceType, loader);
         }
         service.setSchematargetNamespace(schemaNamespace);
 
+        // MessageReceiver
         addMessageReceiver(service, this.defaultMessageReceivers);
         Map msgReceivers = serviceDef.getMessageReceivers();
         if (msgReceivers != null) {
@@ -133,7 +143,7 @@ public class S2ServiceBuilderImpl implements ServiceBuilder {
         }
 
         List excludeOperations = createExcludeOperations(serviceClass,
-                                                         serviceType);
+                serviceType);
         excludeOperations.addAll(serviceDef.getExcludeOperations());
 
         // サービスの生成
@@ -141,19 +151,14 @@ public class S2ServiceBuilderImpl implements ServiceBuilder {
             service.addParameter(parameter);
             service.setClassLoader(axisConfig.getServiceClassLoader());
 
-            Utils.fillAxisService(service,
-                                  axisConfig,
-                                  new ArrayList(excludeOperations));
-        }
-        catch (AxisFault ex) {
+            Utils.fillAxisService(service, axisConfig, new ArrayList(
+                    excludeOperations));
+        } catch (AxisFault ex) {
             throw new DeployFailedException("EAXS0003",
-                                            new Object[] { service.getName() },
-                                            ex);
-        }
-        catch (Exception ex) {
+                    new Object[] { service.getName() }, ex);
+        } catch (Exception ex) {
             throw new DeployFailedException("EAXS0003",
-                                            new Object[] { service.getName() },
-                                            ex);
+                    new Object[] { service.getName() }, ex);
         }
 
         // 除外メソッドの削除
@@ -161,9 +166,9 @@ public class S2ServiceBuilderImpl implements ServiceBuilder {
             String opName = (String) excludeOperations.get(i);
             service.removeOperation(new QName(opName));
         }
-        
+
         // WSDLの公開設定
-        service.setWsdlfound(true);
+        service.setWsdlFound(true);
 
         return service;
     }
@@ -171,8 +176,7 @@ public class S2ServiceBuilderImpl implements ServiceBuilder {
     /**
      * サービスの実装クラスから、公開するサービスクラスの型を取得します。
      * 
-     * @param serviceClass
-     *            サービスの実装クラス
+     * @param serviceClass サービスの実装クラス
      * @return 公開するサービスクラスの型
      */
     protected Class getServiceType(Class serviceClass) {
@@ -191,8 +195,7 @@ public class S2ServiceBuilderImpl implements ServiceBuilder {
             default:
                 serviceType = serviceClass;
             }
-        }
-        else {
+        } else {
             serviceType = serviceClass;
         }
 
@@ -203,10 +206,8 @@ public class S2ServiceBuilderImpl implements ServiceBuilder {
      * サービスの実装クラスから、公開するサービスクラスのメソッドを除いたリストを返します。<br>
      * 非公開とするメソッド名を特定するのに利用します。
      * 
-     * @param serviceClass
-     *            サービスの実装クラス
-     * @param serviceType
-     *            公開するサービスクラス（インタフェース）
+     * @param serviceClass サービスの実装クラス
+     * @param serviceType 公開するサービスクラス（インタフェース）
      * @return メソッドの除外リスト
      */
     protected List createExcludeOperations(Class serviceClass, Class serviceType) {
@@ -249,17 +250,48 @@ public class S2ServiceBuilderImpl implements ServiceBuilder {
     }
 
     /**
+     * サービスクラスから、TargetNamespaceを生成します。
+     * 
+     * @param serviceClass サービスクラス
+     * @param loader クラスローダー
+     * @return TargetNamespace
+     */
+    protected String createTargetNamespace(Class serviceClass,
+                                           ClassLoader loader) {
+        String className = serviceClass.getName();
+
+        StringBuffer nsBuff;
+        try {
+            nsBuff = Java2WSDLUtils.targetNamespaceFromClassName(className,
+                    loader, new DefaultNamespaceGenerator());
+        } catch (Exception ex) {
+            throw new DeployFailedException("EAXS0003",
+                    new Object[] { className }, ex);
+        }
+        String targetNamespace = nsBuff.toString();
+
+        return targetNamespace;
+    }
+
+    /**
      * サービスクラスから、スキーマの名前空間を生成します。
      * 
-     * @param serviceClass
-     *            サービスクラス
+     * @param serviceClass サービスクラス
+     * @param loader クラスローダー
      * @return スキーマの名前空間
      */
-    protected String createSchemaNamespace(Class serviceClass) {
+    protected String createSchemaNamespace(Class serviceClass,
+                                           ClassLoader loader) {
+        String className = serviceClass.getName();
 
-        String packageName = serviceClass.getPackage().getName();
-
-        StringBuffer nsBuff = Java2WSDLUtils.schemaNamespaceFromPackageName(packageName);
+        StringBuffer nsBuff;
+        try {
+            nsBuff = Java2WSDLUtils.schemaNamespaceFromClassName(className,
+                    loader);
+        } catch (Exception ex) {
+            throw new DeployFailedException("EAXS0003",
+                    new Object[] { className }, ex);
+        }
         String schemaNamespace = nsBuff.toString();
 
         return schemaNamespace;
@@ -268,10 +300,8 @@ public class S2ServiceBuilderImpl implements ServiceBuilder {
     /**
      * 指定されたAxisServiceに、MessageReceiverを追加します。<br>
      * 
-     * @param service
-     *            AxisService
-     * @param msgReceivers
-     *            MessageReceiverのマップ
+     * @param service AxisService
+     * @param msgReceivers MessageReceiverのマップ
      */
     private void addMessageReceiver(AxisService service, Map msgReceivers) {
         if (service == null || msgReceivers == null) {
@@ -285,7 +315,7 @@ public class S2ServiceBuilderImpl implements ServiceBuilder {
 
             if ((key instanceof String) && (value instanceof MessageReceiver)) {
                 service.addMessageReceiver((String) key,
-                                           (MessageReceiver) value);
+                        (MessageReceiver) value);
 
                 if (logger.isDebugEnabled()) {
                     Object[] args = new Object[] { service.getName(), key,

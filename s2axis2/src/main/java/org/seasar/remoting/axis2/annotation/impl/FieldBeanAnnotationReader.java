@@ -22,14 +22,19 @@ import org.seasar.framework.beans.factory.BeanDescFactory;
 import org.seasar.framework.util.FieldUtil;
 import org.seasar.remoting.axis2.annotation.BeanAnnotationReader;
 
+/**
+ * 
+ * @author takanori
+ * 
+ */
 public class FieldBeanAnnotationReader implements BeanAnnotationReader {
 
     public String    PARAMETER_SUFFIX = "_PARAMETER";
 
     private BeanDesc beanDesc;
 
-    public FieldBeanAnnotationReader(Class beanClass_) {
-        this.beanDesc = BeanDescFactory.getBeanDesc(beanClass_);
+    public FieldBeanAnnotationReader(Class beanClass) {
+        this.beanDesc = BeanDescFactory.getBeanDesc(beanClass);
     }
 
     public String getParameterAnnotation(PropertyDesc pd) {

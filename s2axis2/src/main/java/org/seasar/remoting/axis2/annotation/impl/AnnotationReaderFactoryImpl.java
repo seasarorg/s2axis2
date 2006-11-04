@@ -20,6 +20,11 @@ import org.seasar.framework.util.ClassUtil;
 import org.seasar.remoting.axis2.annotation.AnnotationReaderFactory;
 import org.seasar.remoting.axis2.annotation.BeanAnnotationReader;
 
+/**
+ * 
+ * @author takanori
+ *
+ */
 public class AnnotationReaderFactoryImpl implements AnnotationReaderFactory {
 
     private static final String     TIGER_ANNOTATION_READER_FACTORY       = "org.seasar.remoting.axis2.annotation.tiger.impl.AnnotationReaderFactoryImpl";

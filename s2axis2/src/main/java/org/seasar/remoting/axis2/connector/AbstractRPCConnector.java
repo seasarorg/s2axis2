@@ -55,7 +55,7 @@ public abstract class AbstractRPCConnector extends AbstractAxisConnector {
      */
     abstract protected Object execute(Options options,
                                       Method method,
-                                      Object[] args) throws AxisFault;
+                                      Object[] args) throws Exception;
 
     /**
      * 共通の設定を行い、executeを呼び出します。
@@ -101,12 +101,15 @@ public abstract class AbstractRPCConnector extends AbstractAxisConnector {
      * @param args Webサービスの引数
      * @return リクエスト
      */
-    protected OMElement createRequest(Method method, Object[] args) {
+    protected OMElement createRequest(Method method, Object[] args)
+            throws Exception {
         OMFactory fac = OMAbstractFactory.getOMFactory();
 
-        String packageName = method.getDeclaringClass().getPackage().getName();
+        String className = method.getDeclaringClass().getName();
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
 
-        StringBuffer nsBuff = Java2WSDLUtils.schemaNamespaceFromPackageName(packageName);
+        StringBuffer nsBuff = Java2WSDLUtils.schemaNamespaceFromClassName(
+                className, loader);
         String schemaTargetNameSpace = nsBuff.toString();
 
         OMNamespace omNs = fac.createOMNamespace(schemaTargetNameSpace,
@@ -114,7 +117,9 @@ public abstract class AbstractRPCConnector extends AbstractAxisConnector {
 
         QName qName = new QName(method.getName());
 
-        OMElement request = BeanUtil.getOMElement(qName, args, null);
+        // see org.apache.axis2.rpc.client.RPCServiceClient
+        OMElement request = BeanUtil.getOMElement(qName, args, null, false,
+                null);
         request.setNamespace(omNs);
 
         return request;

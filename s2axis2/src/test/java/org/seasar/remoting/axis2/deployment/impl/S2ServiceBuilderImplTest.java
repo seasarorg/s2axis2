@@ -70,14 +70,15 @@ public class S2ServiceBuilderImplTest extends S2TestCase {
 
     public void testPopulateService_implClass() {
         ComponentDef componentDef = container.getComponentDef("ServiceMock");
-        AxisService service = this.builder.populateService(new AxisConfiguration(),
-                                                           componentDef);
+        AxisService service = this.builder.populateService(
+                new AxisConfiguration(), componentDef);
 
         List opeList = extractOpNames(service);
 
-        assertEquals("http://ws.apache.org/axis2", service.getTargetNamespace());
+        assertEquals("http://mock.axis2.remoting.seasar.org",
+                service.getTargetNamespace());
         assertEquals("http://mock.axis2.remoting.seasar.org/xsd",
-                     service.getSchematargetNamespace());
+                service.getSchematargetNamespace());
         boolean equals = equalsList(interfaceMethods, opeList);
         assertTrue(equals);
     }
@@ -88,14 +89,14 @@ public class S2ServiceBuilderImplTest extends S2TestCase {
         this.serviceDef.setTargetNamespace(null);
         this.serviceDef.setSchemaNamespace(null);
 
-        AxisService service = this.builder.populateService(new AxisConfiguration(),
-                                                           componentDef,
-                                                           this.serviceDef);
+        AxisService service = this.builder.populateService(
+                new AxisConfiguration(), componentDef, this.serviceDef);
         List opeList = extractOpNames(service);
 
-        assertEquals("http://ws.apache.org/axis2", service.getTargetNamespace());
+        assertEquals("http://mock.axis2.remoting.seasar.org",
+                service.getTargetNamespace());
         assertEquals("http://mock.axis2.remoting.seasar.org/xsd",
-                     service.getSchematargetNamespace());
+                service.getSchematargetNamespace());
         boolean equals = equalsList(interfaceMethods, opeList);
         assertTrue(equals);
     }
@@ -103,9 +104,8 @@ public class S2ServiceBuilderImplTest extends S2TestCase {
     public void testPopulateService_ns() {
         ComponentDef componentDef = container.getComponentDef("ServiceMock");
 
-        AxisService service = this.builder.populateService(new AxisConfiguration(),
-                                                           componentDef,
-                                                           this.serviceDef);
+        AxisService service = this.builder.populateService(
+                new AxisConfiguration(), componentDef, this.serviceDef);
         List opeList = extractOpNames(service);
 
         assertEquals(TARGET_NAMESPACE, service.getTargetNamespace());
@@ -118,34 +118,34 @@ public class S2ServiceBuilderImplTest extends S2TestCase {
         ComponentDef componentDef = container.getComponentDef("ServiceDefTest");
         MetaDef metaDef = componentDef.getMetaDef("axis-service");
 
-        AxisService service = this.builder.populateService(new AxisConfiguration(),
-                                                           componentDef,
-                                                           (ServiceDef) metaDef.getValue());
+        AxisService service = this.builder.populateService(
+                new AxisConfiguration(), componentDef,
+                (ServiceDef) metaDef.getValue());
         List opeList = extractOpNames(service);
 
-        assertEquals("http://ws.apache.org/axis2", service.getTargetNamespace());
+        assertEquals("http://examples", service.getTargetNamespace());
         assertEquals("http://examples/xsd", service.getSchematargetNamespace());
         assertEquals(0, opeList.size());
     }
-    
+
     public void testGetServiceType_interface1() {
         Class expected = ServiceMock.class;
         Class actual = this.builder.getServiceType(ServiceMockImpl.class);
-        
+
         assertEquals(expected, actual);
     }
-    
+
     public void testGetServiceType_interface2() {
         Class expected = ServiceMockImpl2.class;
         Class actual = this.builder.getServiceType(ServiceMockImpl2.class);
-        
+
         assertEquals(expected, actual);
     }
-    
+
     public void testGetServiceType_notImpl() {
         Class expected = ServiceSample.class;
         Class actual = this.builder.getServiceType(ServiceSample.class);
-        
+
         assertEquals(expected, actual);
     }
 
@@ -154,33 +154,30 @@ public class S2ServiceBuilderImplTest extends S2TestCase {
         expected.add("setParam1");
         expected.add("setParam2");
 
-        List actual = this.builder.createExcludeOperations(ServiceMockImpl.class,
-                                                           ServiceMock.class);
+        List actual = this.builder.createExcludeOperations(
+                ServiceMockImpl.class, ServiceMock.class);
 
         boolean equals = equalsList(expected, actual);
         assertTrue(equals);
 
     }
-    
+
     public void testCreateExcludeOperations_invalidServiceType() {
-        
+
         try {
-            List actual = this.builder.createExcludeOperations(ServiceMockImpl.class,
-                                                               String.class);
+            List actual = this.builder.createExcludeOperations(
+                    ServiceMockImpl.class, String.class);
             fail(actual.toString());
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             assertTrue(ex.getMessage(), true);
         }
-
-
 
     }
 
     public void testCreateExcludeOperations_typeNull() {
 
-        List actual = this.builder.createExcludeOperations(ServiceMockImpl.class,
-                                                           null);
+        List actual = this.builder.createExcludeOperations(
+                ServiceMockImpl.class, null);
 
         assertEquals(0, actual.size());
 
@@ -188,7 +185,8 @@ public class S2ServiceBuilderImplTest extends S2TestCase {
 
     public void testCreateSchemaNamespace_success() {
         String expected = "http://mock.axis2.remoting.seasar.org/xsd";
-        String actual = this.builder.createSchemaNamespace(ServiceMock.class);
+        String actual = this.builder.createSchemaNamespace(ServiceMock.class,
+                ServiceMock.class.getClassLoader());
 
         assertEquals(expected, actual);
     }

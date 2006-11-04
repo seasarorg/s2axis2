@@ -32,7 +32,7 @@ public class AxisOnewayConnector extends AbstractRPCConnector {
     public AxisOnewayConnector() {}
 
     protected Object execute(Options options, Method method, Object[] args)
-            throws AxisFault {
+            throws Exception {
 
         Class retunType = method.getReturnType();
         if (!retunType.equals(void.class)) {

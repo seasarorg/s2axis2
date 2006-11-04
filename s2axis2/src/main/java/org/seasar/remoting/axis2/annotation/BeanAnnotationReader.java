@@ -17,6 +17,11 @@ package org.seasar.remoting.axis2.annotation;
 
 import org.seasar.framework.beans.PropertyDesc;
 
+/**
+ * 
+ * @author takanori
+ * 
+ */
 public interface BeanAnnotationReader {
 
     String getParameterAnnotation(PropertyDesc pd);

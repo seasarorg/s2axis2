@@ -27,6 +27,7 @@ import org.apache.axiom.om.OMFactory;
 import org.apache.axiom.om.OMNamespace;
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.databinding.utils.BeanUtil;
+import org.apache.axis2.engine.DefaultObjectSupplier;
 
 /**
  * 
@@ -44,7 +45,7 @@ public class OMElementUtilSample {
         OMElement om;
 
         QName qName = new QName("method");
-        om = BeanUtil.getOMElement(qName, params, null);
+        om = BeanUtil.getOMElement(qName, params, null, false, null);
         om.setNamespace(omNs);
 
         Iterator ite = om.getChildren();
@@ -70,7 +71,7 @@ public class OMElementUtilSample {
             String className = arg.getAttribute(new QName("class")).getAttributeValue();
             Class clazz = Class.forName(className);
 
-            Object value = BeanUtil.deserialize(clazz, arg);
+            Object value = BeanUtil.deserialize(clazz, arg, new DefaultObjectSupplier(), null);
 
             list.add(value);
         }

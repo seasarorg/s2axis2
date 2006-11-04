@@ -18,9 +18,14 @@ package org.seasar.remoting.axis2.annotation.impl;
 import org.seasar.remoting.axis2.annotation.AnnotationReaderFactory;
 import org.seasar.remoting.axis2.annotation.BeanAnnotationReader;
 
+/**
+ * 
+ * @author takanori
+ * 
+ */
 public class FieldAnnotationReaderFactory implements AnnotationReaderFactory {
 
-    public BeanAnnotationReader createBeanAnnotationReader(Class beanClass_) {
-        return new FieldBeanAnnotationReader(beanClass_);
+    public BeanAnnotationReader createBeanAnnotationReader(Class beanClass) {
+        return new FieldBeanAnnotationReader(beanClass);
     }
 }

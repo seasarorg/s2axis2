@@ -17,6 +17,13 @@ package org.seasar.remoting.axis2.receivers;
 
 import org.apache.axis2.engine.MessageReceiver;
 
+/**
+ * 
+ * @author takanori
+ * 
+ */
 public interface S2MessageReceiver extends MessageReceiver {
+
     void setServiceHolder(ServiceHolder serviceHolder);
+
 }

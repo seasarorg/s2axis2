@@ -45,7 +45,7 @@ public class ServiceDefTest extends S2TestCase {
         ServiceDef serviceDef = (ServiceDef)metaDef.getValue();
         
         assertEquals(ServiceMock.class, serviceDef.getServiceType());
-        assertEquals("http://ws.apache.org/axis2", serviceDef.getTargetNamespace());
+        assertEquals("http://examples", serviceDef.getTargetNamespace());
         assertEquals("http://examples/xsd", serviceDef.getSchemaNamespace());
         
         assertTrue(serviceDef.getExcludeOperations().contains("method1"));

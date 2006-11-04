@@ -15,10 +15,10 @@
  */
 package org.seasar.remoting.axis2.receivers;
 
+import org.apache.axis2.Constants;
 import org.apache.axis2.context.MessageContext;
 import org.apache.axis2.description.AxisService;
 import org.apache.axis2.description.Parameter;
-import org.apache.axis2.receivers.AbstractMessageReceiver;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 
@@ -29,7 +29,7 @@ import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
  */
 public class ServiceHolder {
 
-    private static final String SERVICE_CLASS = AbstractMessageReceiver.SERVICE_CLASS;
+    private static final String SERVICE_CLASS = Constants.SERVICE_CLASS;
 
     private S2Container         container;
 

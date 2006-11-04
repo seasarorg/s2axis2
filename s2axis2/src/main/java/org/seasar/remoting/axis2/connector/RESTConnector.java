@@ -22,13 +22,17 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMFactory;
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.Constants;
 import org.apache.axis2.addressing.EndpointReference;
 import org.apache.axis2.client.Options;
-import org.apache.axis2.client.RESTCall;
+import org.apache.axis2.client.ServiceClient;
 import org.apache.axis2.databinding.utils.BeanUtil;
+import org.apache.axis2.engine.DefaultObjectSupplier;
 import org.apache.commons.beanutils.BeanUtils;
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.PropertyDesc;
@@ -37,16 +41,16 @@ import org.seasar.framework.container.S2Container;
 import org.seasar.remoting.axis2.annotation.AnnotationReaderFactory;
 import org.seasar.remoting.axis2.annotation.BeanAnnotationReader;
 import org.seasar.remoting.axis2.annotation.impl.AnnotationReaderFactoryImpl;
-import org.seasar.remoting.axis2.util.OMElementUtil;
 import org.seasar.remoting.axis2.xml.OMElementDeserializer;
 import org.seasar.remoting.axis2.xml.XMLBindException;
+import org.seasar.remoting.common.connector.impl.TargetSpecificURLBasedConnector;
 
 /**
  * RESTをサポートしているWebサービスと通信するためのコネクタです。
  * 
  * @author takanori
  */
-public class RESTConnector extends AbstractAxisConnector {
+public class RESTConnector extends TargetSpecificURLBasedConnector {
 
     /** GETを行う際の指定子 */
     public static final String      REST_GET_OPERATION      = "get";
@@ -55,7 +59,7 @@ public class RESTConnector extends AbstractAxisConnector {
     public static final String      REST_POST_OPERATION     = "post";
 
     /** エンコード */
-    private String                  encode                  = OMElementUtil.DEFAULT_ENCODE;
+    private String                  encode                  = "UTF-8";
 
     /** RESTのメッセージを生成するデシアライザのマップ */
     private Map                     deserializerMap         = new HashMap();
@@ -81,21 +85,18 @@ public class RESTConnector extends AbstractAxisConnector {
      */
     protected Object invoke(URL url, Method method, Object[] args)
             throws Throwable {
-        
-        if (super.options == null) {
-            super.options = new Options();
-        }
 
-        fillRestOptions(super.options, method.getName());
+        EndpointReference targetEPR = new EndpointReference(
+                this.baseURL.toString());
 
-        String targetUrl = createTarget(args);
-        EndpointReference targetEPR = new EndpointReference(targetUrl);
-        super.options.setTo(targetEPR);
+        Options options = createOptions(method.getName());
+        options.setTo(targetEPR);
 
-        RESTCall call = new RESTCall();
-        call.setOptions(super.options);
+        ServiceClient client = new ServiceClient();
+        client.setOptions(options);
 
-        OMElement response = call.sendReceive();
+        OMElement request = createRequest(method.getName(), args);
+        OMElement response = client.sendReceive(request);
 
         Class returnType = method.getReturnType();
         Object result = deserialize(returnType, response);
@@ -104,16 +105,13 @@ public class RESTConnector extends AbstractAxisConnector {
     }
 
     /**
-     * REST形式の呼び出しを行う際のAxis2のOptionを設定します。
+     * REST形式の呼び出しを行う際のAxis2のOptionを生成します。
      * 
-     * @param options Axis2のOption
      * @param methodName メソッド名
+     * @return Axis2のオプション
      */
-    protected void fillRestOptions(Options options, String methodName) {
-        if (options == null) {
-            return;
-        }
-
+    private Options createOptions(String methodName) {
+        Options options = new Options();
         options.setTransportInProtocol(Constants.TRANSPORT_HTTP);
         options.setProperty(Constants.Configuration.ENABLE_REST,
                 Constants.VALUE_TRUE);
@@ -127,45 +125,44 @@ public class RESTConnector extends AbstractAxisConnector {
             opeProp = Constants.Configuration.HTTP_METHOD_GET;
         }
         options.setProperty(Constants.Configuration.HTTP_METHOD, opeProp);
-    }
 
-    /**
-     * RESTリクエストを生成します。
-     * 
-     * @param args リクエストに設定するパラメータ
-     * @return RESTリクエスト（指定するURL）
-     * @throws IllegalArgumentException
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
-     * @throws NoSuchMethodException
-     * @throws UnsupportedEncodingException
-     */
-    protected String createTarget(Object[] args)
-            throws IllegalArgumentException, IllegalAccessException,
-            InvocationTargetException, NoSuchMethodException,
-            UnsupportedEncodingException {
-
-        String target;
-
-        if (args == null || args.length <= 0) {
-            target = this.baseURL.toString();
-        } else if (args.length == 1) {
-            StringBuffer buff = new StringBuffer(this.baseURL.toString());
-            buff.append("?");
-            buff.append(createRestParameter(args[0]));
-
-            target = buff.toString();
-        } else {
-            throw new IllegalArgumentException(
-                    "argument num is too much. it must be 0 or 1.");
-        }
-
-        return target;
+        return options;
     }
 
     /**
      * RESTリクエストを作成します。
      * 
+     * @param methodName メソッド名
+     * @param args リクエストに設定するパラメータ
+     * @return RESTリクエスト
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
+     * @throws NoSuchMethodException
+     * @throws UnsupportedEncodingException
+     */
+    protected OMElement createRequest(String methodName, Object[] args)
+            throws UnsupportedEncodingException, IllegalAccessException,
+            InvocationTargetException, NoSuchMethodException {
+        OMFactory fac = OMAbstractFactory.getOMFactory();
+        OMElement root = fac.createOMElement(methodName, null);
+
+        if (args == null || args.length <= 0) {
+            // do nothing
+        } else if (args.length == 1) {
+            fillRestParameter(fac, root, args[0]);
+        } else {
+            throw new IllegalArgumentException(
+                    "argument num is too much. it must be 0 or 1.");
+        }
+
+        return root;
+    }
+
+    /**
+     * RESTリクエストを作成します。
+     * 
+     * @param fac OMFactory
+     * @param root ルートエレメント
      * @param bean パラメータを保持するオブジェクト
      * @return RESTリクエスト
      * @throws IllegalAccessException
@@ -173,7 +170,7 @@ public class RESTConnector extends AbstractAxisConnector {
      * @throws NoSuchMethodException
      * @throws UnsupportedEncodingException
      */
-    private String createRestParameter(Object bean)
+    private void fillRestParameter(OMFactory fac, OMElement root, Object bean)
             throws IllegalAccessException, InvocationTargetException,
             NoSuchMethodException, UnsupportedEncodingException {
 
@@ -190,26 +187,19 @@ public class RESTConnector extends AbstractAxisConnector {
             paramMap.put(newKey, value);
         }
 
-        StringBuffer buff = new StringBuffer();
-        Object[] keys = paramMap.keySet().toArray();
+        String[] keys = (String[]) paramMap.keySet().toArray(new String[0]);
         for (int i = 0; i < keys.length; i++) {
-            Object key = keys[i];
+            String key = keys[i];
             Object value = paramMap.get(key);
 
             if ((!key.equals("class")) && (value != null)) {
-                if (i > 0) {
-                    buff.append("&");
-                }
-
-                buff.append(key);
-                buff.append("=");
-                buff.append(URLEncoder.encode(value.toString(), encode));
+                OMElement query = fac.createOMElement(key, null, root);
+                String text = URLEncoder.encode(value.toString(), encode);
+                query.setText(text);
             }
         }
 
-        String restParam = buff.toString();
-
-        return restParam.toString();
+        return;
     }
 
     /**
@@ -276,13 +266,14 @@ public class RESTConnector extends AbstractAxisConnector {
             result = deserializer.deserialize(om);
         } else if (returnType.equals(String.class)) {
             // Convert to String
-            result = OMElementUtil.toString(om);
+            result = om.toString();
         } else if (returnType.isAssignableFrom(OMElement.class)) {
             result = om;
         } else {
             // Bind by BeanUtil(expect simple JavaBeans)
             try {
-                result = BeanUtil.deserialize(returnType, om);
+                result = BeanUtil.deserialize(returnType, om,
+                        new DefaultObjectSupplier(), null);
             } catch (AxisFault ex) {
                 throw new XMLBindException(ex);
             }

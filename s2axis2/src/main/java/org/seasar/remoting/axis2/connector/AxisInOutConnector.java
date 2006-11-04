@@ -18,10 +18,10 @@ package org.seasar.remoting.axis2.connector;
 import java.lang.reflect.Method;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axis2.AxisFault;
 import org.apache.axis2.client.Options;
 import org.apache.axis2.client.ServiceClient;
 import org.apache.axis2.databinding.utils.BeanUtil;
+import org.apache.axis2.engine.DefaultObjectSupplier;
 
 /**
  * 
@@ -33,7 +33,7 @@ public class AxisInOutConnector extends AbstractRPCConnector {
     public AxisInOutConnector() {}
 
     protected Object execute(Options options, Method method, Object[] args)
-            throws AxisFault {
+            throws Exception {
 
         ServiceClient client = new ServiceClient();
         client.setOptions(options);
@@ -48,7 +48,9 @@ public class AxisInOutConnector extends AbstractRPCConnector {
         }
         else {
             Object[] returnTypes = new Object[] { returnType };
-            Object[] returnValue = BeanUtil.deserialize(response, returnTypes);
+            
+            // see org.apache.axis2.rpc.client.RPCServiceClient
+            Object[] returnValue = BeanUtil.deserialize(response, returnTypes, new DefaultObjectSupplier());
 
             result = returnValue[0];
         }

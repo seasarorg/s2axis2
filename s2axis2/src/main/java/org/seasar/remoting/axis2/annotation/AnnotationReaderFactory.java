@@ -15,6 +15,13 @@
  */
 package org.seasar.remoting.axis2.annotation;
 
+/**
+ * 
+ * @author takanori
+ * 
+ */
 public interface AnnotationReaderFactory {
-    public BeanAnnotationReader createBeanAnnotationReader(Class beanClass_);
+
+    BeanAnnotationReader createBeanAnnotationReader(Class beanClass_);
+
 }
