@@ -19,8 +19,10 @@ import org.apache.axis2.Constants;
 import org.apache.axis2.context.MessageContext;
 import org.apache.axis2.description.AxisService;
 import org.apache.axis2.description.Parameter;
+import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
+import org.seasar.remoting.axis2.util.AxisServiceUtil;
 
 /**
  * MessageReciverで利用される、サービスオブジェクトを返すクラスです。
@@ -44,11 +46,9 @@ public class ServiceHolder {
      * 
      * サービスオブジェクトを返します。
      * 
-     * @param msgContext
-     *            MessageContext
+     * @param msgContext MessageContext
      * @return サービスオブジェクト
-     * @throws NotFoundServiceException
-     *             サービスオブジェクトが見つからない場合
+     * @throws NotFoundServiceException サービスオブジェクトが見つからない場合
      */
     public Object getServiceObject(MessageContext msgContext)
             throws NotFoundServiceException {
@@ -60,18 +60,16 @@ public class ServiceHolder {
             Parameter implInfoParam = service.getParameter(SERVICE_CLASS);
 
             if (implInfoParam != null) {
-                Class implClass = Class.forName(((String) implInfoParam.getValue()).trim(),
-                                                true,
-                                                classLoader);
+                Class implClass = Class.forName(
+                        ((String) implInfoParam.getValue()).trim(), true,
+                        classLoader);
 
                 // S2コンテナが保持しているオブジェクトを取得する。
-                serviceObj = getComponent(implClass);
-            }
-            else {
+                serviceObj = getComponent(service, implClass);
+            } else {
                 throw new NotFoundServiceException("Can't find SERVICE_CLASS.");
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             throw new NotFoundServiceException(ex);
         }
 
@@ -81,18 +79,24 @@ public class ServiceHolder {
     /**
      * S2コンテナで管理されているコンポーネントを返します。
      * 
-     * @param clazz
-     *            サービスクラス
+     * @param clazz サービスクラス
      * @return コンポーネント
      */
-    protected Object getComponent(Class clazz) {
+    protected Object getComponent(AxisService service, Class clazz) {
 
         Object component;
 
         if (this.container != null && clazz != null) {
-            component = this.container.getComponent(clazz);
-        }
-        else {
+            ComponentDef componentDef = this.container.getComponentDef(clazz);
+            if (componentDef != null) {
+                component = this.container.getComponent(clazz);
+                String scope = AxisServiceUtil.getAxisScope(componentDef.getInstanceDef());
+                service.setScope(scope);
+            } else {
+                component = null;
+            }
+
+        } else {
             component = null;
         }
 

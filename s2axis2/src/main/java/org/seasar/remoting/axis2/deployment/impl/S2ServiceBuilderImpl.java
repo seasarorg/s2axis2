@@ -149,7 +149,6 @@ public class S2ServiceBuilderImpl implements ServiceBuilder {
         // サービスの生成
         try {
             service.addParameter(parameter);
-            service.setClassLoader(axisConfig.getServiceClassLoader());
 
             Utils.fillAxisService(service, axisConfig, new ArrayList(
                     excludeOperations));
