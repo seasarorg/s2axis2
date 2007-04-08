@@ -2,7 +2,7 @@
 <!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
 	"http://www.seasar.org/dtd/components21.dtd">
 <components>
-	<include path="s2-axis-client.dicon"/>
+	<include path="s2axis2-client.dicon"/>
 
     <component class="org.seasar.remoting.axis2.examples.ex03.BeanEcho">
 		<aspect>ioRemoting</aspect>

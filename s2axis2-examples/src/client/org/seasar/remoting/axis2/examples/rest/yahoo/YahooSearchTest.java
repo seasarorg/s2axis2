@@ -31,16 +31,8 @@ public class YahooSearchTest extends S2TestCase {
         YahooSearch rest = (YahooSearch) getComponent(YahooSearch.class);
         YahooSearchDto dto = createDto();
 
-        try
-        {
-            String result = rest.postSearch(dto);
-            System.out.println(result);
-            
-            fail();
-        }catch(Exception ex)
-        {
-            System.out.println(ex);
-        }
+        String result = rest.postSearch(dto);
+        System.out.println(result);
     }
 
     public void testGet() {

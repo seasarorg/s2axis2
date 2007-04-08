@@ -2,12 +2,24 @@
 <!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
     "http://www.seasar.org/dtd/components21.dtd">
 <components>
+
+	<!--
+	    Yahoo Webサービスでは、POSTの場合、Content-Length を指定しないとエラーになるため、
+	    Optionを利用して指定している。
+	    Axis2では、「Transfer-Encoding: chunked」を指定しないことで、自動的に Content-Length　が指定される。
+	-->
+    <component name="options"
+        class="org.apache.axis2.client.Options">
+        <property name="properties">#{@org.apache.axis2.transport.http.HTTPConstants@CHUNKED : false}</property>
+    </component>
+
     <component name="remoting" class="org.seasar.remoting.common.interceptor.RemotingInterceptor"/>
 
     <component name="connector" class="org.seasar.remoting.axis2.connector.RESTConnector">
         <property name="baseURL">
             new java.net.URL("http://api.search.yahoo.co.jp/WebSearchService/V1/webSearch")
         </property>
+        <property name="options">options</property>
     </component>
 
     <component class="org.seasar.remoting.axis2.examples.rest.yahoo.YahooSearch">

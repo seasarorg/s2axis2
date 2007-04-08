@@ -5,4 +5,8 @@
 	<component name="BeanEcho" class="org.seasar.remoting.axis2.examples.ex03.impl.BeanEchoImpl">
 		<meta name="axis-service" />
 	</component>
+	
+	<component name="NestedBeanService" class="org.seasar.remoting.axis2.examples.ex03.impl.NestedBeanServiceImpl">
+		<meta name="axis-service" />
+	</component>
 </components>
