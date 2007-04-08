@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.seasar.remoting.axis2.receivers.S2MessageReceiver;
+import org.apache.axis2.engine.MessageReceiver;
 
 /**
  * 
@@ -104,7 +104,7 @@ public class ServiceDef {
         return messageReceivers;
     }
 
-    public void addMessageReceiver(String mep, S2MessageReceiver receiver) {
+    public void addMessageReceiver(String mep, MessageReceiver receiver) {
         if (this.messageReceivers == null) {
             this.messageReceivers = new HashMap();
         }

@@ -44,9 +44,11 @@ public class S2ServiceBuilderImplTest extends S2TestCase {
     static {
         interfaceMethods.add("method1");
         interfaceMethods.add("method2");
+        interfaceMethods.add("method3");
 
         implMethods.add("method1");
         implMethods.add("method2");
+        implMethods.add("method3");
         implMethods.add("setParam1");
         implMethods.add("setParam2");
     }
@@ -58,7 +60,7 @@ public class S2ServiceBuilderImplTest extends S2TestCase {
     private ServiceDef           serviceDef;
 
     protected void setUp() throws Exception {
-        include("s2-axis-test.dicon");
+        include("s2axis2-test.dicon");
 
         this.serviceDef = new ServiceDef();
         this.serviceDef.setServiceType(ServiceMock.class);

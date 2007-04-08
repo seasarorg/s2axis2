@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
 import org.apache.axiom.om.OMElement;
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.client.Options;
-import org.apache.axis2.client.ServiceClient;
+import org.apache.axis2.rpc.client.RPCServiceClient;
 
 /**
  * 
@@ -29,19 +29,25 @@ import org.apache.axis2.client.ServiceClient;
  */
 public class AxisOnewayConnector extends AbstractRPCConnector {
 
+    /**
+     * デフォルトのコンストラクタ。
+     */
     public AxisOnewayConnector() {}
 
     protected Object execute(Options options, Method method, Object[] args)
             throws Exception {
 
-        Class retunType = method.getReturnType();
-        if (!retunType.equals(void.class)) {
-            throw new AxisFault("return type must be void. invalid return type: "
-                    + method.getReturnType());
-        }
+        RPCServiceClient client = createClient();
 
-        ServiceClient client = new ServiceClient();
-        client.setOptions(options);
+        // WS-Addressingを利用する場合の設定
+        options.setAction("urn:" + method.getName());
+
+        Class returnType = method.getReturnType();
+        if (!returnType.equals(void.class)) {
+            throw new AxisFault(
+                    "return type must be void. invalid return type: "
+                            + method.getReturnType());
+        }
 
         OMElement request = createRequest(method, args);
 

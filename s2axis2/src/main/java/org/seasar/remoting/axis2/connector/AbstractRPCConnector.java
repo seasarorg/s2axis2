@@ -20,20 +20,17 @@ import java.net.URL;
 
 import javax.xml.namespace.QName;
 
-import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMFactory;
-import org.apache.axiom.om.OMNamespace;
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.addressing.EndpointReference;
 import org.apache.axis2.client.Options;
 import org.apache.axis2.databinding.utils.BeanUtil;
+import org.apache.axis2.rpc.client.RPCServiceClient;
 import org.apache.axis2.transport.http.HTTPConstants;
 import org.apache.ws.java2wsdl.Java2WSDLUtils;
-import org.apache.ws.java2wsdl.SchemaGenerator;
 
 /**
- * RPCでのWebサービス呼び出しを行うコネクタです。
+ * RPC形式でのWebサービス呼び出しを行うコネクタです。
  * 
  * @author takanori
  */
@@ -95,15 +92,30 @@ public abstract class AbstractRPCConnector extends AbstractAxisConnector {
     }
 
     /**
-     * リクエストを生成します。
+     * RPC形式のサービスクライアントを生成します。
+     * 
+     * @throws Exception
+     */
+    protected RPCServiceClient createClient() throws Exception {
+        RPCServiceClient client = new RPCServiceClient();
+        client.setOptions(super.options);
+
+        // セッションを利用する場合の設定
+        if (super.options.isManageSession()) {
+            client.engageModule(new QName("addressing"));
+        }
+
+        return client;
+    }
+
+    /**
+     * Webサービスの実行メソッドのQNameを生成します。
      * 
      * @param method Webサービスの実行メソッド
-     * @param args Webサービスの引数
-     * @return リクエスト
+     * @return QName
+     * @throws Exception
      */
-    protected OMElement createRequest(Method method, Object[] args)
-            throws Exception {
-        OMFactory fac = OMAbstractFactory.getOMFactory();
+    protected static QName createOperationQName(Method method) throws Exception {
 
         String className = method.getDeclaringClass().getName();
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
@@ -112,15 +124,27 @@ public abstract class AbstractRPCConnector extends AbstractAxisConnector {
                 className, loader);
         String schemaTargetNameSpace = nsBuff.toString();
 
-        OMNamespace omNs = fac.createOMNamespace(schemaTargetNameSpace,
-                SchemaGenerator.SCHEMA_NAMESPACE_PRFIX);
+        QName qName = new QName(schemaTargetNameSpace, method.getName());
 
-        QName qName = new QName(method.getName());
+        return qName;
+    }
+
+    /**
+     * OMElement型のリクエストを生成します。
+     * 
+     * @param method Webサービスの実行メソッド
+     * @param args Webサービスの実行メソッドの引数
+     * @return リクエスト
+     * @throws Exception
+     */
+    protected static OMElement createRequest(Method method, Object[] args)
+            throws Exception {
+
+        QName qName = createOperationQName(method);
 
         // see org.apache.axis2.rpc.client.RPCServiceClient
         OMElement request = BeanUtil.getOMElement(qName, args, null, false,
                 null);
-        request.setNamespace(omNs);
 
         return request;
     }

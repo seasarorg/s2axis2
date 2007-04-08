@@ -29,7 +29,7 @@ public class ServiceMaker {
     
     public void make() {
         
-        OperationContext opeContext = new OperationContext(null);
+        OperationContext opeContext = new OperationContext();
         opeContext.setParent(new ServiceContext(null, null));
         
         MessageContext msgContext = new MessageContext();

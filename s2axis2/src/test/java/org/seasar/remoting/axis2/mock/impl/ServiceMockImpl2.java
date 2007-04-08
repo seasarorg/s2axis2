@@ -24,7 +24,9 @@ public class ServiceMockImpl2 implements ServiceMock, ServiceDummy {
 
     public void method1() {}
 
-    public void method2() {}
+    public void method2(String arg1) {}
+
+    public void method3(String arg1, Integer arg2) {}
 
     public void dummy() {}
 

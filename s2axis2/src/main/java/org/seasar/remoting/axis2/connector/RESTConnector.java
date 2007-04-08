@@ -43,14 +43,16 @@ import org.seasar.remoting.axis2.annotation.BeanAnnotationReader;
 import org.seasar.remoting.axis2.annotation.impl.AnnotationReaderFactoryImpl;
 import org.seasar.remoting.axis2.xml.OMElementDeserializer;
 import org.seasar.remoting.axis2.xml.XMLBindException;
-import org.seasar.remoting.common.connector.impl.TargetSpecificURLBasedConnector;
 
 /**
- * RESTをサポートしているWebサービスと通信するためのコネクタです。
+ * RESTをサポートしているWebサービスと通信するためのコネクタです。<br>
+ * <br>
+ * このコネクタを利用する場合は、サービスの引数は1つに限ります。<br>
+ * その引数のパラメータより、サービスを実行するためのRESTパラメータを生成します。<br>
  * 
  * @author takanori
  */
-public class RESTConnector extends TargetSpecificURLBasedConnector {
+public class RESTConnector extends AbstractAxisConnector {
 
     /** GETを行う際の指定子 */
     public static final String      REST_GET_OPERATION      = "get";
@@ -86,14 +88,14 @@ public class RESTConnector extends TargetSpecificURLBasedConnector {
     protected Object invoke(URL url, Method method, Object[] args)
             throws Throwable {
 
+        initOptions(method.getName());
+
         EndpointReference targetEPR = new EndpointReference(
                 this.baseURL.toString());
-
-        Options options = createOptions(method.getName());
-        options.setTo(targetEPR);
+        super.options.setTo(targetEPR);
 
         ServiceClient client = new ServiceClient();
-        client.setOptions(options);
+        client.setOptions(super.options);
 
         OMElement request = createRequest(method.getName(), args);
         OMElement response = client.sendReceive(request);
@@ -105,28 +107,54 @@ public class RESTConnector extends TargetSpecificURLBasedConnector {
     }
 
     /**
-     * REST形式の呼び出しを行う際のAxis2のOptionを生成します。
+     * このオブジェクトが持つOptionsに、 REST形式の呼び出しを行う際のパラメータを設定します。
      * 
      * @param methodName メソッド名
-     * @return Axis2のオプション
      */
-    private Options createOptions(String methodName) {
-        Options options = new Options();
-        options.setTransportInProtocol(Constants.TRANSPORT_HTTP);
-        options.setProperty(Constants.Configuration.ENABLE_REST,
-                Constants.VALUE_TRUE);
-        options.setProperty(Constants.Configuration.ENABLE_REST_THROUGH_GET,
-                Constants.VALUE_TRUE);
-
-        String opeProp;
-        if (methodName.toLowerCase().startsWith(REST_POST_OPERATION)) {
-            opeProp = Constants.Configuration.HTTP_METHOD_POST;
-        } else {
-            opeProp = Constants.Configuration.HTTP_METHOD_GET;
+    protected void initOptions(String methodName) {
+        if (super.options == null) {
+            super.options = new Options();
         }
-        options.setProperty(Constants.Configuration.HTTP_METHOD, opeProp);
 
-        return options;
+        super.options.setTransportInProtocol(Constants.TRANSPORT_HTTP);
+
+        if (methodName.toLowerCase().startsWith(REST_POST_OPERATION)) {
+            super.options.setProperty(Constants.Configuration.HTTP_METHOD,
+                    Constants.Configuration.HTTP_METHOD_POST);
+        } else {
+            super.options.setProperty(Constants.Configuration.HTTP_METHOD,
+                    Constants.Configuration.HTTP_METHOD_GET);
+        }
+
+        String keyEnableRest = Constants.Configuration.ENABLE_REST;
+        if (super.options.getProperty(keyEnableRest) == null) {
+            super.options.setProperty(keyEnableRest, Constants.VALUE_TRUE);
+        }
+
+        String keyEnableRestThroughGet = Constants.Configuration.ENABLE_REST_THROUGH_GET;
+        if (super.options.getProperty(keyEnableRestThroughGet) == null) {
+            super.options.setProperty(keyEnableRestThroughGet,
+                    Constants.VALUE_TRUE);
+        }
+
+        String keyMessageType = Constants.Configuration.MESSAGE_TYPE;
+        if (super.options.getProperty(keyMessageType) == null) {
+            super.options.setProperty(
+                    keyMessageType,
+                    org.apache.axis2.transport.http.HTTPConstants.MEDIA_TYPE_X_WWW_FORM);
+        }
+
+        // WS-Addressingを利用する場合の設定
+        super.options.setAction("urn:" + getTargetOperation());
+    }
+
+    protected String getTargetOperation() {
+
+        String url = this.baseURL.toString();
+        String targetOperation = url.substring(url.lastIndexOf("/") + 1);
+
+        return targetOperation;
+
     }
 
     /**
@@ -143,8 +171,9 @@ public class RESTConnector extends TargetSpecificURLBasedConnector {
     protected OMElement createRequest(String methodName, Object[] args)
             throws UnsupportedEncodingException, IllegalAccessException,
             InvocationTargetException, NoSuchMethodException {
+
         OMFactory fac = OMAbstractFactory.getOMFactory();
-        OMElement root = fac.createOMElement(methodName, null);
+        OMElement root = fac.createOMElement(getTargetOperation(), null);
 
         if (args == null || args.length <= 0) {
             // do nothing

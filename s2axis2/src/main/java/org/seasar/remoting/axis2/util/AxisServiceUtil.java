@@ -29,8 +29,7 @@ public class AxisServiceUtil {
         String axisScope;
         String scope = instanceDef.getName();
 
-        // session は transportsession としてマッピング。サービスグループ間で共有可。
-        // soapsession とした場合は、サービスグループ内でのみ共有可。
+        // session は soapsession としてマッピング。サービスグループ内でのみ共有可。
         // prototype は request としてマッピング。
         if (InstanceDef.SINGLETON_NAME.equals(scope)) {
             axisScope = Constants.SCOPE_APPLICATION;

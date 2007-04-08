@@ -15,8 +15,10 @@
  */
 package org.seasar.remoting.axis2.connector;
 
+import java.util.Iterator;
+import java.util.Properties;
+
 import org.apache.axis2.client.Options;
-import org.apache.axis2.description.AxisService;
 import org.seasar.remoting.common.connector.impl.TargetSpecificURLBasedConnector;
 
 /**
@@ -27,23 +29,19 @@ import org.seasar.remoting.common.connector.impl.TargetSpecificURLBasedConnector
 public abstract class AbstractAxisConnector extends
         TargetSpecificURLBasedConnector {
 
-    /** AxisService */
-    protected AxisService service;
+    /** Axis2のシステムプロパティ */
+    private Properties properties;
 
-    /** Axis2 のオプション */
-    protected Options     options;
+    /** Axis2のオプション */
+    protected Options  options;
 
     /** タイムアウト値 */
-    protected int         timeout = 0;
+    protected int      timeout = 0;
 
     /**
      * デフォルトのコンストラクタ。
      */
     public AbstractAxisConnector() {}
-
-    public void setService(AxisService service) {
-        this.service = service;
-    }
 
     public void setOptions(Options options) {
         this.options = options;
@@ -51,6 +49,18 @@ public abstract class AbstractAxisConnector extends
 
     public void setTimeout(int timeout) {
         this.timeout = timeout;
+    }
+
+    public void setProperties(Properties properties) {
+        this.properties = properties;
+
+        Iterator ite = this.properties.keySet().iterator();
+        while (ite.hasNext()) {
+            String key = (String) ite.next();
+            String value = this.properties.getProperty(key);
+
+            System.setProperty(key, value);
+        }
     }
 
 }

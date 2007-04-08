@@ -31,7 +31,7 @@ public class ServiceDefTest extends S2TestCase {
 
 
     protected void setUp() throws Exception {
-        include("s2-axis-test.dicon");
+        include("s2axis2-test.dicon");
     }
 
     protected void tearDown() throws Exception {

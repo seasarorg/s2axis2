@@ -16,7 +16,6 @@
 package org.seasar.remoting.axis2.receivers;
 
 import org.apache.axis2.Constants;
-import org.apache.axis2.context.MessageContext;
 import org.apache.axis2.description.AxisService;
 import org.apache.axis2.description.Parameter;
 import org.seasar.framework.container.ComponentDef;
@@ -50,12 +49,11 @@ public class ServiceHolder {
      * @return サービスオブジェクト
      * @throws NotFoundServiceException サービスオブジェクトが見つからない場合
      */
-    public Object getServiceObject(MessageContext msgContext)
+    public Object getServiceObject(AxisService service)
             throws NotFoundServiceException {
 
         Object serviceObj;
         try {
-            AxisService service = msgContext.getOperationContext().getServiceContext().getAxisService();
             ClassLoader classLoader = service.getClassLoader();
             Parameter implInfoParam = service.getParameter(SERVICE_CLASS);
 

@@ -16,9 +16,11 @@
 package org.seasar.remoting.axis2.mock;
 
 public interface ServiceMock {
-    
+
     void method1();
-    
-    void method2();
+
+    void method2(String arg1);
+
+    void method3(String arg1, Integer arg2);
 
 }

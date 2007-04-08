@@ -17,42 +17,49 @@ package org.seasar.remoting.axis2.connector;
 
 import java.lang.reflect.Method;
 
-import org.apache.axiom.om.OMElement;
+import javax.xml.namespace.QName;
+
 import org.apache.axis2.client.Options;
-import org.apache.axis2.client.ServiceClient;
-import org.apache.axis2.databinding.utils.BeanUtil;
-import org.apache.axis2.engine.DefaultObjectSupplier;
+import org.apache.axis2.rpc.client.RPCServiceClient;
 
 /**
+ * RPC形式で、同期的にサービスを呼び出すためのConnectorです。
  * 
  * @author takanori
- * 
  */
 public class AxisInOutConnector extends AbstractRPCConnector {
 
+    /**
+     * デフォルトのコンストラクタ。
+     */
     public AxisInOutConnector() {}
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.seasar.remoting.axis2.connector.AbstractRPCConnector#execute(org.apache.axis2.client.Options,
+     *      java.lang.reflect.Method, java.lang.Object[])
+     */
     protected Object execute(Options options, Method method, Object[] args)
             throws Exception {
 
-        ServiceClient client = new ServiceClient();
-        client.setOptions(options);
+        RPCServiceClient client = createClient();
 
-        OMElement request = createRequest(method, args);
-        OMElement response = client.sendReceive(request);
-
+        QName targetQName = createOperationQName(method);
         Class returnType = method.getReturnType();
+
+        // WS-Addressingを利用する場合の設定
+        options.setAction("urn:" + method.getName());
+        
         Object result;
         if (returnType.equals(void.class)) {
+            client.invokeRobust(targetQName, args);
             result = null;
-        }
-        else {
-            Object[] returnTypes = new Object[] { returnType };
-            
-            // see org.apache.axis2.rpc.client.RPCServiceClient
-            Object[] returnValue = BeanUtil.deserialize(response, returnTypes, new DefaultObjectSupplier());
-
-            result = returnValue[0];
+        } else {
+            Class[] returnTypes = new Class[] { method.getReturnType() };
+            Object[] response = client.invokeBlocking(targetQName, args,
+                    returnTypes);
+            result = response[0];
         }
 
         return result;

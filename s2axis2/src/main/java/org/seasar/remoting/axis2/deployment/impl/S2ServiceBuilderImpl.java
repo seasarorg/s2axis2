@@ -32,7 +32,9 @@ import org.apache.axis2.description.AxisService;
 import org.apache.axis2.description.Parameter;
 import org.apache.axis2.engine.AxisConfiguration;
 import org.apache.axis2.engine.MessageReceiver;
-import org.apache.axis2.wsdl.WSDLConstants.WSDL20_2004Constants;
+import org.apache.axis2.rpc.receivers.RPCInOnlyMessageReceiver;
+import org.apache.axis2.rpc.receivers.RPCMessageReceiver;
+import org.apache.axis2.wsdl.WSDLConstants.WSDL20_2006Constants;
 import org.apache.ws.java2wsdl.DefaultNamespaceGenerator;
 import org.apache.ws.java2wsdl.Java2WSDLUtils;
 import org.seasar.framework.container.ComponentDef;
@@ -41,10 +43,6 @@ import org.seasar.framework.util.StringUtil;
 import org.seasar.remoting.axis2.DeployFailedException;
 import org.seasar.remoting.axis2.ServiceDef;
 import org.seasar.remoting.axis2.deployment.ServiceBuilder;
-import org.seasar.remoting.axis2.receivers.S2MessageReceiver;
-import org.seasar.remoting.axis2.receivers.S2RPCInOnlyMessageReceiver;
-import org.seasar.remoting.axis2.receivers.S2RPCMessageReceiver;
-import org.seasar.remoting.axis2.receivers.ServiceHolder;
 
 /**
  * 
@@ -56,20 +54,21 @@ public class S2ServiceBuilderImpl implements ServiceBuilder {
     /** デフォルトのMessageReceiver */
     private Map                 defaultMessageReceivers = new HashMap();
 
+    private Class               sericeObjectSupplierClass;
+
     private static final Logger logger                  = Logger.getLogger(S2ServiceBuilderImpl.class);
 
     /**
      * デフォルトのコンストラクタ。
      */
-    public S2ServiceBuilderImpl(ServiceHolder serviceHolder) {
-        S2MessageReceiver ioReceiver = new S2RPCMessageReceiver();
-        ioReceiver.setServiceHolder(serviceHolder);
-        this.defaultMessageReceivers.put(WSDL20_2004Constants.MEP_URI_IN_OUT,
+    public S2ServiceBuilderImpl() {
+
+        MessageReceiver ioReceiver = new RPCMessageReceiver();
+        this.defaultMessageReceivers.put(WSDL20_2006Constants.MEP_URI_IN_OUT,
                 ioReceiver);
 
-        S2MessageReceiver inOnlyReceiver = new S2RPCInOnlyMessageReceiver();
-        inOnlyReceiver.setServiceHolder(serviceHolder);
-        this.defaultMessageReceivers.put(WSDL20_2004Constants.MEP_URI_IN_ONLY,
+        MessageReceiver inOnlyReceiver = new RPCInOnlyMessageReceiver();
+        this.defaultMessageReceivers.put(WSDL20_2006Constants.MEP_URI_IN_ONLY,
                 inOnlyReceiver);
     }
 
@@ -104,13 +103,21 @@ public class S2ServiceBuilderImpl implements ServiceBuilder {
             serviceDef = new ServiceDef();
         }
 
+        AxisService service = new AxisService(componentDef.getComponentName());
+        ClassLoader loader = axisConfig.getServiceClassLoader();
+
+        // ServiceClass
         Class serviceClass = componentDef.getComponentClass();
         String className = serviceClass.getName();
-        Parameter parameter = new Parameter(Constants.SERVICE_CLASS, className);
-        AxisService service = new AxisService(componentDef.getComponentName());
+        Parameter paramServiceClass = new Parameter(Constants.SERVICE_CLASS,
+                className);
+        try {
+            service.addParameter(paramServiceClass);
+        } catch (AxisFault ex) {
+            throw new DeployFailedException("EAXS0003",
+                    new Object[] { service.getName() }, ex);
+        }
 
-        ClassLoader loader = axisConfig.getServiceClassLoader();
-        
         // Service Interface
         Class serviceType = serviceDef.getServiceType();
         if (serviceType == null) {
@@ -142,16 +149,26 @@ public class S2ServiceBuilderImpl implements ServiceBuilder {
             addMessageReceiver(service, msgReceivers);
         }
 
+        // exclude method
         List excludeOperations = createExcludeOperations(serviceClass,
                 serviceType);
         excludeOperations.addAll(serviceDef.getExcludeOperations());
 
+        // Service Object Supplier Class
+        Parameter paramServiceObjectSupplier = new Parameter(
+                Constants.SERVICE_OBJECT_SUPPLIER,
+                sericeObjectSupplierClass.getName());
+        try {
+            service.addParameter(paramServiceObjectSupplier);
+        } catch (AxisFault ex) {
+            throw new DeployFailedException("EAXS0003",
+                    new Object[] { service.getName() }, ex);
+        }
+
         // サービスの生成
         try {
-            service.addParameter(parameter);
-
             Utils.fillAxisService(service, axisConfig, new ArrayList(
-                    excludeOperations));
+                    excludeOperations), new ArrayList());
         } catch (AxisFault ex) {
             throw new DeployFailedException("EAXS0003",
                     new Object[] { service.getName() }, ex);
@@ -324,6 +341,10 @@ public class S2ServiceBuilderImpl implements ServiceBuilder {
             }
 
         }
+    }
+
+    public void setSericeObjectSupplierClass(Class sericeObjectSupplierClass) {
+        this.sericeObjectSupplierClass = sericeObjectSupplierClass;
     }
 
 }
