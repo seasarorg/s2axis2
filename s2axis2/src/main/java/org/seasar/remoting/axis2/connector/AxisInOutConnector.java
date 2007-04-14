@@ -19,11 +19,10 @@ import java.lang.reflect.Method;
 
 import javax.xml.namespace.QName;
 
-import org.apache.axis2.client.Options;
 import org.apache.axis2.rpc.client.RPCServiceClient;
 
 /**
- * RPC形式で、同期的にサービスを呼び出すためのConnectorです。
+ * 同期型要求応答形式（Request/Response）で、RPCとしてサービスを呼び出すためのConnectorです。
  * 
  * @author takanori
  */
@@ -37,20 +36,16 @@ public class AxisInOutConnector extends AbstractRPCConnector {
     /*
      * (non-Javadoc)
      * 
-     * @see org.seasar.remoting.axis2.connector.AbstractRPCConnector#execute(org.apache.axis2.client.Options,
-     *      java.lang.reflect.Method, java.lang.Object[])
+     * @see org.seasar.remoting.axis2.connector.AbstractRPCConnector#execute(java.lang.reflect.Method,
+     *      java.lang.Object[])
      */
-    protected Object execute(Options options, Method method, Object[] args)
-            throws Exception {
+    protected Object execute(Method method, Object[] args) throws Exception {
 
-        RPCServiceClient client = createClient();
+        RPCServiceClient client = getClient();
 
         QName targetQName = createOperationQName(method);
         Class returnType = method.getReturnType();
 
-        // WS-Addressingを利用する場合の設定
-        options.setAction("urn:" + method.getName());
-        
         Object result;
         if (returnType.equals(void.class)) {
             client.invokeRobust(targetQName, args);

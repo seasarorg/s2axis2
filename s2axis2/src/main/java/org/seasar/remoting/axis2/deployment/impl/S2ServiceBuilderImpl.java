@@ -30,11 +30,11 @@ import org.apache.axis2.Constants;
 import org.apache.axis2.deployment.util.Utils;
 import org.apache.axis2.description.AxisService;
 import org.apache.axis2.description.Parameter;
+import org.apache.axis2.description.WSDL2Constants;
 import org.apache.axis2.engine.AxisConfiguration;
 import org.apache.axis2.engine.MessageReceiver;
 import org.apache.axis2.rpc.receivers.RPCInOnlyMessageReceiver;
 import org.apache.axis2.rpc.receivers.RPCMessageReceiver;
-import org.apache.axis2.wsdl.WSDLConstants.WSDL20_2006Constants;
 import org.apache.ws.java2wsdl.DefaultNamespaceGenerator;
 import org.apache.ws.java2wsdl.Java2WSDLUtils;
 import org.seasar.framework.container.ComponentDef;
@@ -64,11 +64,11 @@ public class S2ServiceBuilderImpl implements ServiceBuilder {
     public S2ServiceBuilderImpl() {
 
         MessageReceiver ioReceiver = new RPCMessageReceiver();
-        this.defaultMessageReceivers.put(WSDL20_2006Constants.MEP_URI_IN_OUT,
+        this.defaultMessageReceivers.put(WSDL2Constants.MEP_URI_IN_OUT,
                 ioReceiver);
 
         MessageReceiver inOnlyReceiver = new RPCInOnlyMessageReceiver();
-        this.defaultMessageReceivers.put(WSDL20_2006Constants.MEP_URI_IN_ONLY,
+        this.defaultMessageReceivers.put(WSDL2Constants.MEP_URI_IN_ONLY,
                 inOnlyReceiver);
     }
 

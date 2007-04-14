@@ -19,13 +19,13 @@ import java.lang.reflect.Method;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axis2.AxisFault;
-import org.apache.axis2.client.Options;
 import org.apache.axis2.rpc.client.RPCServiceClient;
+import org.seasar.framework.message.MessageFormatter;
 
 /**
+ * 一方向形式（Oneway）で、RPCとしてサービスを呼び出すためのConnectorです。
  * 
  * @author takanori
- * 
  */
 public class AxisOnewayConnector extends AbstractRPCConnector {
 
@@ -34,19 +34,21 @@ public class AxisOnewayConnector extends AbstractRPCConnector {
      */
     public AxisOnewayConnector() {}
 
-    protected Object execute(Options options, Method method, Object[] args)
-            throws Exception {
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.seasar.remoting.axis2.connector.AbstractRPCConnector#execute(java.lang.reflect.Method,
+     *      java.lang.Object[])
+     */
+    protected Object execute(Method method, Object[] args) throws Exception {
 
-        RPCServiceClient client = createClient();
-
-        // WS-Addressingを利用する場合の設定
-        options.setAction("urn:" + method.getName());
+        RPCServiceClient client = getClient();
 
         Class returnType = method.getReturnType();
         if (!returnType.equals(void.class)) {
-            throw new AxisFault(
-                    "return type must be void. invalid return type: "
-                            + method.getReturnType());
+            Object[] msgArgs = new Object[] { method.getReturnType() };
+            throw new AxisFault(MessageFormatter.getSimpleMessage("EAXS1003",
+                    msgArgs));
         }
 
         OMElement request = createRequest(method, args);
@@ -55,5 +57,4 @@ public class AxisOnewayConnector extends AbstractRPCConnector {
 
         return null;
     }
-
 }

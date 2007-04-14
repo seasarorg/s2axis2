@@ -19,6 +19,7 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import org.apache.axis2.client.Options;
+import org.apache.axis2.client.ServiceClient;
 import org.seasar.remoting.common.connector.impl.TargetSpecificURLBasedConnector;
 
 /**
@@ -30,13 +31,16 @@ public abstract class AbstractAxisConnector extends
         TargetSpecificURLBasedConnector {
 
     /** Axis2のシステムプロパティ */
-    private Properties properties;
+    private Properties      properties;
+
+    /** Axis2のクライアント */
+    protected ServiceClient client;
 
     /** Axis2のオプション */
-    protected Options  options;
+    protected Options       options;
 
     /** タイムアウト値 */
-    protected int      timeout = 0;
+    protected int           timeout = 0;
 
     /**
      * デフォルトのコンストラクタ。

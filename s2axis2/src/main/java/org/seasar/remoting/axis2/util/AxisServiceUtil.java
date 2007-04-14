@@ -18,8 +18,47 @@ package org.seasar.remoting.axis2.util;
 import org.apache.axis2.Constants;
 import org.seasar.framework.container.InstanceDef;
 
+/**
+ * AxisServiceに関するユーティリティです。
+ * 
+ * @author takanori
+ */
 public class AxisServiceUtil {
 
+    /**
+     * 指定されたインスタンス属性において、S2コンテナで指定可能なライフサイクルから、 Axis2のスコープを取得します。<br>
+     * <br>
+     * <table>
+     * <tr>
+     * <th>S2のinstance属性</th>
+     * <th>Axis2のスコープ</th>
+     * </tr>
+     * <tr>
+     * <td>singleton</td>
+     * <td>application</td>
+     * </tr>
+     * <tr>
+     * <td>application</td>
+     * <td>application</td>
+     * </tr>
+     * <tr>
+     * <td>session</td>
+     * <td>transport session</td>
+     * </tr>
+     * <tr>
+     * <td>request</td>
+     * <td>request</td>
+     * </tr>
+     * <tr>
+     * <td>prototype</td>
+     * <td>request</td>
+     * </tr>
+     * </table> <br>
+     * 上記以外のinstance属性が指定されている場合は、nullを返します。
+     * 
+     * @param instanceDef S2コンテナで管理されるコンポーネントのインスタンス属性
+     * @return Axis2のスコープ
+     */
     public static String getAxisScope(InstanceDef instanceDef) {
 
         if (instanceDef == null) {
@@ -29,12 +68,12 @@ public class AxisServiceUtil {
         String axisScope;
         String scope = instanceDef.getName();
 
-        // session は soapsession としてマッピング。サービスグループ内でのみ共有可。
-        // prototype は request としてマッピング。
         if (InstanceDef.SINGLETON_NAME.equals(scope)) {
             axisScope = Constants.SCOPE_APPLICATION;
+        } else if (InstanceDef.APPLICATION_NAME.equals(scope)) {
+            axisScope = Constants.SCOPE_APPLICATION;
         } else if (InstanceDef.SESSION_NAME.equals(scope)) {
-            axisScope = Constants.SCOPE_SOAP_SESSION;
+            axisScope = Constants.SCOPE_TRANSPORT_SESSION;
         } else if (InstanceDef.REQUEST_NAME.equals(scope)) {
             axisScope = Constants.SCOPE_REQUEST;
         } else if (InstanceDef.PROTOTYPE_NAME.equals(scope)) {

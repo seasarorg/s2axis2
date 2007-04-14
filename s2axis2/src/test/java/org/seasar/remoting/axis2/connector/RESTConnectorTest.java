@@ -28,7 +28,7 @@ public class RESTConnectorTest extends S2TestCase {
         dto.setId(new Integer(1));
         dto.setName("name");
 
-        String expectedData = "<restService><id>1</id><name>name</name></restService>";
+        String expectedData = "<restService><name>name</name><id>1</id></restService>";
 
         OMElement actual = this.restConnector.createRequest("method",
                 new Object[] { dto });

@@ -78,40 +78,13 @@ public class RESTConnector extends AbstractAxisConnector {
     public RESTConnector() {}
 
     /**
-     * RESTサービスを呼び出します。
+     * このオブジェクトの初期化を行います。 <br>
+     * Optionsに、 REST形式の呼び出しを行う際のパラメータを設定します。
      * 
-     * @param url 呼び出し先のURL
-     * @param method 呼び出し先のメソッド
-     * @param args リクエストに設定するパラメータ
-     * @return RESTサービスの呼び出し結果
+     * @param methodName サービスのメソッド名
+     * @throws AxisFault
      */
-    protected Object invoke(URL url, Method method, Object[] args)
-            throws Throwable {
-
-        initOptions(method.getName());
-
-        EndpointReference targetEPR = new EndpointReference(
-                this.baseURL.toString());
-        super.options.setTo(targetEPR);
-
-        ServiceClient client = new ServiceClient();
-        client.setOptions(super.options);
-
-        OMElement request = createRequest(method.getName(), args);
-        OMElement response = client.sendReceive(request);
-
-        Class returnType = method.getReturnType();
-        Object result = deserialize(returnType, response);
-
-        return result;
-    }
-
-    /**
-     * このオブジェクトが持つOptionsに、 REST形式の呼び出しを行う際のパラメータを設定します。
-     * 
-     * @param methodName メソッド名
-     */
-    protected void initOptions(String methodName) {
+    protected void init(String methodName) throws AxisFault {
         if (super.options == null) {
             super.options = new Options();
         }
@@ -146,6 +119,37 @@ public class RESTConnector extends AbstractAxisConnector {
 
         // WS-Addressingを利用する場合の設定
         super.options.setAction("urn:" + getTargetOperation());
+
+        if (super.client == null) {
+            super.client = new ServiceClient();
+        }
+        super.client.setOptions(super.options);
+    }
+
+    /**
+     * RESTサービスを呼び出します。
+     * 
+     * @param url 呼び出し先のURL
+     * @param method 呼び出し先のメソッド
+     * @param args リクエストに設定するパラメータ
+     * @return RESTサービスの呼び出し結果
+     */
+    protected Object invoke(URL url, Method method, Object[] args)
+            throws Throwable {
+
+        init(method.getName());
+
+        EndpointReference targetEPR = new EndpointReference(
+                super.baseURL.toString());
+        super.options.setTo(targetEPR);
+
+        OMElement request = createRequest(method.getName(), args);
+        OMElement response = super.client.sendReceive(request);
+
+        Class returnType = method.getReturnType();
+        Object result = deserialize(returnType, response);
+
+        return result;
     }
 
     protected String getTargetOperation() {

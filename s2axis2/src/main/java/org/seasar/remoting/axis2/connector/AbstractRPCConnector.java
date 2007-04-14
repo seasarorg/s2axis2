@@ -28,6 +28,7 @@ import org.apache.axis2.databinding.utils.BeanUtil;
 import org.apache.axis2.rpc.client.RPCServiceClient;
 import org.apache.axis2.transport.http.HTTPConstants;
 import org.apache.ws.java2wsdl.Java2WSDLUtils;
+import org.seasar.remoting.axis2.S2AxisClientException;
 
 /**
  * RPC形式でのWebサービス呼び出しを行うコネクタです。
@@ -42,37 +43,19 @@ public abstract class AbstractRPCConnector extends AbstractAxisConnector {
     public AbstractRPCConnector() {}
 
     /**
-     * Webサービスを呼び出します。
+     * このオブジェクトの初期化を行います。
      * 
-     * @param options オプション
-     * @param method Webサービスの実行メソッド
-     * @param args Webサービスの引数
-     * @return Webサービスの呼び出し結果
-     * @throws AxisFault 通信に失敗した場合
+     * @param methodName サービスのメソッド名
+     * @throws AxisFault
      */
-    abstract protected Object execute(Options options,
-                                      Method method,
-                                      Object[] args) throws Exception;
-
-    /**
-     * 共通の設定を行い、executeを呼び出します。
-     * 
-     * @param url 接続先のURL
-     * @param method Webサービスの実行メソッド
-     * @param args Webサービスの引数
-     * @return Webサービスの呼び出し結果
-     * @throws Throwable 通信に失敗した場合
-     */
-    protected Object invoke(URL url, Method method, Object[] args)
-            throws Throwable {
-
+    protected void init(String methodName) throws AxisFault {
         if (super.options == null) {
             super.options = new Options();
         }
 
-        EndpointReference targetEPR = new EndpointReference(url.toString());
-        super.options.setTo(targetEPR);
+        super.options.setManageSession(true);
 
+        // タイムアウトの設定
         if (super.timeout > 0) {
 
             if (super.options.isUseSeparateListener()) {
@@ -86,26 +69,67 @@ public abstract class AbstractRPCConnector extends AbstractAxisConnector {
             }
         }
 
-        Object returnValue = execute(super.options, method, args);
+        // WS-Addressingを利用する場合の設定
+        super.options.setAction("urn:" + methodName);
+
+        if (super.client == null) {
+            super.client = new RPCServiceClient();
+        }
+
+        super.client.setOptions(super.options);
+    }
+
+    /**
+     * 共通の設定を行い、executeを呼び出します。
+     * 
+     * @param url 接続先のURL
+     * @param method Webサービスの実行メソッド
+     * @param args Webサービスの引数
+     * @return Webサービスの呼び出し結果
+     * @throws Throwable 通信に失敗した場合
+     */
+    protected Object invoke(URL url, Method method, Object[] args)
+            throws Throwable {
+
+        try {
+            init(method.getName());
+        } catch (AxisFault ex) {
+            throw new S2AxisClientException("EAXS1001", null, ex);
+        }
+
+        EndpointReference targetEPR = new EndpointReference(url.toString());
+        super.options.setTo(targetEPR);
+
+        Object returnValue;
+        try {
+            returnValue = execute(method, args);
+        } catch (Exception ex) {
+            throw new S2AxisClientException("EAXS1002",
+                    new Object[] { targetEPR }, ex);
+        }
 
         return returnValue;
     }
 
     /**
-     * RPC形式のサービスクライアントを生成します。
+     * Webサービスを呼び出します。
      * 
-     * @throws Exception
+     * @param options オプション
+     * @param method Webサービスの実行メソッド
+     * @param args Webサービスの引数
+     * @return Webサービスの呼び出し結果
+     * @throws Exception 通信に失敗した場合
      */
-    protected RPCServiceClient createClient() throws Exception {
-        RPCServiceClient client = new RPCServiceClient();
-        client.setOptions(super.options);
+    abstract protected Object execute(Method method, Object[] args)
+            throws Exception;
 
-        // セッションを利用する場合の設定
-        if (super.options.isManageSession()) {
-            client.engageModule(new QName("addressing"));
-        }
-
-        return client;
+    /**
+     * このオブジェクトが持つ、RPCServiceClientを返します。
+     * 
+     * @return RPCServiceClient
+     */
+    protected RPCServiceClient getClient() {
+        return (RPCServiceClient) super.client;
     }
 
     /**
@@ -113,15 +137,20 @@ public abstract class AbstractRPCConnector extends AbstractAxisConnector {
      * 
      * @param method Webサービスの実行メソッド
      * @return QName
-     * @throws Exception
+     * @throws AxisFault
      */
-    protected static QName createOperationQName(Method method) throws Exception {
+    protected static QName createOperationQName(Method method) throws AxisFault {
 
         String className = method.getDeclaringClass().getName();
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
 
-        StringBuffer nsBuff = Java2WSDLUtils.schemaNamespaceFromClassName(
-                className, loader);
+        StringBuffer nsBuff;
+        try {
+            nsBuff = Java2WSDLUtils.schemaNamespaceFromClassName(className,
+                    loader);
+        } catch (Exception ex) {
+            throw new AxisFault(ex);
+        }
         String schemaTargetNameSpace = nsBuff.toString();
 
         QName qName = new QName(schemaTargetNameSpace, method.getName());
@@ -135,10 +164,10 @@ public abstract class AbstractRPCConnector extends AbstractAxisConnector {
      * @param method Webサービスの実行メソッド
      * @param args Webサービスの実行メソッドの引数
      * @return リクエスト
-     * @throws Exception
+     * @throws AxisFault
      */
     protected static OMElement createRequest(Method method, Object[] args)
-            throws Exception {
+            throws AxisFault {
 
         QName qName = createOperationQName(method);
 

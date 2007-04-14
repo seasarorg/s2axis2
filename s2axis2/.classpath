@@ -12,7 +12,7 @@
 	<classpathentry kind="lib" path="lib/axiom-api-1.2.3.jar"/>
 	<classpathentry kind="lib" path="lib/axiom-dom-1.2.3.jar"/>
 	<classpathentry kind="lib" path="lib/axiom-impl-1.2.3.jar"/>
-	<classpathentry kind="lib" path="lib/axis2-adb-1.2-RC2.jar" sourcepath="/axis2/src/modules"/>
+	<classpathentry kind="lib" path="lib/axis2-adb-1.2-RC2.jar"/>
 	<classpathentry kind="lib" path="lib/axis2-adb-codegen-1.2-RC2.jar"/>
 	<classpathentry kind="lib" path="lib/axis2-codegen-1.2-RC2.jar"/>
 	<classpathentry kind="lib" path="lib/axis2-fastinfoset-1.2-RC2.jar"/>
@@ -22,7 +22,7 @@
 	<classpathentry kind="lib" path="lib/axis2-jaxws-api-1.2-RC2.jar"/>
 	<classpathentry kind="lib" path="lib/axis2-jibx-1.2-RC2.jar"/>
 	<classpathentry kind="lib" path="lib/axis2-json-1.2-RC2.jar"/>
-	<classpathentry kind="lib" path="lib/axis2-kernel-1.2-RC2.jar" sourcepath="/axis2/src/modules"/>
+	<classpathentry kind="lib" path="lib/axis2-kernel-1.2-RC2.jar"/>
 	<classpathentry kind="lib" path="lib/axis2-metadata-1.2-RC2.jar"/>
 	<classpathentry kind="lib" path="lib/axis2-saaj-1.2-RC2.jar"/>
 	<classpathentry kind="lib" path="lib/axis2-saaj-api-1.2-RC2.jar"/>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components namespace="axis">
+
+    <component name="singletionComponent"
+    	class="java.lang.String" instance="singleton" />
+    	
+    <component name="sessionComponent"
+    	class="java.lang.String" instance="session" />
+
+    <component name="requestComponent"
+    	class="java.lang.String" instance="request" />
+
+	<component name="prototypeComponent"
+    	class="java.lang.String" instance="prototype" />
+	
+</components>
