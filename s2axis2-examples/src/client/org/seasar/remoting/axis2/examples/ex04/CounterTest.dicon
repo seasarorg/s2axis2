@@ -3,12 +3,7 @@
     "http://www.seasar.org/dtd/components21.dtd">
 <components>
 	<include path="s2axis2-client.dicon"/>
-    
-    <component name="options"
-               class="org.apache.axis2.client.Options" autoBinding="none">
-        <property name="manageSession">true</property>
-    </component>
-    
+	
     <component name="remoting"
                class="org.seasar.remoting.common.interceptor.RemotingInterceptor">
         <property name="connector">connector</property>
@@ -17,7 +12,6 @@
     <component name="connector"
                class="org.seasar.remoting.axis2.connector.AxisInOutConnector">
         <property name="baseURL">baseURL</property>
-        <property name="options">options</property>
     </component>
 
     <component class="org.seasar.remoting.axis2.examples.ex04.Counter">
