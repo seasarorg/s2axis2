@@ -12,7 +12,7 @@
     </component>
     <component name="serviceBuilder"
         class="org.seasar.remoting.axis2.deployment.impl.S2ServiceBuilderImpl">
-        <property name="sericeObjectSupplierClass">@org.seasar.remoting.axis2.receivers.S2ServiceObjectSupplier@class</property>
+        <property name="serviceObjectSupplierClass">@org.seasar.remoting.axis2.receivers.S2ServiceObjectSupplier@class</property>
     </component>
 
     

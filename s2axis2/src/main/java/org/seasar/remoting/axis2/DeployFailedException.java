@@ -18,9 +18,9 @@ package org.seasar.remoting.axis2;
 import org.seasar.framework.exception.SRuntimeException;
 
 /**
+ * サービスのデプロイに失敗した際にスローされる例外です。
  * 
  * @author takanori
- * 
  */
 public class DeployFailedException extends SRuntimeException {
 

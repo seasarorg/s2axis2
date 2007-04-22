@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.axis2.context.ConfigurationContext;
 import org.apache.axis2.description.AxisOperation;
 import org.apache.axis2.description.AxisService;
 import org.apache.axis2.engine.AxisConfiguration;
@@ -59,6 +60,8 @@ public class S2ServiceBuilderImplTest extends S2TestCase {
 
     private ServiceDef           serviceDef;
 
+    private ConfigurationContext configCtx;
+
     protected void setUp() throws Exception {
         include("s2axis2-test.dicon");
 
@@ -66,14 +69,16 @@ public class S2ServiceBuilderImplTest extends S2TestCase {
         this.serviceDef.setServiceType(ServiceMock.class);
         this.serviceDef.setTargetNamespace(TARGET_NAMESPACE);
         this.serviceDef.setSchemaNamespace(SCHEMA_NAMESPACE);
+
+        this.configCtx = new ConfigurationContext(new AxisConfiguration());
     }
 
     protected void tearDown() throws Exception {}
 
     public void testPopulateService_implClass() {
         ComponentDef componentDef = container.getComponentDef("ServiceMock");
-        AxisService service = this.builder.populateService(
-                new AxisConfiguration(), componentDef);
+        AxisService service = this.builder.populateService(this.configCtx,
+                componentDef);
 
         List opeList = extractOpNames(service);
 
@@ -91,8 +96,8 @@ public class S2ServiceBuilderImplTest extends S2TestCase {
         this.serviceDef.setTargetNamespace(null);
         this.serviceDef.setSchemaNamespace(null);
 
-        AxisService service = this.builder.populateService(
-                new AxisConfiguration(), componentDef, this.serviceDef);
+        AxisService service = this.builder.populateService(this.configCtx,
+                componentDef, this.serviceDef);
         List opeList = extractOpNames(service);
 
         assertEquals("http://mock.axis2.remoting.seasar.org",
@@ -106,8 +111,8 @@ public class S2ServiceBuilderImplTest extends S2TestCase {
     public void testPopulateService_ns() {
         ComponentDef componentDef = container.getComponentDef("ServiceMock");
 
-        AxisService service = this.builder.populateService(
-                new AxisConfiguration(), componentDef, this.serviceDef);
+        AxisService service = this.builder.populateService(this.configCtx,
+                componentDef, this.serviceDef);
         List opeList = extractOpNames(service);
 
         assertEquals(TARGET_NAMESPACE, service.getTargetNamespace());
@@ -120,9 +125,8 @@ public class S2ServiceBuilderImplTest extends S2TestCase {
         ComponentDef componentDef = container.getComponentDef("ServiceDefTest");
         MetaDef metaDef = componentDef.getMetaDef("axis-service");
 
-        AxisService service = this.builder.populateService(
-                new AxisConfiguration(), componentDef,
-                (ServiceDef) metaDef.getValue());
+        AxisService service = this.builder.populateService(this.configCtx,
+                componentDef, (ServiceDef) metaDef.getValue());
         List opeList = extractOpNames(service);
 
         assertEquals("http://examples", service.getTargetNamespace());

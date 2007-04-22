@@ -1,0 +1,13 @@
+<service name="ServiceSample" scope="transportsession">
+    <description>
+        This is a sample Web Service.
+    </description>
+    <messageReceivers>
+        <messageReceiver mep="http://www.w3.org/ns/wsdl/in-only"
+                         class="org.apache.axis2.rpc.receivers.RPCInOnlyMessageReceiver"/>
+        <messageReceiver mep="http://www.w3.org/ns/wsdl/in-out"
+                         class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+    </messageReceivers>
+    <parameter name="ServiceClass" locked="false">org.seasar.remoting.axis2.mock.ServiceSample</parameter>
+    <parameter name="ServiceObjectSupplier" >org.seasar.remoting.axis2.receivers.S2ServiceObjectSupplier</parameter>
+</service>

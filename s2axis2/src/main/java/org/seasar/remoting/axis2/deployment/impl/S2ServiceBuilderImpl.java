@@ -27,6 +27,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.Constants;
+import org.apache.axis2.context.ConfigurationContext;
 import org.apache.axis2.deployment.util.Utils;
 import org.apache.axis2.description.AxisService;
 import org.apache.axis2.description.Parameter;
@@ -54,7 +55,7 @@ public class S2ServiceBuilderImpl implements ServiceBuilder {
     /** デフォルトのMessageReceiver */
     private Map                 defaultMessageReceivers = new HashMap();
 
-    private Class               sericeObjectSupplierClass;
+    private Class               serviceObjectSupplierClass;
 
     private static final Logger logger                  = Logger.getLogger(S2ServiceBuilderImpl.class);
 
@@ -72,30 +73,21 @@ public class S2ServiceBuilderImpl implements ServiceBuilder {
                 inOnlyReceiver);
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.seasar.remoting.axis2.deployment.ServiceBuilder#populateService(
-     *      org.apache.axis2.engine.AxisConfiguration,
-     *      org.seasar.framework.container.ComponentDef)
+    /**
+     * {@inheritDoc}
      */
-    public AxisService populateService(AxisConfiguration axisConfig,
+    public AxisService populateService(ConfigurationContext configCtx,
                                        ComponentDef componentDef) {
 
-        AxisService service = populateService(axisConfig, componentDef, null);
+        AxisService service = populateService(configCtx, componentDef, null);
 
         return service;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.seasar.remoting.axis2.deployment.ServiceBuilder#populateService(
-     *      org.apache.axis2.engine.AxisConfiguration,
-     *      org.seasar.framework.container.ComponentDef,
-     *      org.seasar.remoting.axis2.ServiceDef)
+    /**
+     * {@inheritDoc}
      */
-    public AxisService populateService(AxisConfiguration axisConfig,
+    public AxisService populateService(ConfigurationContext configCtx,
                                        ComponentDef componentDef,
                                        ServiceDef serviceDef) {
 
@@ -104,6 +96,7 @@ public class S2ServiceBuilderImpl implements ServiceBuilder {
         }
 
         AxisService service = new AxisService(componentDef.getComponentName());
+        AxisConfiguration axisConfig = configCtx.getAxisConfiguration();
         ClassLoader loader = axisConfig.getServiceClassLoader();
 
         // ServiceClass
@@ -157,7 +150,7 @@ public class S2ServiceBuilderImpl implements ServiceBuilder {
         // Service Object Supplier Class
         Parameter paramServiceObjectSupplier = new Parameter(
                 Constants.SERVICE_OBJECT_SUPPLIER,
-                sericeObjectSupplierClass.getName());
+                serviceObjectSupplierClass.getName());
         try {
             service.addParameter(paramServiceObjectSupplier);
         } catch (AxisFault ex) {
@@ -343,8 +336,8 @@ public class S2ServiceBuilderImpl implements ServiceBuilder {
         }
     }
 
-    public void setSericeObjectSupplierClass(Class sericeObjectSupplierClass) {
-        this.sericeObjectSupplierClass = sericeObjectSupplierClass;
+    public void setServiceObjectSupplierClass(Class serviceObjectSupplierClass) {
+        this.serviceObjectSupplierClass = serviceObjectSupplierClass;
     }
 
 }

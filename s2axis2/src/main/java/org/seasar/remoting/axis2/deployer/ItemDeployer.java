@@ -15,14 +15,25 @@
  */
 package org.seasar.remoting.axis2.deployer;
 
+import org.apache.axis2.context.ConfigurationContext;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.MetaDef;
 
 /**
+ * コンポーネントをAxisにデプロイするためのインタフェースです。
  * 
  * @author takanori
- * 
  */
 public interface ItemDeployer {
-    void deploy(ComponentDef componentDef, MetaDef metaDef);
+
+    /**
+     * 指定されたコンポーネントをデプロイします。
+     * 
+     * @param configCtx Axisの設定情報
+     * @param componentDef コンポーネント定義
+     * @param metaDef メタデータ
+     */
+    void deploy(ConfigurationContext configCtx,
+                ComponentDef componentDef,
+                MetaDef metaDef);
 }

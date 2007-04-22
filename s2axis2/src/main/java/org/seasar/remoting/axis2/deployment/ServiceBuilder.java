@@ -15,8 +15,8 @@
  */
 package org.seasar.remoting.axis2.deployment;
 
+import org.apache.axis2.context.ConfigurationContext;
 import org.apache.axis2.description.AxisService;
-import org.apache.axis2.engine.AxisConfiguration;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.remoting.axis2.ServiceDef;
 
@@ -29,26 +29,25 @@ import org.seasar.remoting.axis2.ServiceDef;
 public interface ServiceBuilder {
 
     /**
-     * Axis2およびS2コンテナのコンポーネント定義を指定して、
-     * AxisServiceを構築します。
+     * Axis2およびS2コンテナのコンポーネント定義を指定して、 AxisServiceを構築します。
      * 
-     * @param axisConfig Axis2の定義
+     * @param configCtx Axis2の設定情報
      * @param componentDef S2コンテナのコンポーネント定義
      * @return AxisService
      */
-    public AxisService populateService(AxisConfiguration axisConfig,
-            ComponentDef componentDef);
+    public AxisService populateService(ConfigurationContext configCtx,
+                                       ComponentDef componentDef);
 
     /**
-     * Axis2、S2コンテナのコンポーネント定義、
-     * およびS2Axis2のサービス定義を指定して、AxisServiceを構築します。
+     * Axis2、S2コンテナのコンポーネント定義、 およびS2Axis2のサービス定義を指定して、AxisServiceを構築します。
      * 
-     * @param axisConfig Axis2の定義
+     * @param configCtx Axis2の設定情報
      * @param componentDef S2コンテナのコンポーネント定義
      * @param serviceDef S2Axis2のサービス定義
      * @return AxisService
      */
-    public AxisService populateService(AxisConfiguration axisConfig,
-            ComponentDef componentDef, ServiceDef serviceDef);
+    public AxisService populateService(ConfigurationContext configCtx,
+                                       ComponentDef componentDef,
+                                       ServiceDef serviceDef);
 
 }

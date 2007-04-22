@@ -19,4 +19,14 @@ public class ServiceSample {
 
     public ServiceSample() {}
 
+    public String method1() {
+        return "method1";
+    }
+
+    public String method2() {
+        return "method2";
+    }
+
+    public void method3() {}
+
 }

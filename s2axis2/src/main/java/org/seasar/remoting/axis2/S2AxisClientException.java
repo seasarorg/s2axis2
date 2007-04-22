@@ -18,7 +18,7 @@ package org.seasar.remoting.axis2;
 import org.seasar.framework.exception.SRuntimeException;
 
 /**
- * S2Axis2のクライアントで発生する例外です。
+ * S2Axis2のクライアントでエラーが発生した際にスローされる例外です。
  * 
  * @author takanori
  */

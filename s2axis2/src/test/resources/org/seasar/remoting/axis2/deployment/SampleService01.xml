@@ -1,0 +1,14 @@
+<service name="ServiceSample">
+    <description>
+        This is a sample Web Service.
+    </description>
+    <parameter name="ServiceClass" locked="false">org.seasar.remoting.axis2.mock.ServiceSample</parameter>
+    <operation name="method1">
+        <messageReceiver class="org.apache.axis2.receivers.RawXMLINOutMessageReceiver"/>
+        <actionMapping>urn:method1</actionMapping>
+    </operation>
+    <operation name="method3">
+        <messageReceiver class="org.apache.axis2.receivers.RawXMLINOnlyMessageReceiver"/>
+        <actionMapping>urn:method3</actionMapping>
+    </operation>
+</service>
