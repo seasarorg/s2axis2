@@ -7,4 +7,5 @@
     <include path="org/seasar/remoting/axis2/examples/ex02/deploy.dicon"/>
     <include path="org/seasar/remoting/axis2/examples/ex03/deploy.dicon"/>
     <include path="org/seasar/remoting/axis2/examples/ex04/deploy.dicon"/>
+    <include path="org/seasar/remoting/axis2/examples/ex05/deploy.dicon"/>
 </components>
