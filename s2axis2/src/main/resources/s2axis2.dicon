@@ -7,12 +7,20 @@
         class="org.seasar.remoting.axis2.deployer.AxisDeployer">
         <initMethod name="deploy"/>
     </component>
-    <component name="serviceDeployer"
-        class="org.seasar.remoting.axis2.deployer.ServiceDeployer">
+    
+    <component name="serviceComponentDeployer"
+        class="org.seasar.remoting.axis2.deployer.ServiceComponentDeployer">
     </component>
-    <component name="serviceBuilder"
-        class="org.seasar.remoting.axis2.deployment.impl.S2ServiceBuilderImpl">
+    <component
+        class="org.seasar.remoting.axis2.deployment.impl.ComponentBasedServiceBuilderImpl">
         <property name="serviceObjectSupplierClass">@org.seasar.remoting.axis2.receivers.S2ServiceObjectSupplier@class</property>
+    </component>
+    
+    <component name="serviceXmlDeployer"
+        class="org.seasar.remoting.axis2.deployer.ServiceXmlDeployer">
+    </component>
+    <component
+        class="org.seasar.remoting.axis2.deployment.impl.XmlBasedServiceBuilderImpl">
     </component>
 
     

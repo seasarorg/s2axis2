@@ -23,7 +23,7 @@ import org.seasar.remoting.axis2.annotation.BeanAnnotationReader;
 /**
  * 
  * @author takanori
- *
+ * 
  */
 public class AnnotationReaderFactoryImpl implements AnnotationReaderFactory {
 
@@ -37,12 +37,10 @@ public class AnnotationReaderFactoryImpl implements AnnotationReaderFactory {
         Class clazz = FieldAnnotationReaderFactory.class;
         try {
             clazz = ClassUtil.forName(TIGER_ANNOTATION_READER_FACTORY);
-        }
-        catch (ClassNotFoundRuntimeException ignore1) {
+        } catch (ClassNotFoundRuntimeException ignore1) {
             try {
                 clazz = ClassUtil.forName(BACKPORT175_ANNOTATION_READER_FACTORY);
-            }
-            catch (ClassNotFoundRuntimeException ignore2) {}
+            } catch (ClassNotFoundRuntimeException ignore2) {}
         }
         annotationReaderFactory = (AnnotationReaderFactory) ClassUtil.newInstance(clazz);
     }

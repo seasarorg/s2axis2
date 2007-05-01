@@ -13,31 +13,26 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.remoting.axis2.receivers;
+package org.seasar.remoting.axis2.deployment;
+
+import java.util.List;
+
+import org.apache.axis2.context.ConfigurationContext;
 
 /**
+ * <code>service.xml</code>の情報から、<code>AxisService</code>を構築します。<br>
  * 
  * @author takanori
- * 
  */
-public class NotFoundServiceException extends Exception {
+public interface XmlBasedServiceBuilder {
 
-    private static final long serialVersionUID = 1L;
-
-    public NotFoundServiceException() {
-        super();
-    }
-
-    public NotFoundServiceException(String arg0) {
-        super(arg0);
-    }
-
-    public NotFoundServiceException(Throwable arg0) {
-        super(arg0);
-    }
-
-    public NotFoundServiceException(String arg0, Throwable arg1) {
-        super(arg0, arg1);
-    }
-
+    /**
+     * <code>AxisService</code>を生成します。
+     * 
+     * @param configCtx Axisの設定情報
+     * @param servicexmlPath service.xmlのパス（フルパス指定）
+     * @return <code>AxisService</code>のリスト
+     */
+    public List populateService(ConfigurationContext configCtx,
+                                String servicexmlPath);
 }

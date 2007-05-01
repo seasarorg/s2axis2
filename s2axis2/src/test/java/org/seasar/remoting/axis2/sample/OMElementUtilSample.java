@@ -81,7 +81,7 @@ public class OMElementUtilSample {
 
     public static void main(String[] args) {
 
-        Object[] params = new Object[] { new String("test"),
+        Object[] params = new Object[] { "test",
                 new Integer(1), new Long(2), new Float(0.1), new Double(0.2) };
 
         OMElementUtilSample sample = new OMElementUtilSample();

@@ -26,31 +26,28 @@ import org.seasar.framework.container.S2Container;
 import org.seasar.remoting.axis2.mock.ServiceMock;
 
 public class ServiceDefTest extends S2TestCase {
-    
-    private S2Container          container;
 
+    private S2Container container;
 
     protected void setUp() throws Exception {
         include("s2axis2-test.dicon");
     }
 
-    protected void tearDown() throws Exception {
-    }
-    
-    public void testServiceDef_readDicon()
-    {
+    protected void tearDown() throws Exception {}
+
+    public void testServiceDef_readDicon() {
         ComponentDef componentDef = container.getComponentDef("ServiceDefTest");
         MetaDef metaDef = componentDef.getMetaDef("axis-service");
-        
-        ServiceDef serviceDef = (ServiceDef)metaDef.getValue();
-        
+
+        ServiceDef serviceDef = (ServiceDef) metaDef.getValue();
+
         assertEquals(ServiceMock.class, serviceDef.getServiceType());
         assertEquals("http://examples", serviceDef.getTargetNamespace());
         assertEquals("http://examples/xsd", serviceDef.getSchemaNamespace());
-        
+
         assertTrue(serviceDef.getExcludeOperations().contains("method1"));
         assertTrue(serviceDef.getExcludeOperations().contains("method2"));
-        
+
         Map receivers = serviceDef.getMessageReceivers();
         Object obj;
         obj = receivers.get("http://www.w3.org/2004/08/wsdl/in-out");

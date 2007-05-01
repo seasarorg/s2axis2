@@ -37,13 +37,15 @@ import org.seasar.remoting.axis2.S2AxisConstants;
  */
 public class AxisDeployer {
 
-    protected static final Pattern META_NAME_PATTERN = Pattern.compile("(?:s2-axis:|axis-)(.+)");
+    protected static final Pattern   META_NAME_PATTERN        = Pattern.compile("(?:s2-axis:|axis-)(.+)");
 
-    protected S2Container          container         = null;
+    protected S2Container            container                = null;
 
-    protected ConfigurationContext configCtx         = null;
+    protected ConfigurationContext   configCtx                = null;
 
-    private ServiceDeployer        serviceDeployer   = null;
+    private ServiceComponentDeployer serviceComponentDeployer = null;
+
+    private ServiceXmlDeployer       serviceXmlDeployer       = null;
 
     /**
      * デフォルトコンストラクタです。
@@ -75,18 +77,18 @@ public class AxisDeployer {
         final MetaDef serviceMetaDef = getMetaDef(componentDef,
                 S2AxisConstants.META_SERVICE);
         if (serviceMetaDef != null) {
-            this.serviceDeployer.deploy(this.configCtx, componentDef,
+            this.serviceComponentDeployer.deploy(this.configCtx, componentDef,
                     serviceMetaDef);
         }
 
-        // TODO ハンドラのデプロイ
+        // TODO モジュールのデプロイ
     }
 
     protected void process(final S2Container container) {
         final MetaDef[] metaDefs = getMetaDefs(container,
                 S2AxisConstants.META_DEPLOY);
         for (int i = 0; metaDefs != null && i < metaDefs.length; ++i) {
-            this.serviceDeployer.deploy(this.configCtx, null, metaDefs[i]);
+            this.serviceXmlDeployer.deploy(this.configCtx, null, metaDefs[i]);
         }
     }
 
@@ -126,16 +128,16 @@ public class AxisDeployer {
         this.configCtx = (ConfigurationContext) servletContext.getAttribute(S2AxisConstants.ATTR_CONFIGURATION_CONTEXT);
     }
 
-    public ServiceDeployer getServiceDeployer() {
-        return this.serviceDeployer;
-    }
-
-    public void setServiceDeployer(ServiceDeployer serviceDeployer) {
-        this.serviceDeployer = serviceDeployer;
-    }
-
     public ConfigurationContext getConfigurationContext() {
         return configCtx;
+    }
+
+    public void setServiceComponentDeployer(ServiceComponentDeployer serviceComponentDeployer) {
+        this.serviceComponentDeployer = serviceComponentDeployer;
+    }
+
+    public void setServiceXmlDeployer(ServiceXmlDeployer serviceXmlDeployer) {
+        this.serviceXmlDeployer = serviceXmlDeployer;
     }
 
 }
