@@ -18,7 +18,7 @@ package org.seasar.remoting.axis2.examples.ex01;
 import java.util.Calendar;
 import java.util.Date;
 
-interface SimpleWrapTypeService {
+public interface SimpleWrapTypeService {
 
     Object[] getArrayParam();
 

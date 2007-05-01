@@ -15,7 +15,7 @@
  */
 package org.seasar.remoting.axis2.examples.ex01;
 
-interface SimpleTypeService {
+public interface SimpleTypeService {
 
     byte getByteParam();
 
