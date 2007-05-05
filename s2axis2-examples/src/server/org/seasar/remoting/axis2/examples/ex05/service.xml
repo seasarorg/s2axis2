@@ -9,7 +9,6 @@
                          class="org.apache.axis2.rpc.receivers.RPCInOnlyMessageReceiver"/>
     </messageReceivers>
     <parameter name="ServiceClass" locked="false">org.seasar.remoting.axis2.examples.ex01.EchoImpl</parameter>
-    <parameter name="ServiceObjectSupplier">org.seasar.remoting.axis2.receivers.S2ServiceObjectSupplier</parameter>
     <operation name="echo">
         <actionMapping>urn:echo</actionMapping>
     </operation>
