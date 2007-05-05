@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <project
   xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -9,10 +9,14 @@
   <artifactId>s2axis2</artifactId>
   <packaging>jar</packaging>
   <name>S2Axis2 Project</name>
-  <version>0.3.0-SNAPSHOT</version>
+  <version>0.3.0</version>
   <description></description>
   <url>http://s2axis.seasar.org/</url>
-  <inceptionYear>2006</inceptionYear>
+  <issueManagement>
+    <system>JIRA</system>
+    <url><![CDATA[https://www.seasar.org/issues/browse/CONTAINER]]></url>
+  </issueManagement>
+  <inceptionYear>2007</inceptionYear>
   <mailingLists>
     <mailingList>
       <name>Seasar-user</name>
@@ -57,15 +61,78 @@
     <pluginManagement>
       <plugins>
         <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
           <configuration>
             <source>1.4</source>
             <target>1.4</target>
+            <encoding>UTF-8</encoding>
+          </configuration>
+        </plugin>
+        <plugin>
+          <artifactId>maven-site-plugin</artifactId>
+          <configuration>
+            <locales>en,ja</locales>
+            <inputEncoding>UTF-8</inputEncoding>
+            <outputEncoding>UTF-8</outputEncoding>
+          </configuration>
+        </plugin>
+        <plugin>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <configuration>
+            <updateReleaseInfo>true</updateReleaseInfo>
           </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
+    <plugins>
+      <plugin>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>source-jar</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <source>1.4</source>
+          <encoding>UTF-8</encoding>
+          <docencoding>UTF-8</docencoding>
+          <charset>UTF-8</charset>
+          <links>
+            <link>http://java.sun.com/javaee/5/docs/api/</link>
+          	<link>http://java.sun.com/j2se/1.5.0/ja/docs/ja/api/</link>
+            <link>http://aopalliance.sourceforge.net/doc/</link>
+            <link>http://jakarta.apache.org/commons/logging/apidocs/</link>
+            <link>http://www.csg.is.titech.ac.jp/~chiba/javassist/html/</link>
+            <link>http://www.ognl.org/2.6.9/Documentation/javadoc/</link>
+            <link>http://www.junit.org/junit/javadoc/3.8.1/</link>
+          </links>
+        </configuration>
+        <!--
+        <executions>
+          <execution>
+            <id>javadoc-jar</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+        -->
+      </plugin>
+    </plugins>
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-webdav</artifactId>
+      </extension>
+    </extensions>
   </build>
   <repositories>
     <repository>
@@ -74,10 +141,32 @@
       <url>http://maven.seasar.org/maven2</url>
     </repository>
     <repository>
-      <id>repo1.maven.org</id>
-      <name>Maven2 Repository</name>
-      <url>http://repo1.maven.org/maven2</url>
+      <id>ibiblio</id>
+      <name>ibiblio maven repository</name>
+      <url>http://ibiblio.org/maven/</url>
     </repository>
+    <repository>
+      <id>ibiblio</id>
+      <name>ibiblio maven repository mirrors</name>
+      <url>http://mirrors.ibiblio.org/pub/mirrors/maven2/</url>
+    </repository>
+    <repository>
+      <id>apache-m2</id>
+      <url>http://people.apache.org/repo/m2-ibiblio-rsync-repository</url>
+    </repository>
+    <repository>
+      <id>apache-snapshots</id>
+      <url>http://people.apache.org/repo/m2-snapshot-repository/</url>
+    </repository>
+    <repository>
+      <id>ws-zones</id>
+      <name>ws.zones maven repository</name>
+      <url>http://ws.zones.apache.org/repository/</url>
+    </repository>
+    <repository>
+      <id>maven2</id>
+      <url>http://repo1.maven.org/maven2/</url>
+      </repository>
     <repository>
       <id>local</id>
       <name>The Seasar Foundation Maven2 local Repository</name>
@@ -86,9 +175,22 @@
   </repositories>
   <dependencies>
     <dependency>
+      <groupId>org.seasar.container</groupId>
+      <artifactId>s2-extension</artifactId>
+      <version>2.4.12</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.seasar.container</groupId>
+      <artifactId>s2-framework</artifactId>
+      <version>2.4.12</version>
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.seasar.remoting</groupId>
       <artifactId>s2remoting</artifactId>
-      <version>1.0.0a</version>
+      <version>1.1.0</version>
       <type>jar</type>
     </dependency>
     <dependency>
@@ -99,35 +201,139 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>axis2</groupId>
+        <groupId>org.apache.ws.commons.axiom</groupId>
+        <artifactId>axiom-api</artifactId>
+        <version>1.2.4</version>
+        <exclusions>
+           <exclusion>
+              <groupId>log4j</groupId>
+              <artifactId>log4j</artifactId>
+           </exclusion>
+        </exclusions>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.ws.commons.axiom</groupId>
+        <artifactId>axiom-impl</artifactId>
+        <version>1.2.4</version>
+        <exclusions>
+           <exclusion>
+              <groupId>log4j</groupId>
+              <artifactId>log4j</artifactId>
+           </exclusion>
+        </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.axis2</groupId>
+      <artifactId>axis2</artifactId>
+      <version>1.2</version>
+    </dependency>
+<!--
+    <dependency>
+      <groupId>org.apache.axis2</groupId>
       <artifactId>axis2-adb</artifactId>
-      <version>1.0</version>
-      <type>jar</type>
+      <version>1.2</version>
     </dependency>
     <dependency>
-      <groupId>axis2</groupId>
-      <artifactId>axis2-kernel</artifactId>
-      <version>1.0</version>
-      <type>jar</type>
+      <groupId>org.apache.axis2</groupId>
+      <artifactId>axis2-adb-codegen</artifactId>
+      <version>1.2</version>
     </dependency>
     <dependency>
-      <groupId>axis2</groupId>
+      <groupId>org.apache.axis2</groupId>
       <artifactId>axis2-codegen</artifactId>
-      <version>1.0</version>
-      <type>jar</type>
+      <version>1.2</version>
     </dependency>
     <dependency>
-      <groupId>ws-commons</groupId>
-      <artifactId>axiom-api</artifactId>
-      <version>1.0</version>
-      <type>jar</type>
+      <groupId>org.apache.axis2</groupId>
+      <artifactId>axis2-java2wsdl</artifactId>
+      <version>1.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.axis2</groupId>
+      <artifactId>axis2-kernel</artifactId>
+      <version>1.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.axis2</groupId>
+      <artifactId>axis2-tools</artifactId>
+      <version>1.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.neethi</groupId>
+      <artifactId>neethi</artifactId>
+      <version>2.0.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.ws.commons.schema</groupId>
+      <artifactId>XmlSchema</artifactId>
+      <version>1.3.1</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-httpclient</groupId>
+      <artifactId>commons-httpclient</artifactId>
+      <version>3.0.1</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+      <version>1.3</version>
+    </dependency>
+    <dependency>
+      <groupId>woodstox</groupId>
+      <artifactId>wstx</artifactId>
+      <version>asl-3.2.1</version>
     </dependency>
     <dependency>
       <groupId>stax</groupId>
       <artifactId>stax-api</artifactId>
-      <version>1.0</version>
-      <type>jar</type>
+      <version>1.0.1</version>
     </dependency>
+    <dependency>
+      <groupId>wsdl4j</groupId>
+      <artifactId>wsdl4j</artifactId>
+      <version>1.6.2</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.mail</groupId>
+      <artifactId>mail</artifactId>
+      <version>1.4</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.activation</groupId>
+      <artifactId>activation</artifactId>
+      <version>1.1</version>
+    </dependency>
+    <dependency>
+      <groupId>xalan</groupId>
+      <artifactId>xalan</artifactId>
+      <version>2.7.0</version>
+    </dependency>
+    <dependency>
+      <groupId>xmlbeans</groupId>
+      <artifactId>xbean</artifactId>
+      <version>2.2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>jaxen</groupId>
+      <artifactId>jaxen</artifactId>
+      <version>1.1-beta-10</version>
+    </dependency>
+    <dependency>
+      <groupId>backport-util-concurrent</groupId>
+      <artifactId>backport-util-concurrent</artifactId>
+      <version>2.2</version>
+    </dependency>
+    <dependency>
+      <groupId>annogen</groupId>
+      <artifactId>annogen</artifactId>
+      <version>0.1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>incubator-woden</groupId>
+      <artifactId>woden</artifactId>
+      <version>1.0.0M7</version>
+    </dependency>
+-->
     <dependency>
       <groupId>commons-beanutils</groupId>
       <artifactId>commons-beanutils</artifactId>
@@ -140,7 +346,13 @@
       <uniqueVersion>false</uniqueVersion>
       <id>maven.seasar.org</id>
       <name>The Seasar Foundation Maven2 Repository</name>
-      <url>scp://www.seasar.org/home/groups/s2axis/maven/maven2</url>
+      <url>dav:https://www.seasar.org/maven/maven2</url>
     </repository>
+    <snapshotRepository>
+      <uniqueVersion>true</uniqueVersion>
+      <id>maven.seasar.org</id>
+      <name>The Seasar Foundation Maven2 Snapshot Repository</name>
+      <url>dav:https://www.seasar.org/maven/maven2-snapshot</url>
+    </snapshotRepository>
   </distributionManagement>
 </project>
