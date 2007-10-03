@@ -53,7 +53,7 @@ public class XmlBasedServiceBuilderImplTest extends S2TestCase {
         AxisService service = (AxisService) serviceList.get(0);
         assertEquals("http://mock.axis2.remoting.seasar.org",
                 service.getTargetNamespace());
-        assertEquals("http://mock.axis2.remoting.seasar.org/xsd",
+        assertEquals("http://mock.axis2.remoting.seasar.org",
                 service.getSchematargetNamespace());
         assertTrue(service.isWsdlFound());
     }

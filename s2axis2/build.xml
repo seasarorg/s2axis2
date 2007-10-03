@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<project name="S2Axis2" default="dist" basedir=".">
-  <property name="ver" value="0.3.0"/>
+<project name="s2axis2" default="dist" basedir=".">
+  <property name="ver" value="0.4.0-SNAPSHOT"/>
 
   <target name="dist">
-    <zip zipfile="target/S2Axis2-${ver}.zip">
+    <zip zipfile="target/s2axis2-${ver}.zip">
       <zipfileset prefix="s2axis2" dir=".">
         <exclude name="**/target/**"/>
         <exclude name=".settings"/>

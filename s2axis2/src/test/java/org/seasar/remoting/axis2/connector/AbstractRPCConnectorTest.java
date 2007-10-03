@@ -41,7 +41,7 @@ public class AbstractRPCConnectorTest extends S2TestCase {
     public void testCreateOperationQName_success() throws Exception {
 
         QName expected = new QName(
-                "http://connector.axis2.remoting.seasar.org/xsd",
+                "http://connector.axis2.remoting.seasar.org",
                 "testCreateOperationQName_success");
 
         BeanDesc beanDesc = BeanDescFactory.getBeanDesc(this.getClass());
@@ -109,7 +109,7 @@ public class AbstractRPCConnectorTest extends S2TestCase {
 
         OMFactory fac = OMAbstractFactory.getOMFactory();
         OMNamespace ns = fac.createOMNamespace(
-                "http://mock.axis2.remoting.seasar.org/xsd", "");
+                "http://mock.axis2.remoting.seasar.org", "");
         OMElement operationNameOM = fac.createOMElement(operationName, ns);
 
         return operationNameOM;

@@ -84,7 +84,7 @@ public class ComponentBasedServiceBuilderImplTest extends S2TestCase {
 
         assertEquals("http://mock.axis2.remoting.seasar.org",
                 service.getTargetNamespace());
-        assertEquals("http://mock.axis2.remoting.seasar.org/xsd",
+        assertEquals("http://mock.axis2.remoting.seasar.org",
                 service.getSchematargetNamespace());
         boolean equals = equalsList(interfaceMethods, opeList);
         assertTrue(equals);
@@ -102,7 +102,7 @@ public class ComponentBasedServiceBuilderImplTest extends S2TestCase {
 
         assertEquals("http://mock.axis2.remoting.seasar.org",
                 service.getTargetNamespace());
-        assertEquals("http://mock.axis2.remoting.seasar.org/xsd",
+        assertEquals("http://mock.axis2.remoting.seasar.org",
                 service.getSchematargetNamespace());
         boolean equals = equalsList(interfaceMethods, opeList);
         assertTrue(equals);
@@ -190,7 +190,7 @@ public class ComponentBasedServiceBuilderImplTest extends S2TestCase {
     }
 
     public void testCreateSchemaNamespace_success() {
-        String expected = "http://mock.axis2.remoting.seasar.org/xsd";
+        String expected = "http://mock.axis2.remoting.seasar.org";
         String actual = this.builder.createSchemaNamespace(ServiceMock.class,
                 ServiceMock.class.getClassLoader());
 
