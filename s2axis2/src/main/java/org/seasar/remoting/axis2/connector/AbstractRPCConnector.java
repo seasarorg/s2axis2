@@ -37,159 +37,142 @@ import org.seasar.remoting.axis2.S2AxisClientException;
  */
 public abstract class AbstractRPCConnector extends AbstractAxisConnector {
 
-	/**
-	 * デフォルトのコンストラクタ。
-	 */
-	public AbstractRPCConnector() {
-	}
+    /**
+     * デフォルトのコンストラクタ。
+     */
+    public AbstractRPCConnector() {}
 
-	/**
-	 * このオブジェクトの初期化を行います。
-	 * 
-	 * @param methodName
-	 *            サービスのメソッド名
-	 * @throws AxisFault
-	 */
-	protected void init(String methodName) throws AxisFault {
-		if (super.options == null) {
-			super.options = new Options();
-		}
+    /**
+     * このオブジェクトの初期化を行います。
+     * 
+     * @param methodName サービスのメソッド名
+     * @throws AxisFault
+     */
+    protected void init(String methodName) throws AxisFault {
+        if (super.options == null) {
+            super.options = new Options();
+        }
 
-		super.options.setManageSession(true);
+        super.options.setManageSession(true);
 
-		// タイムアウトの設定
-		if (super.timeout > 0) {
+        // タイムアウトの設定
+        if (super.timeout != null) {
+            super.options.setTimeOutInMilliSeconds(super.timeout.longValue());
 
-			if (super.options.isUseSeparateListener()) {
-				super.options.setTimeOutInMilliSeconds(timeout);
-			} else {
-				// HTTPプロトコルに対する設定
-				super.options.setProperty(HTTPConstants.SO_TIMEOUT,
-						new Integer(timeout));
-				super.options.setProperty(HTTPConstants.CONNECTION_TIMEOUT,
-						new Integer(timeout));
-			}
-		}
+            // HTTPプロトコルに対する設定
+            super.options.setProperty(HTTPConstants.SO_TIMEOUT, super.timeout);
+            super.options.setProperty(HTTPConstants.CONNECTION_TIMEOUT,
+                    super.timeout);
+        }
 
-		// WS-Addressingを利用する場合の設定
-		super.options.setAction("urn:" + methodName);
+        // WS-Addressingを利用する場合の設定
+        super.options.setAction("urn:" + methodName);
 
-		if (super.client == null) {
-			super.client = new RPCServiceClient();
-		}
+        if (super.client == null) {
+            super.client = new RPCServiceClient();
+        }
 
-		super.client.setOptions(super.options);
-	}
+        super.client.setOptions(super.options);
+    }
 
-	/**
-	 * 共通の設定を行い、executeを呼び出します。
-	 * 
-	 * @param url
-	 *            接続先のURL
-	 * @param method
-	 *            Webサービスの実行メソッド
-	 * @param args
-	 *            Webサービスの引数
-	 * @return Webサービスの呼び出し結果
-	 * @throws Throwable
-	 *             通信に失敗した場合
-	 */
-	protected Object invoke(URL url, Method method, Object[] args)
-			throws Throwable {
+    /**
+     * 共通の設定を行い、executeを呼び出します。
+     * 
+     * @param url 接続先のURL
+     * @param method Webサービスの実行メソッド
+     * @param args Webサービスの引数
+     * @return Webサービスの呼び出し結果
+     * @throws Throwable 通信に失敗した場合
+     */
+    protected Object invoke(URL url, Method method, Object[] args)
+            throws Throwable {
 
-		try {
-			init(method.getName());
-		} catch (AxisFault ex) {
-			throw new S2AxisClientException("EAXS1001", null, ex);
-		}
+        try {
+            init(method.getName());
+        } catch (AxisFault ex) {
+            throw new S2AxisClientException("EAXS1001", null, ex);
+        }
 
-		EndpointReference targetEPR = new EndpointReference(url.toString());
-		super.options.setTo(targetEPR);
+        EndpointReference targetEPR = new EndpointReference(url.toString());
+        super.options.setTo(targetEPR);
 
-		Object returnValue;
-		try {
-			returnValue = execute(method, args);
-		} catch (Exception ex) {
-			throw new S2AxisClientException("EAXS1002",
-					new Object[] { targetEPR }, ex);
-		}
+        Object returnValue;
+        try {
+            returnValue = execute(method, args);
+        } catch (Exception ex) {
+            throw new S2AxisClientException("EAXS1002",
+                    new Object[] { targetEPR }, ex);
+        }
 
-		return returnValue;
-	}
+        return returnValue;
+    }
 
-	/**
-	 * Webサービスを呼び出します。
-	 * 
-	 * @param options
-	 *            オプション
-	 * @param method
-	 *            Webサービスの実行メソッド
-	 * @param args
-	 *            Webサービスの引数
-	 * @return Webサービスの呼び出し結果
-	 * @throws Exception
-	 *             通信に失敗した場合
-	 */
-	abstract protected Object execute(Method method, Object[] args)
-			throws Exception;
+    /**
+     * Webサービスを呼び出します。
+     * 
+     * @param options オプション
+     * @param method Webサービスの実行メソッド
+     * @param args Webサービスの引数
+     * @return Webサービスの呼び出し結果
+     * @throws Exception 通信に失敗した場合
+     */
+    abstract protected Object execute(Method method, Object[] args)
+            throws Exception;
 
-	/**
-	 * このオブジェクトが持つ、RPCServiceClientを返します。
-	 * 
-	 * @return RPCServiceClient
-	 */
-	protected RPCServiceClient getClient() {
-		return (RPCServiceClient) super.client;
-	}
+    /**
+     * このオブジェクトが持つ、RPCServiceClientを返します。
+     * 
+     * @return RPCServiceClient
+     */
+    protected RPCServiceClient getClient() {
+        return (RPCServiceClient)super.client;
+    }
 
-	/**
-	 * Webサービスの実行メソッドのQNameを生成します。
-	 * 
-	 * @param method
-	 *            Webサービスの実行メソッド
-	 * @return QName
-	 * @throws AxisFault
-	 */
-	protected static QName createOperationQName(Method method) throws Exception {
+    /**
+     * Webサービスの実行メソッドのQNameを生成します。
+     * 
+     * @param method Webサービスの実行メソッド
+     * @return QName
+     * @throws AxisFault
+     */
+    protected static QName createOperationQName(Method method) throws Exception {
 
-		String className = method.getDeclaringClass().getName();
-		ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        String className = method.getDeclaringClass().getName();
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
 
-		StringBuffer nsBuff;
-		try {
-			nsBuff = Java2WSDLUtils.schemaNamespaceFromClassName(className,
-					loader);
-		} catch (Exception ex) {
-			// TODO 例外処理の見直し
-			throw ex;
-		}
-		String schemaTargetNameSpace = nsBuff.toString();
+        StringBuffer nsBuff;
+        try {
+            nsBuff = Java2WSDLUtils.schemaNamespaceFromClassName(className,
+                    loader);
+        } catch (Exception ex) {
+            // TODO 例外処理の見直し
+            throw ex;
+        }
+        String schemaTargetNameSpace = nsBuff.toString();
 
-		QName qName = new QName(schemaTargetNameSpace, method.getName());
+        QName qName = new QName(schemaTargetNameSpace, method.getName());
 
-		return qName;
-	}
+        return qName;
+    }
 
-	/**
-	 * OMElement型のリクエストを生成します。
-	 * 
-	 * @param method
-	 *            Webサービスの実行メソッド
-	 * @param args
-	 *            Webサービスの実行メソッドの引数
-	 * @return リクエスト
-	 * @throws AxisFault
-	 */
-	protected static OMElement createRequest(Method method, Object[] args)
-			throws Exception {
+    /**
+     * OMElement型のリクエストを生成します。
+     * 
+     * @param method Webサービスの実行メソッド
+     * @param args Webサービスの実行メソッドの引数
+     * @return リクエスト
+     * @throws AxisFault
+     */
+    protected static OMElement createRequest(Method method, Object[] args)
+            throws Exception {
 
-		QName qName = createOperationQName(method);
+        QName qName = createOperationQName(method);
 
-		// see org.apache.axis2.rpc.client.RPCServiceClient
-		OMElement request = BeanUtil.getOMElement(qName, args, null, false,
-				null);
+        // see org.apache.axis2.rpc.client.RPCServiceClient
+        OMElement request = BeanUtil.getOMElement(qName, args, null, false,
+                null);
 
-		return request;
-	}
+        return request;
+    }
 
 }

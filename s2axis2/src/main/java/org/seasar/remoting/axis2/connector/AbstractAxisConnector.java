@@ -40,7 +40,7 @@ public abstract class AbstractAxisConnector extends
     protected Options       options;
 
     /** タイムアウト値 */
-    protected int           timeout = 0;
+    protected Integer       timeout;
 
     /**
      * デフォルトのコンストラクタ。
@@ -51,7 +51,7 @@ public abstract class AbstractAxisConnector extends
         this.options = options;
     }
 
-    public void setTimeout(int timeout) {
+    public void setTimeout(Integer timeout) {
         this.timeout = timeout;
     }
 
@@ -60,7 +60,7 @@ public abstract class AbstractAxisConnector extends
 
         Iterator ite = this.properties.keySet().iterator();
         while (ite.hasNext()) {
-            String key = (String) ite.next();
+            String key = (String)ite.next();
             String value = this.properties.getProperty(key);
 
             System.setProperty(key, value);
