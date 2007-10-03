@@ -6,11 +6,11 @@
     <component name="properties" class="java.util.Properties" autoBinding="none">
         <initMethod name="setProperty">
             <arg>@org.apache.axis2.Constants@AXIS2_REPO</arg>
-            <arg>"WebContent/WEB-INF"</arg>
+            <arg>"src/main/webapp/WEB-INF"</arg>
         </initMethod>
         <initMethod name="setProperty">
             <arg>@org.apache.axis2.Constants@AXIS2_CONF</arg>
-            <arg>"WebContent/WEB-INF/conf/axis2.xml"</arg>
+            <arg>"src/main/webapp/WEB-INF/conf/axis2.xml"</arg>
         </initMethod>
     </component>
     
