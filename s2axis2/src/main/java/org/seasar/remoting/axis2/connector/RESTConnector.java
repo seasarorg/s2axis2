@@ -74,10 +74,17 @@ public class RESTConnector extends AbstractRPCConnector {
         EndpointReference targetEPR = new EndpointReference(targetUrl);
         super.options.setTo(targetEPR);
 
-        OMElement request = this.requestBuilder.create(method, args);
-        OMElement response = super.client.sendReceive(request);
-
         Class returnType = method.getReturnType();
+
+        OMElement request = this.requestBuilder.create(method, args);
+        OMElement response;
+        if (returnType.equals(void.class)) {
+            super.client.sendRobust(request);
+            response = null;
+        } else {
+            response = super.client.sendReceive(request);
+        }
+
         Object result = deserialize(returnType, response);
 
         return result;
