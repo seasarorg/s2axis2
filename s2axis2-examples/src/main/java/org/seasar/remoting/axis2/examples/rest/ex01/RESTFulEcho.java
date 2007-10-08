@@ -13,20 +13,35 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.remoting.axis2.examples.rest.amazon;
+package org.seasar.remoting.axis2.examples.rest.ex01;
 
 import org.seasar.remoting.axis2.annotation.RestMethod;
-import org.seasar.remoting.axis2.annotation.RestUriTemplate;
+import org.seasar.remoting.axis2.annotation.RestUriParam;
 
 /**
  * @author takanori
  */
-@RestUriTemplate("/onca")
-public interface AmazonSearch {
+public interface RESTFulEcho {
 
-    @RestMethod(name = "xml3")
-    String postSearchResult(AmazonSearchDto dto);
+    EchoDto postEcho(@RestUriParam("id")
+    int id, @RestUriParam("message")
+    String message);
 
-    @RestMethod(name = "xml3")
-    String getSearchResult(AmazonSearchDto dto);
+    EchoDto getEcho(@RestUriParam("id")
+    int id, @RestUriParam("message")
+    String message);
+
+    EchoDto[] getEchoArray(@RestUriParam("count")
+    int count, @RestUriParam("message")
+    String message);
+
+    @RestMethod(httpMethod = RestMethod.HttpMethod.POST)
+    EchoDto[] createEchoArray(@RestUriParam("count")
+    int count, @RestUriParam("message")
+    String message);
+
+    EchoDto postEchoByBean(EchoDto dto);
+
+    EchoDto getEchoByBean(EchoDto dto);
+
 }

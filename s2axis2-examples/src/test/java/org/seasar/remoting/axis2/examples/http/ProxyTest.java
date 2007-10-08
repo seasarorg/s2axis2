@@ -17,7 +17,7 @@ package org.seasar.remoting.axis2.examples.http;
 
 import org.seasar.extension.unit.S2TestCase;
 import org.seasar.remoting.axis2.examples.ex03.BeanEcho;
-import org.seasar.remoting.axis2.examples.ex03.EchoDto;
+import org.seasar.remoting.axis2.examples.ex03.SympleTypeBean;
 
 /**
  * @author takanori
@@ -33,11 +33,11 @@ public class ProxyTest extends S2TestCase {
     }
 
     public void test() {
-        EchoDto expected = new EchoDto();
+        SympleTypeBean expected = new SympleTypeBean();
         expected.setStrParam("echo");
 
         BeanEcho beanEcho = (BeanEcho) getComponent(BeanEcho.class);
-        EchoDto actual = beanEcho.echo(expected);
+        SympleTypeBean actual = beanEcho.echo(expected);
 
         assertEquals(expected.toString(), actual.toString());
     }

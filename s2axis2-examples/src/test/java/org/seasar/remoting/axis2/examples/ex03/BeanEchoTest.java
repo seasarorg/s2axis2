@@ -30,11 +30,11 @@ public class BeanEchoTest extends S2TestCase {
     }
 
     public void test() {
-        EchoDto expected = new EchoDto();
+        SympleTypeBean expected = new SympleTypeBean();
         expected.setStrParam("echo");
 
         BeanEcho beanEcho = (BeanEcho) getComponent(BeanEcho.class);
-        EchoDto actual = beanEcho.echo(expected);
+        SympleTypeBean actual = beanEcho.echo(expected);
 
         assertEquals(expected.toString(), actual.toString());
     }

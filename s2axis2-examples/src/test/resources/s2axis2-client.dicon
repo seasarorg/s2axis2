@@ -2,6 +2,8 @@
 <!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
     "http://www.seasar.org/dtd/components21.dtd">
 <components>
+
+	<include path="s2axis2.dicon" />
     
     <component name="properties" class="java.util.Properties" autoBinding="none">
         <initMethod name="setProperty">
@@ -25,12 +27,7 @@
                class="org.seasar.remoting.axis2.connector.AxisInOutConnector">
         <property name="baseURL">baseURL</property>
         <property name="properties">properties</property>
-        <property name="timeout">10000</property>
-        <property name="options">
-        	<component class="org.apache.axis2.client.Options">
-        		<property name="timeOutInMilliSeconds">10000</property>
-        	</component>
-        </property>
+        <property name="timeout">60000</property>
     </component>
         
     <component name="oneWayRemoting"

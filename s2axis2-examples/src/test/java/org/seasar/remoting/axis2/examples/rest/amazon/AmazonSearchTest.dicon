@@ -2,11 +2,14 @@
 <!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
     "http://www.seasar.org/dtd/components21.dtd">
 <components>
+
+	<include path="s2axis2.dicon" />
+
     <component name="remoting" class="org.seasar.remoting.common.interceptor.RemotingInterceptor"/>
 
     <component name="connector" class="org.seasar.remoting.axis2.connector.RESTConnector">
         <property name="baseURL">
-            new java.net.URL("http://xml-jp.amznxslt.com/onca/xml3")
+            new java.net.URL("http://xml-jp.amznxslt.com/")
         </property>
     </component>
 

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components>
+	<component name="RESTFulEcho"
+		class="org.seasar.remoting.axis2.examples.rest.ex01.RESTFulEchoImpl">
+		<meta name="axis-service"/>
+	</component>
+</components>

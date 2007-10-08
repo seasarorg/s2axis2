@@ -15,23 +15,23 @@
  */
 package org.seasar.remoting.axis2.examples.rest.amazon;
 
+import org.seasar.remoting.axis2.annotation.RestUriParam;
+
 public class AmazonSearchDto {
-    
-    private String             t;
 
-    public static final String devT_PARAMETER       = "dev-t";
+    private String t;
 
-    private String             devT;
+    @RestUriParam("dev-t")
+    private String devT;
 
-    public static final String asinSearch_PARAMETER = "AsinSearch";
+    @RestUriParam("AsinSearch")
+    private String asinSearch;
 
-    private String             asinSearch;
+    private String locale;
 
-    private String             locale;
+    private String type;
 
-    private String             type;
-
-    private String             f;
+    private String f;
 
     public String getT() {
         return t;

@@ -15,17 +15,13 @@
  */
 package org.seasar.remoting.axis2.examples.ex03;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-import org.apache.axis2.databinding.typemapping.SimpleTypeMapper;
 import org.seasar.remoting.axis2.examples.common.util.ConvertUtil;
 
-public class EchoDto {
+public class SympleTypeBean {
 
     private String   strParam    = "";
 
@@ -47,7 +43,7 @@ public class EchoDto {
 
     private Calendar calGMT      = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 
-    public EchoDto() {}
+    public SympleTypeBean() {}
 
     public String getStrParam() {
         return this.strParam;

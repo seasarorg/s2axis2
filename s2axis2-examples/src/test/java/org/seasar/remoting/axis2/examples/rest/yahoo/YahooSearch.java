@@ -15,13 +15,19 @@
  */
 package org.seasar.remoting.axis2.examples.rest.yahoo;
 
+import org.seasar.remoting.axis2.annotation.RestMethod;
+import org.seasar.remoting.axis2.annotation.RestUriTemplate;
+
 /**
  * @author takanori
  */
+@RestUriTemplate("/WebSearchService/V1")
 public interface YahooSearch {
 
+    @RestMethod(name = "webSearch")
     String postSearch(YahooSearchDto dto);
-    
-    String getSearchResult(YahooSearchDto dto);
-    
+
+    @RestMethod(name = "webSearch")
+    String getSearch(YahooSearchDto dto);
+
 }

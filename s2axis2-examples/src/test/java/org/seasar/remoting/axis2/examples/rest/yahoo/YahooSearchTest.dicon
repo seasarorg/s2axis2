@@ -3,6 +3,8 @@
     "http://www.seasar.org/dtd/components21.dtd">
 <components>
 
+	<include path="s2axis2.dicon" />
+
 	<!--
 	    Yahoo Webサービスでは、POSTの場合、Content-Length を指定しないとエラーになるため、
 	    Optionを利用して指定している。
@@ -17,7 +19,7 @@
 
     <component name="connector" class="org.seasar.remoting.axis2.connector.RESTConnector">
         <property name="baseURL">
-            new java.net.URL("http://api.search.yahoo.co.jp/WebSearchService/V1/webSearch")
+            new java.net.URL("http://api.search.yahoo.co.jp/")
         </property>
         <property name="options">options</property>
     </component>

@@ -28,7 +28,7 @@ public class YahooSearchTest extends S2TestCase {
 
     public void testPost() {
 
-        YahooSearch rest = (YahooSearch) getComponent(YahooSearch.class);
+        YahooSearch rest = (YahooSearch)getComponent(YahooSearch.class);
         YahooSearchDto dto = createDto();
 
         String result = rest.postSearch(dto);
@@ -37,17 +37,17 @@ public class YahooSearchTest extends S2TestCase {
 
     public void testGet() {
 
-        YahooSearch rest = (YahooSearch) getComponent(YahooSearch.class);
+        YahooSearch rest = (YahooSearch)getComponent(YahooSearch.class);
         YahooSearchDto dto = createDto();
 
-        String result = rest.getSearchResult(dto);
+        String result = rest.getSearch(dto);
         System.out.println(result);
     }
 
     private YahooSearchDto createDto() {
         YahooSearchDto dto = new YahooSearchDto();
         dto.setAppid("ApacheRestDemo");
-        dto.setQuery("Axis2 REST");
+        dto.setQuery("Axis2 REST サービス");
 
         return dto;
     }
