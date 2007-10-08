@@ -105,14 +105,14 @@ public class AxisDeployer {
 
     protected MetaDef[] getMetaDefs(final MetaDefAware metaDefSupport,
                                     final String localName) {
-        final List result = new ArrayList();
+        final List<MetaDef> result = new ArrayList<MetaDef>();
         for (int i = 0; i < metaDefSupport.getMetaDefSize(); ++i) {
             final MetaDef metaDef = metaDefSupport.getMetaDef(i);
             if (localName.equals(getLocalName(metaDef))) {
                 result.add(metaDef);
             }
         }
-        return (MetaDef[]) result.toArray(new MetaDef[result.size()]);
+        return (MetaDef[])result.toArray(new MetaDef[result.size()]);
     }
 
     protected String getLocalName(final MetaDef metaDef) {
@@ -125,7 +125,7 @@ public class AxisDeployer {
     }
 
     public void setServletContext(final ServletContext servletContext) {
-        this.configCtx = (ConfigurationContext) servletContext.getAttribute(S2AxisConstants.ATTR_CONFIGURATION_CONTEXT);
+        this.configCtx = (ConfigurationContext)servletContext.getAttribute(S2AxisConstants.ATTR_CONFIGURATION_CONTEXT);
     }
 
     public ConfigurationContext getConfigurationContext() {

@@ -47,14 +47,29 @@ public abstract class AbstractAxisConnector extends
      */
     public AbstractAxisConnector() {}
 
+    /**
+     * Axis2のオプションを設定します。
+     *  
+     * @param options Axis2のオプション
+     */
     public void setOptions(Options options) {
         this.options = options;
     }
 
+    /**
+     * タイムアウト値（ミリ秒）を設定します。
+     *  
+     * @param timeout タイムアウト値
+     */
     public void setTimeout(Integer timeout) {
         this.timeout = timeout;
     }
 
+    /**
+     * Axis2のシステムプロパティを設定します。
+     *  
+     * @param properties Axis2のシステムプロパティ
+     */
     public void setProperties(Properties properties) {
         this.properties = properties;
 

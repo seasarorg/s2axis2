@@ -49,7 +49,7 @@ public class AbstractRPCConnectorTest extends S2TestCase {
 
         BeanDesc beanDesc = BeanDescFactory.getBeanDesc(this.getClass());
         Method method = beanDesc.getMethod("testCreateOperationQName_success");
-        QName actual = connector.createOperationQName(method);
+        QName actual = AbstractRPCConnector.createOperationQName(method);
 
         assertEquals(expected.getNamespaceURI(), actual.getNamespaceURI());
         assertEquals(expected.getLocalPart(), actual.getLocalPart());

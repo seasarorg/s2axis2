@@ -57,11 +57,11 @@ public class ComponentBasedServiceBuilderImpl implements
         ComponentBasedServiceBuilder {
 
     /** デフォルトのMessageReceiver */
-    private Map                 defaultMessageReceivers = new HashMap();
+    private Map<String, MessageReceiver> defaultMessageReceivers = new HashMap<String, MessageReceiver>();
 
-    private Class               serviceObjectSupplierClass;
+    private Class                        serviceObjectSupplierClass;
 
-    private static final Logger logger                  = Logger.getLogger(ComponentBasedServiceBuilderImpl.class);
+    private static final Logger          logger                  = Logger.getLogger(ComponentBasedServiceBuilderImpl.class);
 
     /**
      * デフォルトのコンストラクタ。
@@ -153,7 +153,7 @@ public class ComponentBasedServiceBuilderImpl implements
         }
 
         // exclude method
-        List excludeOperations = createExcludeOperations(serviceClass,
+        List<String> excludeOperations = createExcludeOperations(serviceClass,
                 serviceType);
         excludeOperations.addAll(serviceDef.getExcludeOperations());
 
@@ -170,7 +170,7 @@ public class ComponentBasedServiceBuilderImpl implements
 
         // サービスの生成
         try {
-            Utils.fillAxisService(service, axisConfig, new ArrayList(
+            Utils.fillAxisService(service, axisConfig, new ArrayList<String>(
                     excludeOperations), new ArrayList());
         } catch (AxisFault ex) {
             throw new DeployFailedException("EAXS0003",
@@ -232,15 +232,16 @@ public class ComponentBasedServiceBuilderImpl implements
      *            公開するサービスクラス（インタフェース）
      * @return メソッドの除外リスト
      */
-    protected List createExcludeOperations(Class serviceClass, Class serviceType) {
+    protected List<String> createExcludeOperations(Class serviceClass,
+                                                   Class serviceType) {
 
         if (serviceType == null) {
-            return new ArrayList();
+            return new ArrayList<String>();
         }
 
         // 実装クラスと公開するクラスが同じ場合は、空のリストを返す。
         if (serviceClass == serviceType) {
-            return new ArrayList();
+            return new ArrayList<String>();
         }
 
         // サービスクラスが、公開するサービスクラスを、
@@ -251,7 +252,7 @@ public class ComponentBasedServiceBuilderImpl implements
             throw new DeployFailedException("EAXS0004", args);
         }
 
-        Set excludes = new HashSet();
+        Set<String> excludes = new HashSet<String>();
 
         // サービスクラスの全メソッド名を抽出する。
         // 同じメソッド名で引数が異なるものは、公開対象から除かれる。
@@ -268,7 +269,7 @@ public class ComponentBasedServiceBuilderImpl implements
             excludes.remove(typeMethodName);
         }
 
-        return new ArrayList(excludes);
+        return new ArrayList<String>(excludes);
     }
 
     /**

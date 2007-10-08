@@ -18,6 +18,7 @@ package org.seasar.remoting.axis2.deployment;
 import java.util.List;
 
 import org.apache.axis2.context.ConfigurationContext;
+import org.apache.axis2.description.AxisService;
 
 /**
  * <code>service.xml</code>の情報から、<code>AxisService</code>を構築します。<br>
@@ -33,6 +34,6 @@ public interface XmlBasedServiceBuilder {
      * @param servicexmlPath service.xmlのパス（フルパス指定）
      * @return <code>AxisService</code>のリスト
      */
-    public List populateService(ConfigurationContext configCtx,
-                                String servicexmlPath);
+    public List<AxisService> populateService(ConfigurationContext configCtx,
+                                             String servicexmlPath);
 }

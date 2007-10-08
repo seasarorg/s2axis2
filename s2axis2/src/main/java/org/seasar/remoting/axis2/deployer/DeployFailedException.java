@@ -26,14 +26,23 @@ public class DeployFailedException extends SRuntimeException {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * {@inheritDoc}
+     */
     public DeployFailedException(String code) {
         super(code);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public DeployFailedException(String code, Object[] args) {
         super(code, args);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public DeployFailedException(String code, Object[] args, Throwable cause) {
         super(code, args, cause);
     }

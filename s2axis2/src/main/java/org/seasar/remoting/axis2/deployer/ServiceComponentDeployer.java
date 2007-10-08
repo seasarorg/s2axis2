@@ -86,7 +86,7 @@ public class ServiceComponentDeployer implements ItemDeployer {
                     configCtx, componentDef);
 
         } else if (metaData instanceof ServiceDef) {
-            ServiceDef serviceDef = (ServiceDef) metaData;
+            ServiceDef serviceDef = (ServiceDef)metaData;
             service = this.componentBasedServiceBuilder.populateService(
                     configCtx, componentDef, serviceDef);
 

@@ -41,7 +41,8 @@ public class OMElementUtilSample {
     public OMElement createOMElement(Object[] params) {
         OMFactory fac = OMAbstractFactory.getOMFactory();
 
-        OMNamespace omNs = fac.createOMNamespace("http://sample/services/Service", "Service");
+        OMNamespace omNs = fac.createOMNamespace(
+                "http://sample/services/Service", "Service");
         OMElement om;
 
         QName qName = new QName("method");
@@ -51,7 +52,7 @@ public class OMElementUtilSample {
         Iterator ite = om.getChildren();
         int index = 0;
         while (ite.hasNext() == true) {
-            OMElement arg = (OMElement) ite.next();
+            OMElement arg = (OMElement)ite.next();
             String className = params[index].getClass().getName();
             arg.addAttribute("class", className, null);
 
@@ -67,11 +68,12 @@ public class OMElementUtilSample {
 
         Iterator ite = om.getChildren();
         while (ite.hasNext() == true) {
-            OMElement arg = (OMElement) ite.next();
+            OMElement arg = (OMElement)ite.next();
             String className = arg.getAttribute(new QName("class")).getAttributeValue();
             Class clazz = Class.forName(className);
 
-            Object value = BeanUtil.deserialize(clazz, arg, new DefaultObjectSupplier(), null);
+            Object value = BeanUtil.deserialize(clazz, arg,
+                    new DefaultObjectSupplier(), null);
 
             list.add(value);
         }
@@ -81,8 +83,8 @@ public class OMElementUtilSample {
 
     public static void main(String[] args) {
 
-        Object[] params = new Object[] { "test",
-                new Integer(1), new Long(2), new Float(0.1), new Double(0.2) };
+        Object[] params = new Object[] { "test", Integer.valueOf(1),
+                Long.valueOf(2), Float.valueOf(0.1f), Double.valueOf(0.2d) };
 
         OMElementUtilSample sample = new OMElementUtilSample();
 
@@ -97,14 +99,11 @@ public class OMElementUtilSample {
             for (int index = 0; index < paramsResult.length; index++) {
                 System.out.println("arg" + index + " = " + paramsResult[index]);
             }
-        }
-        catch (AxisFault ex) {
+        } catch (AxisFault ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
         }
-        catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
-        }
-        
 
     }
 

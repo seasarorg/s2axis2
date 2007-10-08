@@ -16,6 +16,7 @@
 package org.seasar.remoting.axis2;
 
 /**
+ * S2Axis2で利用する定数です。
  * 
  * @author takanori
  * 

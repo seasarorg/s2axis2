@@ -31,10 +31,8 @@ public class S2ServiceObjectSupplier implements ServiceObjectSupplier {
      */
     public S2ServiceObjectSupplier() {}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.apache.axis2.ServiceObjectSupplier#getServiceObject(org.apache.axis2.description.AxisService)
+    /**
+     * {@inheritDoc}
      */
     public Object getServiceObject(AxisService axisService) throws AxisFault {
         Object serviceObject;

@@ -51,7 +51,7 @@ public class S2ServiceGroupBuilder {
      * @param rootElement <code>service.xml</code>のルート要素
      * @return 生成された<code>AxisService</code>のリスト
      */
-    public List populateService(OMElement rootElement) {
+    public List<AxisService> populateService(OMElement rootElement) {
         AxisServiceGroup serviceGroup = new AxisServiceGroup();
         ClassLoader loader = this.configCtx.getAxisConfiguration().getServiceClassLoader();
         serviceGroup.setServiceGroupClassLoader(loader);
@@ -61,7 +61,7 @@ public class S2ServiceGroupBuilder {
 
         // TODO WSDLの対応
 
-        List serviceList;
+        List<AxisService> serviceList;
         try {
             serviceList = serviceGroupBuilder.populateServiceGroup(serviceGroup);
         } catch (DeploymentException ex) {
@@ -71,7 +71,7 @@ public class S2ServiceGroupBuilder {
         }
 
         for (int i = 0; serviceList != null && i < serviceList.size(); i++) {
-            AxisService service = (AxisService) serviceList.get(i);
+            AxisService service = (AxisService)serviceList.get(i);
             service.setWsdlFound(true);
         }
 

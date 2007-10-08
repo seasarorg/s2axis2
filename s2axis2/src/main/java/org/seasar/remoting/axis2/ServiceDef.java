@@ -44,69 +44,128 @@ import org.apache.axis2.engine.MessageReceiver;
 public class ServiceDef {
 
     /** サービスとして公開するクラス／インタフェースの型 */
-    private Class  serviceType       = null;
+    private Class                        serviceType       = null;
 
     /** スキーマ定義をする際に対象となる名前空間 */
-    private String targetNamespace   = null;
+    private String                       targetNamespace   = null;
 
     /** スキーマの名前空間 */
-    private String schemaNamespace   = null;
+    private String                       schemaNamespace   = null;
 
     /** サービスで公開しないメソッドのリスト */
-    private List   excludeOperations = new ArrayList();
+    private List<String>                 excludeOperations = new ArrayList<String>();
 
     /** サービスがデフォルトで使用するMessageReceiverのマップ */
-    private Map    messageReceivers  = new HashMap();
+    private Map<String, MessageReceiver> messageReceivers  = new HashMap<String, MessageReceiver>();
 
+    /**
+     * コンストラクタ。
+     */
     public ServiceDef() {}
 
+    /**
+     * サービスとして公開するクラス／インタフェースの型を取得します。
+     * 
+     * @return サービスとして公開するクラス／インタフェースの型
+     */
     public Class getServiceType() {
         return serviceType;
     }
 
+    /**
+     * サービスとして公開するクラス／インタフェースの型を設定します。
+     * 
+     * @param serviceType サービスとして公開するクラス／インタフェースの型
+     */
     public void setServiceType(Class serviceType) {
         this.serviceType = serviceType;
     }
 
+    /**
+     * スキーマ定義をする際に対象となる名前空間を取得します。
+     * 
+     * @return スキーマ定義をする際に対象となる名前空間
+     */
     public String getTargetNamespace() {
         return targetNamespace;
     }
 
+    /**
+     * スキーマ定義をする際に対象となる名前空間を設定します。
+     * 
+     * @param targetNamespace スキーマ定義をする際に対象となる名前空間
+     */
     public void setTargetNamespace(String targetNamespace) {
         this.targetNamespace = targetNamespace;
     }
 
+    /**
+     * スキーマの名前空間を取得します。
+     * 
+     * @return スキーマの名前空間
+     */
     public String getSchemaNamespace() {
         return schemaNamespace;
     }
 
+    /**
+     * スキーマの名前空間を設定します。
+     * 
+     * @param schema スキーマの名前空間
+     */
     public void setSchemaNamespace(String schema) {
         this.schemaNamespace = schema;
     }
 
-    public List getExcludeOperations() {
+    /**
+     * サービスで公開しないメソッドのリストを取得します。
+     * 
+     * @return サービスで公開しないメソッドのリスト
+     */
+    public List<String> getExcludeOperations() {
         return excludeOperations;
     }
 
-    public void setExcludeOperations(List excludeOperations) {
+    /**
+     * サービスで公開しないメソッドのリストを設定します。
+     * 
+     * @param excludeOperations サービスで公開しないメソッドのリスト
+     */
+    public void setExcludeOperations(List<String> excludeOperations) {
         this.excludeOperations = excludeOperations;
     }
 
+    /**
+     * サービスで公開しないメソッドのリストを追加します。
+     * 
+     * @param operatin サービスで公開しないメソッド
+     */
     public void addExcludeOperation(String operatin) {
         if (this.excludeOperations == null) {
-            this.excludeOperations = new ArrayList();
+            this.excludeOperations = new ArrayList<String>();
         }
 
         this.excludeOperations.add(operatin);
     }
 
+    /**
+     * サービスがデフォルトで使用するMessageReceiverを取得します。
+     * 
+     * @return サービスがデフォルトで使用するMessageReceiver
+     */
     public Map getMessageReceivers() {
         return messageReceivers;
     }
 
+    /**
+     * サービスがデフォルトで使用するMessageReceiverを追加します。
+     * 
+     * @param mep MEP
+     * @param receiver MessageReceiver
+     */
     public void addMessageReceiver(String mep, MessageReceiver receiver) {
         if (this.messageReceivers == null) {
-            this.messageReceivers = new HashMap();
+            this.messageReceivers = new HashMap<String, MessageReceiver>();
         }
 
         this.messageReceivers.put(mep, receiver);

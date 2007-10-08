@@ -33,6 +33,7 @@ import org.seasar.remoting.axis2.deployment.S2ServiceGroupBuilder;
 import org.seasar.remoting.axis2.deployment.XmlBasedServiceBuilder;
 
 /**
+ * service.xmlを基に、サービスを構築するクラスです。
  * 
  * @author takanori
  */
@@ -50,8 +51,8 @@ public class XmlBasedServiceBuilderImpl implements XmlBasedServiceBuilder {
      * @param servicexmlPath service.xmlのパス（フルパス指定）
      * @return <code>AxisService</code>のリスト
      */
-    public List populateService(ConfigurationContext configCtx,
-                                String servicexmlPath) {
+    public List<AxisService> populateService(ConfigurationContext configCtx,
+                                             String servicexmlPath) {
         InputStream servicexmlStream = ResourceUtil.getResourceAsStream(servicexmlPath);
         if (servicexmlStream == null) {
             throw new DeployFailedException("EAXS0003",
@@ -69,7 +70,7 @@ public class XmlBasedServiceBuilderImpl implements XmlBasedServiceBuilder {
                     new Object[] { servicexmlPath }, ex);
         }
 
-        List serviceList = populateService(configCtx, rootElement);
+        List<AxisService> serviceList = populateService(configCtx, rootElement);
         if (serviceList == null || serviceList.size() == 0) {
             throw new DeployFailedException("EAXS0003",
                     new Object[] { servicexmlPath });
@@ -78,23 +79,30 @@ public class XmlBasedServiceBuilderImpl implements XmlBasedServiceBuilder {
         return serviceList;
     }
 
-    protected List populateService(ConfigurationContext configCtx,
-                                   OMElement rootElement) {
+    /**
+     * <code>AxisService</code>を生成します。
+     * 
+     * @param configCtx Axisの設定情報
+     * @param rootElement rootElement
+     * @return <code>AxisService</code>のリスト
+     */
+    protected List<AxisService> populateService(ConfigurationContext configCtx,
+                                                OMElement rootElement) {
         String elementName = rootElement.getLocalName();
 
-        List serviceList;
+        List<AxisService> serviceList;
         if (DeploymentConstants.TAG_SERVICE.equals(elementName)) {
             S2ServiceBuilder serviceBuilder = new S2ServiceBuilder(configCtx);
             AxisService service = serviceBuilder.populateService(rootElement);
 
-            serviceList = new ArrayList();
+            serviceList = new ArrayList<AxisService>();
             serviceList.add(service);
         } else if (DeploymentConstants.TAG_SERVICE_GROUP.equals(elementName)) {
             S2ServiceGroupBuilder serviceGroupBuilder = new S2ServiceGroupBuilder(
                     configCtx);
             serviceList = serviceGroupBuilder.populateService(rootElement);
         } else {
-            serviceList = new ArrayList();
+            serviceList = new ArrayList<AxisService>();
         }
 
         return serviceList;

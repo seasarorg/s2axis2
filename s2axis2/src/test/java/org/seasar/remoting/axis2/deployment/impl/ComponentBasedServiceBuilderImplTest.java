@@ -35,13 +35,13 @@ import org.seasar.remoting.axis2.mock.impl.ServiceMockImpl2;
 
 public class ComponentBasedServiceBuilderImplTest extends S2TestCase {
 
-    private static final String  TARGET_NAMESPACE = "http://test/axis2";
+    private static final String              TARGET_NAMESPACE = "http://test/axis2";
 
-    private static final String  SCHEMA_NAMESPACE = "http://test/xsd";
+    private static final String              SCHEMA_NAMESPACE = "http://test/xsd";
 
-    private static List          interfaceMethods = new ArrayList();
+    private static List<String>              interfaceMethods = new ArrayList<String>();
 
-    private static List          implMethods      = new ArrayList();
+    private static List<String>              implMethods      = new ArrayList<String>();
     static {
         interfaceMethods.add("method1");
         interfaceMethods.add("method2");
@@ -54,13 +54,13 @@ public class ComponentBasedServiceBuilderImplTest extends S2TestCase {
         implMethods.add("setParam2");
     }
 
-    private S2Container          container;
+    private S2Container                      container;
 
     private ComponentBasedServiceBuilderImpl builder;
 
-    private ServiceDef           serviceDef;
+    private ServiceDef                       serviceDef;
 
-    private ConfigurationContext configCtx;
+    private ConfigurationContext             configCtx;
 
     protected void setUp() throws Exception {
         include("s2axis2-test.dicon");
@@ -80,7 +80,7 @@ public class ComponentBasedServiceBuilderImplTest extends S2TestCase {
         AxisService service = this.builder.populateService(this.configCtx,
                 componentDef);
 
-        List opeList = extractOpNames(service);
+        List<String> opeList = extractOpNames(service);
 
         assertEquals("http://mock.axis2.remoting.seasar.org",
                 service.getTargetNamespace());
@@ -98,7 +98,7 @@ public class ComponentBasedServiceBuilderImplTest extends S2TestCase {
 
         AxisService service = this.builder.populateService(this.configCtx,
                 componentDef, this.serviceDef);
-        List opeList = extractOpNames(service);
+        List<String> opeList = extractOpNames(service);
 
         assertEquals("http://mock.axis2.remoting.seasar.org",
                 service.getTargetNamespace());
@@ -113,7 +113,7 @@ public class ComponentBasedServiceBuilderImplTest extends S2TestCase {
 
         AxisService service = this.builder.populateService(this.configCtx,
                 componentDef, this.serviceDef);
-        List opeList = extractOpNames(service);
+        List<String> opeList = extractOpNames(service);
 
         assertEquals(TARGET_NAMESPACE, service.getTargetNamespace());
         assertEquals(SCHEMA_NAMESPACE, service.getSchematargetNamespace());
@@ -126,7 +126,7 @@ public class ComponentBasedServiceBuilderImplTest extends S2TestCase {
         MetaDef metaDef = componentDef.getMetaDef("axis-service");
 
         AxisService service = this.builder.populateService(this.configCtx,
-                componentDef, (ServiceDef) metaDef.getValue());
+                componentDef, (ServiceDef)metaDef.getValue());
         List opeList = extractOpNames(service);
 
         assertEquals("http://examples", service.getTargetNamespace());
@@ -156,11 +156,11 @@ public class ComponentBasedServiceBuilderImplTest extends S2TestCase {
     }
 
     public void testCreateExcludeOperations_success() {
-        List expected = new ArrayList();
+        List<String> expected = new ArrayList<String>();
         expected.add("setParam1");
         expected.add("setParam2");
 
-        List actual = this.builder.createExcludeOperations(
+        List<String> actual = this.builder.createExcludeOperations(
                 ServiceMockImpl.class, ServiceMock.class);
 
         boolean equals = equalsList(expected, actual);
@@ -171,7 +171,7 @@ public class ComponentBasedServiceBuilderImplTest extends S2TestCase {
     public void testCreateExcludeOperations_invalidServiceType() {
 
         try {
-            List actual = this.builder.createExcludeOperations(
+            List<String> actual = this.builder.createExcludeOperations(
                     ServiceMockImpl.class, String.class);
             fail(actual.toString());
         } catch (Exception ex) {
@@ -182,7 +182,7 @@ public class ComponentBasedServiceBuilderImplTest extends S2TestCase {
 
     public void testCreateExcludeOperations_typeNull() {
 
-        List actual = this.builder.createExcludeOperations(
+        List<String> actual = this.builder.createExcludeOperations(
                 ServiceMockImpl.class, null);
 
         assertEquals(0, actual.size());
@@ -201,18 +201,18 @@ public class ComponentBasedServiceBuilderImplTest extends S2TestCase {
         this.builder = builder;
     }
 
-    private List extractOpNames(AxisService service) {
+    private List<String> extractOpNames(AxisService service) {
         Iterator ite = service.getOperations();
-        List opeList = new ArrayList();
+        List<String> opeList = new ArrayList<String>();
         while (ite.hasNext()) {
-            AxisOperation ope = (AxisOperation) ite.next();
+            AxisOperation ope = (AxisOperation)ite.next();
             opeList.add(ope.getName().getLocalPart());
         }
 
         return opeList;
     }
 
-    private boolean equalsList(List list1, List list2) {
+    private boolean equalsList(List<String> list1, List<String> list2) {
         boolean equals = list1.containsAll(list2) && list2.containsAll(list1);
 
         return equals;

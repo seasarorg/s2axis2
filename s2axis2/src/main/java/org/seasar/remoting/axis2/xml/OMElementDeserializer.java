@@ -24,6 +24,13 @@ import org.apache.axiom.om.OMElement;
  */
 public interface OMElementDeserializer {
 
+    /**
+     * 指定されたOMElementをオブジェクトにデシアライズします。
+     * 
+     * @param om OMElement
+     * @return オブジェクト
+     * @throws XMLBindException デシアライズに失敗した場合
+     */
     Object deserialize(OMElement om) throws XMLBindException;
 
 }
