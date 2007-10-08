@@ -13,17 +13,27 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.remoting.axis2.annotation;
+package org.seasar.remoting.axis2.client;
 
-import org.seasar.framework.beans.PropertyDesc;
+import java.lang.reflect.Method;
+
+import org.apache.axiom.om.OMElement;
 
 /**
+ * Webサービスのリクエストを構築するクラスです。
  * 
  * @author takanori
- * 
+ *
  */
-public interface BeanAnnotationReader {
+public interface RequestBuilder {
 
-    String getParameterAnnotation(PropertyDesc pd);
+    /**
+     * リクエストを生成します。
+     * 
+     * @param method サービスのメソッド
+     * @param args 呼び出すサービスの引数
+     * @return リクエスト
+     */
+    OMElement create(Method method, Object[] args);
 
 }

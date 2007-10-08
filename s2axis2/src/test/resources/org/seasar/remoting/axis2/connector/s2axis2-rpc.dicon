@@ -3,9 +3,7 @@
 	"http://www.seasar.org/dtd/components21.dtd">
 <components namespace="axis">
 
-    <component name="remoting" class="org.seasar.remoting.common.interceptor.RemotingInterceptor"/>
-
-    <component name="connector" class="org.seasar.remoting.axis2.connector.RESTConnector">
+    <component name="connector" class="org.seasar.remoting.axis2.connector.RPCConnectorMock">
         <property name="baseURL">
             new java.net.URL("http://localhost:8080/")
         </property>

@@ -15,11 +15,18 @@
  */
 package org.seasar.remoting.axis2.rest.example;
 
+import org.seasar.remoting.axis2.annotation.RestUriParam;
+
 public class RestDto {
 
     private Integer id;
 
     private String  name;
+
+    @RestUriParam("msg")
+    private String  message;
+
+    public RestDto() {}
 
     public Integer getId() {
         return id;
@@ -37,6 +44,12 @@ public class RestDto {
         this.name = name;
     }
 
-    public RestDto() {}
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
 }

@@ -68,10 +68,13 @@
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
           <configuration>
-            <source>1.4</source>
-            <target>1.4</target>
+            <source>1.5</source>
+            <target>1.5</target>
             <encoding>UTF-8</encoding>
           </configuration>
+        </plugin>
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
         </plugin>
         <plugin>
           <artifactId>maven-site-plugin</artifactId>
@@ -105,7 +108,7 @@
       <plugin>
         <artifactId>maven-javadoc-plugin</artifactId>
         <configuration>
-          <source>1.4</source>
+          <source>1.5</source>
           <encoding>UTF-8</encoding>
           <docencoding>UTF-8</docencoding>
           <charset>UTF-8</charset>
@@ -171,6 +174,12 @@
     <dependency>
       <groupId>org.seasar.container</groupId>
       <artifactId>s2-framework</artifactId>
+      <version>${s2container.version}</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.seasar.container</groupId>
+      <artifactId>s2-tiger</artifactId>
       <version>${s2container.version}</version>
       <type>jar</type>
     </dependency>

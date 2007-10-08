@@ -13,10 +13,10 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.remoting.axis2.annotation.impl;
+package org.seasar.remoting.axis2.annotation.reader.impl;
 
-import org.seasar.remoting.axis2.annotation.AnnotationReaderFactory;
-import org.seasar.remoting.axis2.annotation.BeanAnnotationReader;
+import org.seasar.remoting.axis2.annotation.reader.AnnotationReaderFactory;
+import org.seasar.remoting.axis2.annotation.reader.BeanAnnotationReader;
 
 /**
  * 

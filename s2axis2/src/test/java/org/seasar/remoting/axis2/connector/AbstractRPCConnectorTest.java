@@ -30,8 +30,11 @@ import org.seasar.remoting.axis2.mock.ServiceMock;
 
 public class AbstractRPCConnectorTest extends S2TestCase {
 
+    AbstractRPCConnector connector;
+
     protected void setUp() throws Exception {
         super.setUp();
+        include("s2axis2-rpc.dicon");
     }
 
     protected void tearDown() throws Exception {
@@ -46,7 +49,7 @@ public class AbstractRPCConnectorTest extends S2TestCase {
 
         BeanDesc beanDesc = BeanDescFactory.getBeanDesc(this.getClass());
         Method method = beanDesc.getMethod("testCreateOperationQName_success");
-        QName actual = AbstractRPCConnector.createOperationQName(method);
+        QName actual = connector.createOperationQName(method);
 
         assertEquals(expected.getNamespaceURI(), actual.getNamespaceURI());
         assertEquals(expected.getLocalPart(), actual.getLocalPart());
@@ -59,8 +62,7 @@ public class AbstractRPCConnectorTest extends S2TestCase {
 
         BeanDesc beanDesc = BeanDescFactory.getBeanDesc(ServiceMock.class);
         Method method = beanDesc.getMethod("method1");
-        OMElement actual = AbstractRPCConnector.createRequest(method,
-                new Object[] {});
+        OMElement actual = connector.createRequest(method, new Object[] {});
 
         assertEquals(expected.toString(), actual.toString());
     }
@@ -77,7 +79,7 @@ public class AbstractRPCConnectorTest extends S2TestCase {
         BeanDesc beanDesc = BeanDescFactory.getBeanDesc(ServiceMock.class);
         Method method = beanDesc.getMethod("method2",
                 new Class[] { String.class });
-        OMElement actual = AbstractRPCConnector.createRequest(method,
+        OMElement actual = connector.createRequest(method,
                 new Object[] { "test" });
 
         assertEquals(expected.toString(), actual.toString());
@@ -99,8 +101,8 @@ public class AbstractRPCConnectorTest extends S2TestCase {
         BeanDesc beanDesc = BeanDescFactory.getBeanDesc(ServiceMock.class);
         Method method = beanDesc.getMethod("method3", new Class[] {
                 String.class, Integer.class });
-        OMElement actual = AbstractRPCConnector.createRequest(method,
-                new Object[] { "test", new Integer(1) });
+        OMElement actual = connector.createRequest(method, new Object[] {
+                "test", new Integer(1) });
 
         assertEquals(expected.toString(), actual.toString());
     }

@@ -24,7 +24,7 @@ import org.apache.axis2.deployment.DeploymentException;
 import org.apache.axis2.deployment.ServiceGroupBuilder;
 import org.apache.axis2.description.AxisService;
 import org.apache.axis2.description.AxisServiceGroup;
-import org.seasar.remoting.axis2.DeployFailedException;
+import org.seasar.remoting.axis2.deployer.DeployFailedException;
 
 /**
  * <code>service.xml</code>の情報から、<code>AxisService</code>を構築します。<br>

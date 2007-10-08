@@ -2,7 +2,7 @@
     <description>
         This is a sample Web Service.
     </description>
-    <parameter name="ServiceClass" locked="false">org.seasar.remoting.axis2.mock.ServiceSample</parameter>
+    <parameter name="ServiceClass" locked="false">org.seasar.remoting.axis2.mock.SampleService</parameter>
     <operation name="method1">
         <messageReceiver class="org.apache.axis2.receivers.RawXMLINOutMessageReceiver"/>
         <actionMapping>urn:method1</actionMapping>

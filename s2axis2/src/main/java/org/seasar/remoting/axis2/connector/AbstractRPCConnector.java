@@ -17,6 +17,8 @@ package org.seasar.remoting.axis2.connector;
 
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.namespace.QName;
 
@@ -28,7 +30,13 @@ import org.apache.axis2.databinding.utils.BeanUtil;
 import org.apache.axis2.rpc.client.RPCServiceClient;
 import org.apache.axis2.transport.http.HTTPConstants;
 import org.apache.axis2.description.java2wsdl.Java2WSDLUtils;
+import org.apache.axis2.engine.AxisConfiguration;
+import org.apache.axis2.engine.DefaultObjectSupplier;
 import org.seasar.remoting.axis2.S2AxisClientException;
+import org.seasar.remoting.axis2.builder.S2XFormURLEncodedBuilder;
+import org.seasar.remoting.axis2.transport.http.S2XFormURLEncodedFormatter;
+import org.seasar.remoting.axis2.xml.OMElementDeserializer;
+import org.seasar.remoting.axis2.xml.XMLBindException;
 
 /**
  * RPC形式でのWebサービス呼び出しを行うコネクタです。
@@ -36,6 +44,9 @@ import org.seasar.remoting.axis2.S2AxisClientException;
  * @author takanori
  */
 public abstract class AbstractRPCConnector extends AbstractAxisConnector {
+
+    /** サービスの応答メッセージからオブジェクトを生成するデシアライザのマップ */
+    protected Map<Class, OMElementDeserializer> deserializerMap = new HashMap<Class, OMElementDeserializer>();
 
     /**
      * デフォルトのコンストラクタ。
@@ -45,10 +56,10 @@ public abstract class AbstractRPCConnector extends AbstractAxisConnector {
     /**
      * このオブジェクトの初期化を行います。
      * 
-     * @param methodName サービスのメソッド名
+     * @param method サービスのメソッド
      * @throws AxisFault
      */
-    protected void init(String methodName) throws AxisFault {
+    protected void init(Method method) throws AxisFault {
         if (super.options == null) {
             super.options = new Options();
         }
@@ -66,11 +77,18 @@ public abstract class AbstractRPCConnector extends AbstractAxisConnector {
         }
 
         // WS-Addressingを利用する場合の設定
-        super.options.setAction("urn:" + methodName);
+        super.options.setAction("urn:" + method.getName());
 
         if (super.client == null) {
             super.client = new RPCServiceClient();
         }
+
+        // FIXME REST用の設定
+        AxisConfiguration axisConfig = super.client.getAxisConfiguration();
+        axisConfig.addMessageBuilder("application/x-www-form-urlencoded",
+                new S2XFormURLEncodedBuilder());
+        axisConfig.addMessageFormatter("application/x-www-form-urlencoded",
+                new S2XFormURLEncodedFormatter());
 
         super.client.setOptions(super.options);
     }
@@ -88,7 +106,7 @@ public abstract class AbstractRPCConnector extends AbstractAxisConnector {
             throws Throwable {
 
         try {
-            init(method.getName());
+            init(method);
         } catch (AxisFault ex) {
             throw new S2AxisClientException("EAXS1001", null, ex);
         }
@@ -163,7 +181,7 @@ public abstract class AbstractRPCConnector extends AbstractAxisConnector {
      * @return リクエスト
      * @throws AxisFault
      */
-    protected static OMElement createRequest(Method method, Object[] args)
+    protected OMElement createRequest(Method method, Object[] args)
             throws Exception {
 
         QName qName = createOperationQName(method);
@@ -173,6 +191,59 @@ public abstract class AbstractRPCConnector extends AbstractAxisConnector {
                 null);
 
         return request;
+    }
+
+    /**
+     * OMElemnt をデシアライズします。
+     * 
+     * @param returnType 戻り値の型
+     * @param om OMElemnt
+     * @return 戻り値
+     * @throws XMLBindException
+     */
+    protected Object deserialize(Class returnType, OMElement om)
+            throws XMLBindException {
+
+        if (om == null || returnType.equals(void.class)) {
+            return null;
+        }
+
+        Object result;
+
+        OMElementDeserializer deserializer = (OMElementDeserializer)this.deserializerMap.get(returnType);
+
+        if (deserializer != null) {
+            // Bind by deserializer
+            result = deserializer.deserialize(om);
+        } else if (returnType.equals(String.class)) {
+            // Convert to String
+            result = om.toString();
+        } else if (returnType.isAssignableFrom(OMElement.class)) {
+            result = om;
+        } else {
+            // Bind by BeanUtil(expect simple JavaBeans)
+            try {
+                Object[] response = BeanUtil.deserialize(om,
+                        new Class[] { returnType }, new DefaultObjectSupplier());
+
+                result = response[0];
+            } catch (AxisFault ex) {
+                throw new XMLBindException(ex);
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Webサービスからの応答メッセージ（XMLデータ）をオブジェクトに変換するデシアライザを追加します。
+     * 
+     * @param clazz 戻り値の型となるクラス
+     * @param deserializer デシアライザ
+     */
+    public void addDeserializer(Class clazz, OMElementDeserializer deserializer) {
+
+        this.deserializerMap.put(clazz, deserializer);
     }
 
 }

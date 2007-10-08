@@ -20,7 +20,7 @@ import org.apache.axis2.context.ConfigurationContext;
 import org.apache.axis2.deployment.DeploymentException;
 import org.apache.axis2.deployment.ServiceBuilder;
 import org.apache.axis2.description.AxisService;
-import org.seasar.remoting.axis2.DeployFailedException;
+import org.seasar.remoting.axis2.deployer.DeployFailedException;
 
 /**
  * <code>service.xml</code>の情報から、<code>AxisService</code>を構築します。<br>

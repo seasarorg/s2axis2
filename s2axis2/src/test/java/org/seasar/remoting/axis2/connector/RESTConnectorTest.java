@@ -1,8 +1,24 @@
+/*
+ * Copyright 2004-2007 the Seasar Foundation and the Others.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
 package org.seasar.remoting.axis2.connector;
 
-import org.apache.axiom.om.OMElement;
+import java.lang.reflect.Method;
+
 import org.seasar.extension.unit.S2TestCase;
-import org.seasar.remoting.axis2.rest.example.RestDto;
+import org.seasar.remoting.axis2.rest.example.SampleRestService;
 
 public class RESTConnectorTest extends S2TestCase {
 
@@ -17,25 +33,10 @@ public class RESTConnectorTest extends S2TestCase {
         super.tearDown();
     }
 
-    public void testGetTargetOperation_success() {
-        String actual = this.restConnector.getTargetOperation();
-        assertEquals("restService", actual);
+    public void testGetTargetUrl_success() throws Exception {
+        Method method = SampleRestService.class.getMethod("getHello",
+                (Class[])null);
+        String actual = this.restConnector.getTargetUrl(method);
+        assertEquals("http://localhost:8080/RestService/getHello", actual);
     }
-
-    public void testCreateRequest_success() throws Exception {
-
-        RestDto dto = new RestDto();
-        dto.setId(new Integer(1));
-        dto.setName("name");
-
-        String expectedData = "<restService><name>name</name><id>1</id></restService>";
-
-        OMElement actual = this.restConnector.createRequest("method",
-                new Object[] { dto });
-
-        System.out.println(actual);
-
-        assertEquals(expectedData, actual.toString());
-    }
-
 }

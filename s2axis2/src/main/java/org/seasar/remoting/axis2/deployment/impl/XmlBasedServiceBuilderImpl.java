@@ -27,7 +27,7 @@ import org.apache.axis2.deployment.DeploymentConstants;
 import org.apache.axis2.deployment.DescriptionBuilder;
 import org.apache.axis2.description.AxisService;
 import org.seasar.framework.util.ResourceUtil;
-import org.seasar.remoting.axis2.DeployFailedException;
+import org.seasar.remoting.axis2.deployer.DeployFailedException;
 import org.seasar.remoting.axis2.deployment.S2ServiceBuilder;
 import org.seasar.remoting.axis2.deployment.S2ServiceGroupBuilder;
 import org.seasar.remoting.axis2.deployment.XmlBasedServiceBuilder;

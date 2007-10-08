@@ -26,6 +26,11 @@
     
     <!-- for client -->
     <component
-        class="org.seasar.remoting.axis2.annotation.impl.FieldAnnotationReaderFactory">
+        class="org.seasar.remoting.axis2.annotation.reader.impl.FieldAnnotationReaderFactory">
     </component>
+    
+    <component name="restRequestBuilder"
+        class="org.seasar.remoting.axis2.client.RestRequestBuilder">        
+    </component>
+    
 </components>

@@ -13,20 +13,23 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.remoting.axis2.mock;
+package org.seasar.remoting.axis2.annotation;
 
-public class ServiceSample {
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-    public ServiceSample() {}
+/**
+ * REST形式のWebサービスのパラメータに指定するアノテーションです。
+ * 
+ * @author takanori
+ *
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target( { ElementType.FIELD, ElementType.PARAMETER })
+public @interface RestUriParam {
 
-    public String method1() {
-        return "method1";
-    }
-
-    public String method2() {
-        return "method2";
-    }
-
-    public void method3() {}
-
+    /** パラメータ名 */
+    String value() default "";
 }

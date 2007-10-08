@@ -26,15 +26,25 @@ public class S2AxisClientException extends SRuntimeException {
 
     private static final long serialVersionUID = 1L;
 
-    public S2AxisClientException(String code) {
-        super(code);
+    /**
+     * {@inheritDoc}
+     */
+    public S2AxisClientException(String messageCode) {
+        super(messageCode);
     }
 
-    public S2AxisClientException(String code, Object[] args) {
-        super(code, args);
+    /**
+     * {@inheritDoc}
+     */
+    public S2AxisClientException(String messageCode, Object[] args) {
+        super(messageCode, args);
     }
 
-    public S2AxisClientException(String code, Object[] args, Throwable cause) {
-        super(code, args, cause);
+    /**
+     * {@inheritDoc}
+     */
+    public S2AxisClientException(String messageCode, Object[] args,
+            Throwable cause) {
+        super(messageCode, args, cause);
     }
 }

@@ -33,11 +33,8 @@ public class AxisInOutConnector extends AbstractRPCConnector {
      */
     public AxisInOutConnector() {}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.seasar.remoting.axis2.connector.AbstractRPCConnector#execute(java.lang.reflect.Method,
-     *      java.lang.Object[])
+    /**
+     * {@inheritDoc}
      */
     protected Object execute(Method method, Object[] args) throws Exception {
 

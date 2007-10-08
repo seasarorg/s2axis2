@@ -13,15 +13,28 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.remoting.axis2.annotation;
+package org.seasar.remoting.axis2.deployer;
+
+import org.seasar.framework.exception.SRuntimeException;
 
 /**
+ * サービスのデプロイに失敗した際にスローされる例外です。
  * 
  * @author takanori
- * 
  */
-public interface AnnotationReaderFactory {
+public class DeployFailedException extends SRuntimeException {
 
-    BeanAnnotationReader createBeanAnnotationReader(Class beanClass_);
+    private static final long serialVersionUID = 1L;
 
+    public DeployFailedException(String code) {
+        super(code);
+    }
+
+    public DeployFailedException(String code, Object[] args) {
+        super(code, args);
+    }
+
+    public DeployFailedException(String code, Object[] args, Throwable cause) {
+        super(code, args, cause);
+    }
 }

@@ -29,7 +29,7 @@ import org.seasar.framework.container.MetaDef;
 import org.seasar.framework.container.S2Container;
 import org.seasar.remoting.axis2.ServiceDef;
 import org.seasar.remoting.axis2.mock.ServiceMock;
-import org.seasar.remoting.axis2.mock.ServiceSample;
+import org.seasar.remoting.axis2.mock.SampleService;
 import org.seasar.remoting.axis2.mock.impl.ServiceMockImpl;
 import org.seasar.remoting.axis2.mock.impl.ServiceMockImpl2;
 
@@ -149,8 +149,8 @@ public class ComponentBasedServiceBuilderImplTest extends S2TestCase {
     }
 
     public void testGetServiceType_notImpl() {
-        Class expected = ServiceSample.class;
-        Class actual = this.builder.getServiceType(ServiceSample.class);
+        Class expected = SampleService.class;
+        Class actual = this.builder.getServiceType(SampleService.class);
 
         assertEquals(expected, actual);
     }

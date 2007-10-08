@@ -9,7 +9,7 @@
           <messageReceiver mep="http://www.w3.org/ns/wsdl/in-out"
                            class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
       </messageReceivers>
-      <parameter name="ServiceClass" locked="false">org.seasar.remoting.axis2.mock.ServiceSample</parameter>
+      <parameter name="ServiceClass" locked="false">org.seasar.remoting.axis2.mock.SampleService</parameter>
       <parameter name="ServiceObjectSupplier" >org.seasar.remoting.axis2.receivers.S2ServiceObjectSupplier</parameter>
   </service>
   
@@ -23,7 +23,7 @@
           <messageReceiver mep="http://www.w3.org/ns/wsdl/in-out"
                            class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
       </messageReceivers>
-      <parameter name="ServiceClass" locked="false">org.seasar.remoting.axis2.mock.ServiceSample</parameter>
+      <parameter name="ServiceClass" locked="false">org.seasar.remoting.axis2.mock.SampleService</parameter>
       <parameter name="ServiceObjectSupplier" >org.seasar.remoting.axis2.receivers.S2ServiceObjectSupplier</parameter>
   </service>
 </serviceGroup>

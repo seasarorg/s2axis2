@@ -23,7 +23,6 @@ import org.apache.axis2.description.AxisService;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.MetaDef;
 import org.seasar.framework.log.Logger;
-import org.seasar.remoting.axis2.DeployFailedException;
 import org.seasar.remoting.axis2.deployment.XmlBasedServiceBuilder;
 
 /**

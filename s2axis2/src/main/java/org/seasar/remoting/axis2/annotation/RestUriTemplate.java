@@ -13,28 +13,25 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.remoting.axis2;
+package org.seasar.remoting.axis2.annotation;
 
-import org.seasar.framework.exception.SRuntimeException;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * サービスのデプロイに失敗した際にスローされる例外です。
+ * REST形式のWebサービスのクラスに指定するアノテーションです。
+ * RESTのリソースに対するURIを指定します。
  * 
  * @author takanori
+ *
  */
-public class DeployFailedException extends SRuntimeException {
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface RestUriTemplate {
 
-    private static final long serialVersionUID = 1L;
+    /** URI */
+    String value() default "";
 
-    public DeployFailedException(String code) {
-        super(code);
-    }
-
-    public DeployFailedException(String code, Object[] args) {
-        super(code, args);
-    }
-
-    public DeployFailedException(String code, Object[] args, Throwable cause) {
-        super(code, args, cause);
-    }
 }

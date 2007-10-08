@@ -34,11 +34,8 @@ public class AxisOnewayConnector extends AbstractRPCConnector {
      */
     public AxisOnewayConnector() {}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.seasar.remoting.axis2.connector.AbstractRPCConnector#execute(java.lang.reflect.Method,
-     *      java.lang.Object[])
+    /**
+     * {@inheritDoc}
      */
     protected Object execute(Method method, Object[] args) throws Exception {
 
