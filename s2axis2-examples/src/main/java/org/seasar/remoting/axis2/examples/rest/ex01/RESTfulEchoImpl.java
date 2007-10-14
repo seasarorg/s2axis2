@@ -20,12 +20,12 @@ import org.seasar.remoting.axis2.annotation.RestUriParam;
 /**
  * @author takanori
  */
-public class RESTFulEchoImpl implements RESTFulEcho {
+public class RESTfulEchoImpl implements RESTfulEcho {
 
-    public RESTFulEchoImpl() {}
+    public RESTfulEchoImpl() {}
 
     public EchoDto postEcho(@RestUriParam("id")
-    int id, @RestUriParam("message")
+    Integer id, @RestUriParam("message")
     String message) {
         EchoDto dto = new EchoDto();
         dto.setId(id);
@@ -34,19 +34,11 @@ public class RESTFulEchoImpl implements RESTFulEcho {
     }
 
     public EchoDto getEcho(@RestUriParam("id")
-    int id, @RestUriParam("message")
+    Integer id, @RestUriParam("message")
     String message) {
         EchoDto dto = new EchoDto();
         dto.setId(id);
         dto.setMessage(message);
-        return dto;
-    }
-
-    public EchoDto getEchoByBean(EchoDto dto) {
-        return dto;
-    }
-
-    public EchoDto postEchoByBean(EchoDto dto) {
         return dto;
     }
 

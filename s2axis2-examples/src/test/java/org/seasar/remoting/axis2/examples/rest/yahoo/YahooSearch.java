@@ -21,13 +21,12 @@ import org.seasar.remoting.axis2.annotation.RestUriTemplate;
 /**
  * @author takanori
  */
-@RestUriTemplate("/WebSearchService/V1")
+@RestUriTemplate("/WebSearchService/V1/webSearch")
 public interface YahooSearch {
 
-    @RestMethod(name = "webSearch")
+    @RestMethod(contentType = "application/x-www-form-urlencoded")
     String postSearch(YahooSearchDto dto);
 
-    @RestMethod(name = "webSearch")
     String getSearch(YahooSearchDto dto);
 
 }

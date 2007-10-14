@@ -24,17 +24,17 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  */
 public class EchoDto {
 
-    private int    id;
+    private Integer id;
 
-    private String message;
+    private String  message;
 
     public EchoDto() {}
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

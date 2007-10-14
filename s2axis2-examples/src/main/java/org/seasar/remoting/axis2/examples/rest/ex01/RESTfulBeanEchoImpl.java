@@ -15,28 +15,20 @@
  */
 package org.seasar.remoting.axis2.examples.rest.ex01;
 
-import org.seasar.remoting.axis2.annotation.RestMethod;
-import org.seasar.remoting.axis2.annotation.RestUriParam;
 
 /**
  * @author takanori
  */
-public interface RESTfulEcho {
+public class RESTfulBeanEchoImpl implements RESTfulBeanEcho {
 
-    EchoDto postEcho(@RestUriParam("id")
-    Integer id, @RestUriParam("message")
-    String message);
+    public RESTfulBeanEchoImpl() {}
 
-    EchoDto getEcho(@RestUriParam("id")
-    Integer id, @RestUriParam("message")
-    String message);
+    public EchoDto getEchoByBean(EchoDto dto) {
+        return dto;
+    }
 
-    EchoDto[] getEchoArray(@RestUriParam("count")
-    int count, @RestUriParam("message")
-    String message);
+    public EchoDto postEchoByBean(EchoDto dto) {
+        return dto;
+    }
 
-    @RestMethod(httpMethod = RestMethod.HTTP_METHOD_POST)
-    EchoDto[] createEchoArray(@RestUriParam("count")
-    int count, @RestUriParam("message")
-    String message);
 }

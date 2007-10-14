@@ -18,13 +18,20 @@ package org.seasar.remoting.axis2.examples.rest.amazon;
 import org.seasar.extension.unit.S2TestCase;
 
 public class AmazonSearchTest extends S2TestCase {
-    
+
     public void setUp() {
         include("AmazonSearchTest.dicon");
     }
 
+    public void testPost() {
+        AmazonSearch rest = (AmazonSearch)getComponent(AmazonSearch.class);
+        AmazonSearchDto dto = createDto();
+        String result = rest.postSearchResult(dto);
+        System.out.println(result);
+    }
+
     public void testGet() {
-        AmazonSearch rest = (AmazonSearch) getComponent(AmazonSearch.class);
+        AmazonSearch rest = (AmazonSearch)getComponent(AmazonSearch.class);
         AmazonSearchDto dto = createDto();
         String result = rest.getSearchResult(dto);
         System.out.println(result);

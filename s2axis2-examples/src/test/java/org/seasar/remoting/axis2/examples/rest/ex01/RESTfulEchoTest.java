@@ -20,18 +20,18 @@ import org.seasar.extension.unit.S2TestCase;
 /**
  * @author takanori
  */
-public class RESTFulEchoTest extends S2TestCase {
+public class RESTfulEchoTest extends S2TestCase {
 
-    public RESTFulEchoTest(String name) {
+    public RESTfulEchoTest(String name) {
         super(name);
     }
 
     public void setUp() {
-        include("RESTFulEchoTest.dicon");
+        include("RESTfulEchoTest.dicon");
     }
 
     public void testPostEcho() {
-        RESTFulEcho service = (RESTFulEcho)getComponent(RESTFulEcho.class);
+        RESTfulEcho service = (RESTfulEcho)getComponent(RESTfulEcho.class);
         EchoDto expected = createEchoDto();
 
         EchoDto actual = service.postEcho(expected.getId(),
@@ -40,8 +40,19 @@ public class RESTFulEchoTest extends S2TestCase {
         assertEquals(expected, actual);
     }
 
+    public void testPostEcho_includeNull() {
+        RESTfulEcho service = (RESTfulEcho)getComponent(RESTfulEcho.class);
+        EchoDto expected = createEchoDto();
+        expected.setId(null);
+
+        EchoDto actual = service.postEcho(expected.getId(),
+                expected.getMessage());
+
+        assertEquals(expected, actual);
+    }
+
     public void testGetEcho() {
-        RESTFulEcho service = (RESTFulEcho)getComponent(RESTFulEcho.class);
+        RESTfulEcho service = (RESTfulEcho)getComponent(RESTfulEcho.class);
         EchoDto expected = createEchoDto();
 
         EchoDto actual = service.getEcho(expected.getId(),
@@ -50,33 +61,26 @@ public class RESTFulEchoTest extends S2TestCase {
         assertEquals(expected, actual);
     }
 
-    public void testPostEchoByBean() {
-        RESTFulEcho service = (RESTFulEcho)getComponent(RESTFulEcho.class);
+    public void testGetEcho_includeNull() {
+        RESTfulEcho service = (RESTfulEcho)getComponent(RESTfulEcho.class);
         EchoDto expected = createEchoDto();
+        expected.setId(null);
 
-        EchoDto actual = service.postEchoByBean(expected);
-
-        assertEquals(expected, actual);
-    }
-
-    public void testGetEchoByBean() {
-        RESTFulEcho service = (RESTFulEcho)getComponent(RESTFulEcho.class);
-        EchoDto expected = createEchoDto();
-
-        EchoDto actual = service.getEchoByBean(expected);
+        EchoDto actual = service.getEcho(expected.getId(),
+                expected.getMessage());
 
         assertEquals(expected, actual);
     }
 
     public void testGetEchoArray() {
-        RESTFulEcho service = (RESTFulEcho)getComponent(RESTFulEcho.class);
+        RESTfulEcho service = (RESTfulEcho)getComponent(RESTfulEcho.class);
         EchoDto[] actual = service.getEchoArray(10, "RESTFul エコーメッセージ");
 
         assertEquals(10, actual.length);
     }
 
     public void testCreateEchoArray() {
-        RESTFulEcho service = (RESTFulEcho)getComponent(RESTFulEcho.class);
+        RESTfulEcho service = (RESTfulEcho)getComponent(RESTfulEcho.class);
         EchoDto[] actual = service.createEchoArray(10,
                 "RESTFul エコーメッセージ create");
 

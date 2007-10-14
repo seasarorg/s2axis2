@@ -21,12 +21,11 @@ import org.seasar.remoting.axis2.annotation.RestUriTemplate;
 /**
  * @author takanori
  */
-@RestUriTemplate("/onca")
+@RestUriTemplate("/onca/xml3")
 public interface AmazonSearch {
 
-    @RestMethod(name = "xml3")
+    @RestMethod(contentType = "application/x-www-form-urlencoded")
     String postSearchResult(AmazonSearchDto dto);
 
-    @RestMethod(name = "xml3")
     String getSearchResult(AmazonSearchDto dto);
 }

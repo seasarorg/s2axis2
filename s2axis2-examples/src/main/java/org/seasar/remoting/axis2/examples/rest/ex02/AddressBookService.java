@@ -13,30 +13,24 @@
  * either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-package org.seasar.remoting.axis2.examples.rest.ex01;
+package org.seasar.remoting.axis2.examples.rest.ex02;
 
-import org.seasar.remoting.axis2.annotation.RestMethod;
 import org.seasar.remoting.axis2.annotation.RestUriParam;
+import org.seasar.remoting.axis2.annotation.RestUriTemplate;
 
-/**
- * @author takanori
- */
-public interface RESTfulEcho {
+@RestUriTemplate("/addressBook")
+public interface AddressBookService {
 
-    EchoDto postEcho(@RestUriParam("id")
-    Integer id, @RestUriParam("message")
-    String message);
+    void addEntry(Entry entry);
 
-    EchoDto getEcho(@RestUriParam("id")
-    Integer id, @RestUriParam("message")
-    String message);
+    void updateEntry(Entry entry);
 
-    EchoDto[] getEchoArray(@RestUriParam("count")
-    int count, @RestUriParam("message")
-    String message);
+    void deleteEntry(@RestUriParam("id")
+    Integer id);
 
-    @RestMethod(httpMethod = RestMethod.HTTP_METHOD_POST)
-    EchoDto[] createEchoArray(@RestUriParam("count")
-    int count, @RestUriParam("message")
-    String message);
+    Entry findEntry(@RestUriParam("id")
+    Integer id);
+
+    Entry[] findAllEntry();
+
 }

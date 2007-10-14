@@ -15,9 +15,6 @@
  */
 package org.seasar.remoting.axis2.examples.ex03;
 
-import java.util.List;
-import java.util.Map;
-
 import org.seasar.extension.unit.S2TestCase;
 import org.seasar.remoting.axis2.examples.common.dto.Employee;
 

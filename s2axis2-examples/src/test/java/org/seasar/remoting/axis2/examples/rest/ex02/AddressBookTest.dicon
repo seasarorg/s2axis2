@@ -11,7 +11,7 @@
         <property name="appendAction">true</property>
     </component>
 
-    <component class="org.seasar.remoting.axis2.examples.rest.ex01.RESTfulEcho">
+    <component class="org.seasar.remoting.axis2.examples.rest.ex02.AddressBookService">
 		<aspect>remoting</aspect>
 	</component>
 </components>

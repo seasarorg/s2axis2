@@ -11,4 +11,6 @@
     <include path="org/seasar/remoting/axis2/examples/ex05/deploy.dicon"/>
     
     <include path="org/seasar/remoting/axis2/examples/rest/ex01/deploy.dicon"/>
+    <include path="org/seasar/remoting/axis2/examples/rest/ex02/deploy.dicon"/>
+    
 </components>

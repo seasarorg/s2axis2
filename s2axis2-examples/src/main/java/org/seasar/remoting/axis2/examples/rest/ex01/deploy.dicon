@@ -2,8 +2,13 @@
 <!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
 	"http://www.seasar.org/dtd/components21.dtd">
 <components>
-	<component name="RESTFulEcho"
-		class="org.seasar.remoting.axis2.examples.rest.ex01.RESTFulEchoImpl">
+	<component name="RESTfulEcho"
+		class="org.seasar.remoting.axis2.examples.rest.ex01.RESTfulEchoImpl">
+		<meta name="axis-service"/>
+	</component>
+	
+	<component name="RESTfulBeanEcho"
+		class="org.seasar.remoting.axis2.examples.rest.ex01.RESTfulBeanEchoImpl">
 		<meta name="axis-service"/>
 	</component>
 </components>

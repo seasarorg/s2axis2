@@ -16,27 +16,16 @@
 package org.seasar.remoting.axis2.examples.rest.ex01;
 
 import org.seasar.remoting.axis2.annotation.RestMethod;
-import org.seasar.remoting.axis2.annotation.RestUriParam;
 
 /**
  * @author takanori
  */
-public interface RESTfulEcho {
+public interface RESTfulBeanEcho {
 
-    EchoDto postEcho(@RestUriParam("id")
-    Integer id, @RestUriParam("message")
-    String message);
+    EchoDto postEchoByBean(EchoDto dto);
 
-    EchoDto getEcho(@RestUriParam("id")
-    Integer id, @RestUriParam("message")
-    String message);
-
-    EchoDto[] getEchoArray(@RestUriParam("count")
-    int count, @RestUriParam("message")
-    String message);
-
+    // RESTfulではなくなるが、JavaBeanを引数とする処理は、POSTで送信する必要がある。
     @RestMethod(httpMethod = RestMethod.HTTP_METHOD_POST)
-    EchoDto[] createEchoArray(@RestUriParam("count")
-    int count, @RestUriParam("message")
-    String message);
+    EchoDto getEchoByBean(EchoDto dto);
+
 }
