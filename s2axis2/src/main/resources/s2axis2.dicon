@@ -25,8 +25,11 @@
 
     
     <!-- for client -->
-    <component name="restRequestBuilder"
-        class="org.seasar.remoting.axis2.client.RestRequestBuilder">        
+    <component name="RESTRequestBuilder"
+        class="org.seasar.remoting.axis2.client.RESTRequestBuilder">        
+    </component>
+    <component name="RESTContext"
+        class="org.seasar.remoting.axis2.client.RESTContext">        
     </component>
     
 </components>

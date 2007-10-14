@@ -15,18 +15,16 @@
  */
 package org.seasar.remoting.axis2.client;
 
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
-import java.net.URLEncoder;
 
 import org.apache.axiom.om.OMElement;
 import org.seasar.extension.unit.S2TestCase;
 import org.seasar.remoting.axis2.rest.example.RestDto;
 import org.seasar.remoting.axis2.rest.example.SampleRestService;
 
-public class RestRequestBuilderTest extends S2TestCase {
+public class RESTRequestBuilderTest extends S2TestCase {
 
-    RestRequestBuilder builder;
+    RESTRequestBuilder builder;
 
     protected void setUp() throws Exception {
         super.setUp();
@@ -42,9 +40,9 @@ public class RestRequestBuilderTest extends S2TestCase {
         Method method = SampleRestService.class.getMethod("getHello",
                 (Class[])null);
 
-        String expectedData = "<getHello />";
+        String expectedData = "<getHello xmlns=\"http://example.rest.axis2.remoting.seasar.org\" />";
 
-        OMElement actual = this.builder.createRequestByBean(method, null);
+        OMElement actual = this.builder.createRequestByBean(method, null, null);
 
         assertEquals(expectedData, actual.toString());
     }
@@ -54,14 +52,23 @@ public class RestRequestBuilderTest extends S2TestCase {
         Method method = SampleRestService.class.getMethod("beanEcho",
                 new Class[] { RestDto.class });
 
-        String expectedData = "<beanEcho><id>1</id><name></name><msg>テスト</msg></beanEcho>";
+        StringBuffer buff = new StringBuffer();
+        buff.append("<beanEcho xmlns=\"http://example.rest.axis2.remoting.seasar.org\">");
+        buff.append("<restDto xmlns=\"\" type=\"org.seasar.remoting.axis2.rest.example.RestDto\">");
+        buff.append("<id>1</id>");
+        buff.append("<name></name>");
+        buff.append("<msg>テスト</msg>");
+        buff.append("</restDto>");
+        buff.append("</beanEcho>");
+
+        String expectedData = buff.toString();
 
         RestDto dto = new RestDto();
         dto.setId(Integer.valueOf(1));
         dto.setName(null);
         dto.setMessage("テスト");
 
-        OMElement actual = this.builder.createRequestByBean(method, dto);
+        OMElement actual = this.builder.createRequestByBean(method, dto, null);
 
         assertEquals(expectedData, actual.toString());
     }
@@ -71,13 +78,22 @@ public class RestRequestBuilderTest extends S2TestCase {
         Method method = SampleRestService.class.getMethod("beanEcho2",
                 new Class[] { RestDto.class });
 
-        String expectedData = "<echo2><id>1</id><name>name</name><msg>test</msg></echo2>";
+        StringBuffer buff = new StringBuffer();
+        buff.append("<echo2 xmlns=\"http://example.rest.axis2.remoting.seasar.org\">");
+        buff.append("<restDto xmlns=\"\" type=\"org.seasar.remoting.axis2.rest.example.RestDto\">");
+        buff.append("<id>1</id>");
+        buff.append("<name>name</name>");
+        buff.append("<msg>test</msg>");
+        buff.append("</restDto>");
+        buff.append("</echo2>");
+
+        String expectedData = buff.toString();
 
         RestDto dto = new RestDto();
         dto.setId(Integer.valueOf(1));
         dto.setName("name");
         dto.setMessage("test");
-        OMElement actual = this.builder.createRequestByBean(method, dto);
+        OMElement actual = this.builder.createRequestByBean(method, dto, null);
 
         assertEquals(expectedData, actual.toString());
     }
@@ -87,9 +103,9 @@ public class RestRequestBuilderTest extends S2TestCase {
         Method method = SampleRestService.class.getMethod("beanEcho",
                 new Class[] { RestDto.class });
 
-        String expectedData = "<beanEcho />";
+        String expectedData = "<beanEcho xmlns=\"http://example.rest.axis2.remoting.seasar.org\" />";
 
-        OMElement actual = this.builder.createRequestByBean(method, null);
+        OMElement actual = this.builder.createRequestByBean(method, null, null);
 
         assertEquals(expectedData, actual.toString());
     }
@@ -99,9 +115,10 @@ public class RestRequestBuilderTest extends S2TestCase {
         Method method = SampleRestService.class.getMethod("getHello",
                 (Class[])null);
 
-        String expectedData = "<getHello />";
+        String expectedData = "<getHello xmlns=\"http://example.rest.axis2.remoting.seasar.org\" />";
 
-        OMElement actual = this.builder.createRequestByParameters(method, null);
+        OMElement actual = this.builder.createRequestByParameters(method, null,
+                null);
 
         assertEquals(expectedData, actual.toString());
     }
@@ -111,10 +128,15 @@ public class RestRequestBuilderTest extends S2TestCase {
         Method method = SampleRestService.class.getMethod("postEcho",
                 new Class[] { String.class });
 
-        String expectedData = "<postEcho><msg>テスト</msg></postEcho>";
+        StringBuffer buff = new StringBuffer();
+        buff.append("<postEcho xmlns=\"http://example.rest.axis2.remoting.seasar.org\">");
+        buff.append("<msg xmlns=\"\">テスト</msg>");
+        buff.append("</postEcho>");
+
+        String expectedData = buff.toString();
 
         OMElement actual = this.builder.createRequestByParameters(method,
-                new Object[] { "テスト" });
+                new Object[] { "テスト" }, null);
 
         assertEquals(expectedData, actual.toString());
     }
@@ -124,10 +146,16 @@ public class RestRequestBuilderTest extends S2TestCase {
         Method method = SampleRestService.class.getMethod("postEcho2",
                 new Class[] { Integer.class, String.class });
 
-        String expectedData = "<echo2><id>1</id><msg>test</msg></echo2>";
+        StringBuffer buff = new StringBuffer();
+        buff.append("<echo2 xmlns=\"http://example.rest.axis2.remoting.seasar.org\">");
+        buff.append("<id xmlns=\"\">1</id>");
+        buff.append("<msg xmlns=\"\">test</msg>");
+        buff.append("</echo2>");
+
+        String expectedData = buff.toString();
 
         OMElement actual = this.builder.createRequestByParameters(method,
-                new Object[] { Integer.valueOf(1), "test" });
+                new Object[] { Integer.valueOf(1), "test" }, null);
 
         assertEquals(expectedData, actual.toString());
     }
@@ -137,9 +165,10 @@ public class RestRequestBuilderTest extends S2TestCase {
         Method method = SampleRestService.class.getMethod("postEcho",
                 new Class[] { String.class });
 
-        String expectedData = "<postEcho />";
+        String expectedData = "<postEcho xmlns=\"http://example.rest.axis2.remoting.seasar.org\" />";
 
-        OMElement actual = this.builder.createRequestByParameters(method, null);
+        OMElement actual = this.builder.createRequestByParameters(method, null,
+                null);
 
         assertEquals(expectedData, actual.toString());
     }
@@ -151,7 +180,7 @@ public class RestRequestBuilderTest extends S2TestCase {
 
         try {
             OMElement actual = this.builder.createRequestByParameters(method,
-                    new Object[] { Integer.valueOf(1), "test" });
+                    new Object[] { Integer.valueOf(1), "test" }, null);
             fail(actual.toString());
         } catch (IllegalServiceMethodException ex) {
             System.err.println(ex.getMessage());
@@ -162,9 +191,9 @@ public class RestRequestBuilderTest extends S2TestCase {
         Method method = SampleRestService.class.getMethod("getHello",
                 (Class[])null);
 
-        String expectedData = "<getHello />";
+        String expectedData = "<getHello xmlns=\"http://example.rest.axis2.remoting.seasar.org\" />";
 
-        OMElement actual = this.builder.create(method, null);
+        OMElement actual = this.builder.create(method, null, null);
 
         assertEquals(expectedData, actual.toString());
     }
@@ -173,13 +202,23 @@ public class RestRequestBuilderTest extends S2TestCase {
         Method method = SampleRestService.class.getMethod("beanEcho",
                 new Class[] { RestDto.class });
 
-        String expectedData = "<beanEcho><id>1</id><name>name</name><msg>test</msg></beanEcho>";
+        StringBuffer buff = new StringBuffer();
+        buff.append("<beanEcho xmlns=\"http://example.rest.axis2.remoting.seasar.org\">");
+        buff.append("<restDto xmlns=\"\" type=\"org.seasar.remoting.axis2.rest.example.RestDto\">");
+        buff.append("<id>1</id>");
+        buff.append("<name>name</name>");
+        buff.append("<msg>test</msg>");
+        buff.append("</restDto>");
+        buff.append("</beanEcho>");
+
+        String expectedData = buff.toString();
 
         RestDto dto = new RestDto();
         dto.setId(Integer.valueOf(1));
         dto.setName("name");
         dto.setMessage("test");
-        OMElement actual = this.builder.create(method, new Object[] { dto });
+        OMElement actual = this.builder.create(method, new Object[] { dto },
+                null);
 
         assertEquals(expectedData, actual.toString());
     }
@@ -188,9 +227,15 @@ public class RestRequestBuilderTest extends S2TestCase {
         Method method = SampleRestService.class.getMethod("postEcho",
                 new Class[] { String.class });
 
-        String expectedData = "<postEcho><msg>test</msg></postEcho>";
+        StringBuffer buff = new StringBuffer();
+        buff.append("<postEcho xmlns=\"http://example.rest.axis2.remoting.seasar.org\">");
+        buff.append("<msg xmlns=\"\">test</msg>");
+        buff.append("</postEcho>");
 
-        OMElement actual = this.builder.create(method, new Object[] { "test" });
+        String expectedData = buff.toString();
+
+        OMElement actual = this.builder.create(method, new Object[] { "test" },
+                null);
 
         assertEquals(expectedData, actual.toString());
     }
@@ -206,7 +251,7 @@ public class RestRequestBuilderTest extends S2TestCase {
 
         try {
             OMElement actual = this.builder.create(method, new Object[] {
-                    Integer.valueOf(1), dto });
+                    Integer.valueOf(1), dto }, null);
 
             fail(actual.toString());
         } catch (IllegalServiceMethodException ex) {
@@ -214,14 +259,4 @@ public class RestRequestBuilderTest extends S2TestCase {
         }
     }
 
-    private String encode(String value, String encode) {
-        String text;
-        try {
-            text = URLEncoder.encode(value, encode);
-        } catch (UnsupportedEncodingException ex) {
-            ex.printStackTrace();
-            text = value;
-        }
-        return text;
-    }
 }

@@ -28,7 +28,7 @@ import org.seasar.remoting.axis2.annotation.RestUriTemplate;
  * @author takanori
  *
  */
-public class RestUtil {
+public class RESTUtil {
 
     /** URIのセパレータ */
     public static final String URI_SEPARATOR = "/";
@@ -36,7 +36,7 @@ public class RestUtil {
     /**
      * コンストラクタ。
      */
-    private RestUtil() {}
+    private RESTUtil() {}
 
     /**
      * 指定されたメソッドから、そのメソッドが含まれるクラスのリソースに対するURIを取得します。<br>
@@ -49,7 +49,7 @@ public class RestUtil {
      * @param method メソッド
      * @return URIテンプレート
      */
-    public static String getUriTemplate(Method method) {
+    public static String getUriTemplate(Method method, boolean appendAction) {
 
         String serviceName = getServiceName(method);
         if (!serviceName.startsWith(URI_SEPARATOR)) {
@@ -57,8 +57,12 @@ public class RestUtil {
         }
 
         String opeName = getOperationName(method);
-        if (!opeName.startsWith(URI_SEPARATOR)) {
-            opeName = URI_SEPARATOR + opeName;
+        if (appendAction) {
+            if (!opeName.startsWith(URI_SEPARATOR)) {
+                opeName = URI_SEPARATOR + opeName;
+            }
+        } else {
+            opeName = "";
         }
 
         String uriTemplate = serviceName + opeName;

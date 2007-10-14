@@ -64,7 +64,7 @@ public class OMElementUtilSample {
 
     public Object[] deserializeOMElement(OMElement om)
             throws ClassNotFoundException, AxisFault {
-        List list = new ArrayList();
+        List<Object> list = new ArrayList<Object>();
 
         Iterator ite = om.getChildren();
         while (ite.hasNext() == true) {

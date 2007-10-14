@@ -19,23 +19,32 @@ import java.lang.reflect.Method;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axis2.client.Options;
+import org.seasar.remoting.axis2.util.RPCUtil;
 
 /**
- * Webサービスのリクエストを構築するクラスです。
+ * RPC形式のリクエストを構築するクラスです。
  * 
  * @author takanori
  *
  */
-public interface RequestBuilder {
+public class RPCRequestBuilder implements RequestBuilder {
 
     /**
-     * リクエストを生成します。
-     * 
-     * @param method サービスのメソッド
-     * @param args 呼び出すサービスの引数
-     * @param options オプション
-     * @return リクエスト
+     * デフォルトコンストラクタ。
      */
-    OMElement create(Method method, Object[] args, Options options);
+    public RPCRequestBuilder() {}
+
+    /**
+     * {@inheritDoc}
+     */
+    public OMElement create(Method method, Object[] args, Options options) {
+        OMElement request;
+        try {
+            request = RPCUtil.createRequest(method, args);
+        } catch (Exception ex) {
+            throw new IllegalServiceMethodException(method, args, ex);
+        }
+        return request;
+    }
 
 }

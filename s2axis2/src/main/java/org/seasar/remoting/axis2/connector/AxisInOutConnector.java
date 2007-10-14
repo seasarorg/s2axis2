@@ -20,6 +20,7 @@ import java.lang.reflect.Method;
 import javax.xml.namespace.QName;
 
 import org.apache.axis2.rpc.client.RPCServiceClient;
+import org.seasar.remoting.axis2.util.RPCUtil;
 
 /**
  * 同期型要求応答形式（Request/Response）で、RPCとしてサービスを呼び出すためのConnectorです。
@@ -40,7 +41,7 @@ public class AxisInOutConnector extends AbstractRPCConnector {
 
         RPCServiceClient client = getClient();
 
-        QName targetQName = createOperationQName(method);
+        QName targetQName = RPCUtil.createOperationQName(method);
         Class returnType = method.getReturnType();
 
         Object result;

@@ -22,7 +22,7 @@ import org.seasar.remoting.axis2.annotation.RestUriTemplate;
 
 import junit.framework.TestCase;
 
-public class RestUtilTest extends TestCase {
+public class RESTUtilTest extends TestCase {
 
     public void setUp() throws Exception {}
 
@@ -30,56 +30,56 @@ public class RestUtilTest extends TestCase {
 
     public void testGetUriTemplate_1() throws Exception {
         Method method = RestService1.class.getMethod("method1", new Class[0]);
-        String acutal = RestUtil.getUriTemplate(method);
+        String acutal = RESTUtil.getUriTemplate(method, true);
 
-        assertEquals("/RestUtilTest$RestService1/method1", acutal);
+        assertEquals("/RESTUtilTest$RestService1/method1", acutal);
     }
 
     public void testGetUriTemplate_post1() throws Exception {
         Method method = RestService1.class.getMethod("postMethod", new Class[0]);
-        String acutal = RestUtil.getUriTemplate(method);
+        String acutal = RESTUtil.getUriTemplate(method, true);
 
-        assertEquals("/RestUtilTest$RestService1/postMethod", acutal);
+        assertEquals("/RESTUtilTest$RestService1/postMethod", acutal);
     }
 
     public void testGetUriTemplate_2() throws Exception {
         Method method = RestService2.class.getMethod("method1", new Class[0]);
-        String acutal = RestUtil.getUriTemplate(method);
+        String acutal = RESTUtil.getUriTemplate(method, true);
 
         assertEquals("/ws/RestService/method", acutal);
     }
 
     public void testGetUriTemplate_post2() throws Exception {
         Method method = RestService2.class.getMethod("postMethod", new Class[0]);
-        String acutal = RestUtil.getUriTemplate(method);
+        String acutal = RESTUtil.getUriTemplate(method, true);
 
         assertEquals("/ws/RestService/methodByPost", acutal);
     }
 
     public void testGetServiceName_1() throws Exception {
         Method method = RestService1.class.getMethod("method1", new Class[0]);
-        String acutal = RestUtil.getServiceName(method);
+        String acutal = RESTUtil.getServiceName(method);
 
-        assertEquals("RestUtilTest$RestService1", acutal);
+        assertEquals("RESTUtilTest$RestService1", acutal);
     }
 
     public void testGetServiceName_2() throws Exception {
         Method method = RestService2.class.getMethod("method1", new Class[0]);
-        String acutal = RestUtil.getServiceName(method);
+        String acutal = RESTUtil.getServiceName(method);
 
         assertEquals("/ws/RestService", acutal);
     }
 
     public void testGetOperationName_1() throws Exception {
         Method method = RestService1.class.getMethod("method1", new Class[0]);
-        String acutal = RestUtil.getOperationName(method);
+        String acutal = RESTUtil.getOperationName(method);
 
         assertEquals("method1", acutal);
     }
 
     public void testGetOperationName_2() throws Exception {
         Method method = RestService2.class.getMethod("method1", new Class[0]);
-        String acutal = RestUtil.getOperationName(method);
+        String acutal = RESTUtil.getOperationName(method);
 
         assertEquals("method", acutal);
     }

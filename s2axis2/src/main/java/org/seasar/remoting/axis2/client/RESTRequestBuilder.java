@@ -18,22 +18,29 @@ package org.seasar.remoting.axis2.client;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
+import org.apache.axis2.Constants;
+import org.apache.axis2.client.Options;
 import org.apache.axis2.databinding.typemapping.SimpleTypeMapper;
+import org.apache.axis2.transport.http.HTTPConstants;
 import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.PropertyDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
+import org.seasar.framework.util.ClassUtil;
+import org.seasar.framework.util.StringUtil;
 import org.seasar.remoting.axis2.annotation.RestUriParam;
-import org.seasar.remoting.axis2.util.RestUtil;
+import org.seasar.remoting.axis2.util.RESTUtil;
+import org.seasar.remoting.axis2.util.RPCUtil;
 
 /**
  * REST形式のリクエストを構築するクラスです。<br>
@@ -48,23 +55,17 @@ import org.seasar.remoting.axis2.util.RestUtil;
  * @author takanori
  *
  */
-public class RestRequestBuilder implements RequestBuilder {
-
-    /** エンコード */
-    private String encode = "UTF-8";
-
-    /** 日付フォーマット */
-    private String dateFormat;
+public class RESTRequestBuilder implements RequestBuilder {
 
     /**
      * デフォルトコンストラクタ。
      */
-    public RestRequestBuilder() {}
+    public RESTRequestBuilder() {}
 
     /**
      * {@inheritDoc}
      */
-    public OMElement create(Method method, Object[] args) {
+    public OMElement create(Method method, Object[] args, Options options) {
 
         OMElement request;
 
@@ -73,11 +74,11 @@ public class RestRequestBuilder implements RequestBuilder {
         // ・シンプルタイプのパラメータのみの場合は、そのパラメータからリクエストを生成する。
         // ・それ以外の場合は、例外をスローする。
         if (args == null || args.length <= 0) {
-            request = createRequestByBean(method, null);
+            request = createRequestByBean(method, null, options);
         } else if (args.length == 1 && !SimpleTypeMapper.isSimpleType(args[0])) {
-            request = createRequestByBean(method, args[0]);
+            request = createRequestByBean(method, args[0], options);
         } else if (checkParameterTypes(method)) {
-            request = createRequestByParameters(method, args);
+            request = createRequestByParameters(method, args, options);
         } else {
             throw new IllegalServiceMethodException(method, args);
         }
@@ -112,18 +113,55 @@ public class RestRequestBuilder implements RequestBuilder {
      * 
      * @param method
      * @param bean
+     * @param options
      * @return
      */
-    protected OMElement createRequestByBean(Method method, Object bean) {
+    protected OMElement createRequestByBean(Method method,
+                                            Object bean,
+                                            Options options) {
 
-        String opeName = RestUtil.getOperationName(method);
-
-        OMFactory omFactory = OMAbstractFactory.getOMFactory();
-        OMElement request = omFactory.createOMElement(opeName, null);
+        OMElement request;
+        try {
+            request = createRootElement(method);
+        } catch (Exception ex) {
+            throw new IllegalServiceMethodException(method,
+                    new Object[] { bean }, ex);
+        }
 
         if (bean == null) {
             return request;
         }
+
+        addBeanElement(bean, request.getNamespace(), request);
+
+        if (options != null) {
+            String contentType = (String)options.getProperty(Constants.Configuration.MESSAGE_TYPE);
+            if (HTTPConstants.MEDIA_TYPE_X_WWW_FORM.equals(contentType)) {
+                request = request.getFirstElement();
+            }
+        }
+
+        return request;
+    }
+
+    /**
+     * 
+     * @param bean
+     * @param ns
+     * @param parent
+     */
+    protected void addBeanElement(Object bean, OMNamespace ns, OMElement parent) {
+
+        if (bean == null) {
+            return;
+        }
+
+        OMFactory fac = OMAbstractFactory.getOMFactory();
+
+        String beanName = ClassUtil.getShortClassName(bean.getClass());
+        String localName = StringUtil.decapitalize(beanName);
+        OMElement beanElement = fac.createOMElement(localName, null, parent);
+        beanElement.addAttribute("type", bean.getClass().getName(), null);
 
         BeanDesc beanDesc = BeanDescFactory.getBeanDesc(bean.getClass());
 
@@ -137,30 +175,40 @@ public class RestRequestBuilder implements RequestBuilder {
             Object value = propDesc.getValue(bean);
 
             // TODO 配列の場合
-            OMElement query = omFactory.createOMElement(key, null, request);
-            String text = getQueryText(value);
-            query.setText(text);
+            if (value == null || SimpleTypeMapper.isSimpleType(value)) {
+                OMElement query = fac.createOMElement(key, null, beanElement);
+                String text = getQueryText(value);
+                query.setText(text);
+            } else {
+                addBeanElement(value, ns, beanElement);
+            }
         }
 
-        return request;
     }
 
     /**
      * 
      * @param method
      * @param args
+     * @param options
      * @return
      */
-    protected OMElement createRequestByParameters(Method method, Object[] args) {
+    protected OMElement createRequestByParameters(Method method,
+                                                  Object[] args,
+                                                  Options options) {
 
-        String opeName = RestUtil.getOperationName(method);
-
-        OMFactory omFactory = OMAbstractFactory.getOMFactory();
-        OMElement request = omFactory.createOMElement(opeName, null);
+        OMElement request;
+        try {
+            request = createRootElement(method);
+        } catch (Exception ex) {
+            throw new IllegalServiceMethodException(method, args, ex);
+        }
 
         if (args == null || args.length <= 0) {
             return request;
         }
+
+        OMFactory fac = OMAbstractFactory.getOMFactory();
 
         String[] paramNameArray = getParameterName(method);
         for (int i = 0; i < args.length; i++) {
@@ -169,8 +217,7 @@ public class RestRequestBuilder implements RequestBuilder {
 
             // TODO 配列の場合
             if (paramName != null) {
-                OMElement query = omFactory.createOMElement(paramName, null,
-                        request);
+                OMElement query = fac.createOMElement(paramName, null, request);
                 String text = getQueryText(value);
                 query.setText(text);
             } else {
@@ -179,6 +226,26 @@ public class RestRequestBuilder implements RequestBuilder {
         }
 
         return request;
+    }
+
+    /**
+     * 
+     * @param method
+     * @return
+     * @throws Exception
+     */
+    protected OMElement createRootElement(Method method) throws Exception {
+
+        OMFactory fac = OMAbstractFactory.getOMFactory();
+
+        QName nsQname = RPCUtil.createOperationQName(method);
+        OMNamespace ns = fac.createOMNamespace(nsQname.getNamespaceURI(),
+                nsQname.getPrefix());
+
+        String opeName = RESTUtil.getOperationName(method);
+        OMElement rootElement = fac.createOMElement(opeName, ns);
+
+        return rootElement;
     }
 
     /**
@@ -193,19 +260,7 @@ public class RestRequestBuilder implements RequestBuilder {
             return "";
         }
 
-        String text;
-        if (this.dateFormat != null) {
-            DateFormat format = new SimpleDateFormat(this.dateFormat);
-            if (value instanceof Date) {
-                text = format.format((Date)value);
-            } else if (value instanceof Calendar) {
-                text = format.format(((Calendar)value).getTime());
-            } else {
-                text = SimpleTypeMapper.getStringValue(value);
-            }
-        } else {
-            text = SimpleTypeMapper.getStringValue(value);
-        }
+        String text = SimpleTypeMapper.getStringValue(value);
 
         return text;
     }
@@ -268,22 +323,6 @@ public class RestRequestBuilder implements RequestBuilder {
         }
 
         return paramNameList.toArray(new String[0]);
-    }
-
-    public String getEncode() {
-        return encode;
-    }
-
-    public void setEncode(String encode) {
-        this.encode = encode;
-    }
-
-    public String getDateFormat() {
-        return dateFormat;
-    }
-
-    public void setDateFormat(String dateFormat) {
-        this.dateFormat = dateFormat;
     }
 
 }

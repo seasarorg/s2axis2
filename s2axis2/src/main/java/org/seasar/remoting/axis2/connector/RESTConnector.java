@@ -23,9 +23,11 @@ import org.apache.axis2.Constants;
 import org.apache.axis2.addressing.EndpointReference;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
+import org.seasar.framework.util.StringUtil;
+import org.seasar.remoting.axis2.client.RESTContext;
+import org.seasar.remoting.axis2.client.RESTRequestBuilder;
 import org.seasar.remoting.axis2.client.RequestBuilder;
-import org.seasar.remoting.axis2.client.RestRequestBuilder;
-import org.seasar.remoting.axis2.util.RestUtil;
+import org.seasar.remoting.axis2.util.RESTUtil;
 
 /**
  * RESTをサポートしているWebサービスと通信するためのコネクタです。<br>
@@ -37,20 +39,11 @@ import org.seasar.remoting.axis2.util.RestUtil;
  */
 public class RESTConnector extends AbstractRPCConnector {
 
-    /** HTTP POST として実行するメソッドの接頭文字列 */
-    protected String[]       httpPostPrefixArray   = new String[] { "post",
-            "create", "insert", "add"             };
+    /** Action名（メソッド名）を付加するかどうかの指定 */
+    protected boolean        appendAction = false;
 
-    /** HTTP PUT として実行するメソッドの接頭文字列 */
-    protected String[]       httpPutPrefixArray    = new String[] { "put",
-            "update", "modify", "store"           };
-
-    /** HTTP DELETE として実行するメソッドの接頭文字列 */
-    protected String[]       httpDeletePrefixArray = new String[] { "delete",
-            "remove"                              };
-
-    /** リクエストのエンコードを行うかどうか */
-    protected boolean        isForceEncode;
+    /** RESTのコンテキスト */
+    protected RESTContext    restContext;
 
     /** RequestBuilder */
     protected RequestBuilder requestBuilder;
@@ -76,7 +69,9 @@ public class RESTConnector extends AbstractRPCConnector {
 
         Class returnType = method.getReturnType();
 
-        OMElement request = this.requestBuilder.create(method, args);
+        OMElement request = this.requestBuilder.create(method, args,
+                super.options);
+
         OMElement response;
         if (returnType.equals(void.class)) {
             super.client.sendRobust(request);
@@ -102,6 +97,14 @@ public class RESTConnector extends AbstractRPCConnector {
 
         super.init(method);
 
+        if (this.restContext == null) {
+            this.restContext = getRestContext();
+        }
+
+        if (this.requestBuilder == null) {
+            this.requestBuilder = getRequestBuilder();
+        }
+
         super.options.setTransportInProtocol(Constants.TRANSPORT_HTTP);
 
         String keyEnableRest = Constants.Configuration.ENABLE_REST;
@@ -109,27 +112,17 @@ public class RESTConnector extends AbstractRPCConnector {
             super.options.setProperty(keyEnableRest, Constants.VALUE_TRUE);
         }
 
-        String keyEnableRestThroughGet = Constants.Configuration.ENABLE_REST_THROUGH_GET;
-        if (super.options.getProperty(keyEnableRestThroughGet) == null) {
-            super.options.setProperty(keyEnableRestThroughGet,
-                    Constants.VALUE_TRUE);
-        }
-
-        String keyMessageType = Constants.Configuration.MESSAGE_TYPE;
-        if (super.options.getProperty(keyMessageType) == null) {
-            super.options.setProperty(
-                    keyMessageType,
-                    org.apache.axis2.transport.http.HTTPConstants.MEDIA_TYPE_X_WWW_FORM);
+        // Content-Typeの指定
+        String contentType = this.restContext.getContentType(method);
+        if (!StringUtil.isEmpty(contentType)) {
+            super.options.setProperty(Constants.Configuration.MESSAGE_TYPE,
+                    contentType);
         }
 
         // HttpMethodの指定
-        String httpMethod = getHttpMethod(method.getName());
+        String httpMethod = this.restContext.getHttpMethod(method);
         super.options.setProperty(Constants.Configuration.HTTP_METHOD,
                 httpMethod);
-
-        if (this.requestBuilder == null) {
-            this.requestBuilder = getRequestBuilder();
-        }
     }
 
     /**
@@ -141,134 +134,67 @@ public class RESTConnector extends AbstractRPCConnector {
      */
     protected String getTargetUrl(Method method) {
         String targetUrl = this.baseURL.toString();
-        if (targetUrl.endsWith(RestUtil.URI_SEPARATOR)) {
+        if (targetUrl.endsWith(RESTUtil.URI_SEPARATOR)) {
             targetUrl = targetUrl.substring(0,
-                    targetUrl.lastIndexOf(RestUtil.URI_SEPARATOR));
+                    targetUrl.lastIndexOf(RESTUtil.URI_SEPARATOR));
         }
 
-        String uriTemplate = RestUtil.getUriTemplate(method);
+        String uriTemplate = RESTUtil.getUriTemplate(method, this.appendAction);
         return targetUrl + uriTemplate;
     }
 
     /**
-     * 指定されたメソッド名から、適合するHTTP METHODを返します。
-     * 
-     * @param methodName
-     * @return POST/PUT/DELETE/GETのいずれか
-     */
-    protected String getHttpMethod(String methodName) {
-
-        if (matchMethodPrefix(methodName, this.httpPostPrefixArray) >= 0) {
-            return Constants.Configuration.HTTP_METHOD_POST;
-        } else if (matchMethodPrefix(methodName, this.httpPutPrefixArray) >= 0) {
-            return Constants.Configuration.HTTP_METHOD_PUT;
-        } else if (matchMethodPrefix(methodName, this.httpDeletePrefixArray) >= 0) {
-            return Constants.Configuration.HTTP_METHOD_DELETE;
-        } else {
-            return Constants.Configuration.HTTP_METHOD_GET;
-        }
-    }
-
-    /**
-     * メソッド名が、指定されたメソッド接頭文字列の配列要素のいずれかから開始される場合、
-     * 配列のインデックスを返します。
-     * いずれの要素からも開始されない場合は-1を返します。
-     * 
-     * @param methodName メソッド名
-     * @param prefixArray 接頭文字列の配列
-     * @return 配列要素のインデックス。該当しない場合は-1
-     */
-    protected int matchMethodPrefix(String methodName, String[] prefixArray) {
-        for (int i = 0; i < prefixArray.length; i++) {
-            if (methodName.startsWith(prefixArray[i])) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    /**
-     * このオブジェクトに関連するRequestBuilderを取得します。
+     * RequestBuilderを取得します。
      * 
      * @return RequestBuilder
      */
     protected RequestBuilder getRequestBuilder() {
         S2Container container = SingletonS2ContainerFactory.getContainer().getRoot();
-        RequestBuilder requestBuilder = (RequestBuilder)container.getComponent(RestRequestBuilder.class);
+        RequestBuilder requestBuilder = null;
+        if (requestBuilder == null) {
+            requestBuilder = (RequestBuilder)container.getComponent("RESTRequestBuilder");
+        }
+        if (requestBuilder == null) {
+            requestBuilder = (RequestBuilder)container.getComponent(RESTRequestBuilder.class);
+        }
 
         return requestBuilder;
     }
 
     /**
-     * HTTP POST処理を行うメソッドの接頭文字列の配列を取得します。
+     * RESTのコンテキストを取得します。
      * 
-     * @return 接頭文字列の配列
+     * @return RESTContext
      */
-    public String[] getHttpPostPrefixArray() {
-        return httpPostPrefixArray;
+    protected RESTContext getRestContext() {
+        S2Container container = SingletonS2ContainerFactory.getContainer().getRoot();
+        RESTContext context = null;
+        if (context == null) {
+            context = (RESTContext)container.getComponent("RESTContext");
+        }
+        if (context == null) {
+            context = (RESTContext)container.getComponent(RESTContext.class);
+        }
+
+        return context;
     }
 
     /**
-     * HTTP POST処理を行うメソッドの接頭文字列の配列を設定します。
+     * URIにアクション名（メソッド名）を含めるかどうかを取得する。
      * 
-     * @param httpPostPrefixArray 接頭文字列の配列
+     * @return 含める場合はture
      */
-    public void setHttpPostPrefixArray(String[] httpPostPrefixArray) {
-        this.httpPostPrefixArray = httpPostPrefixArray;
+    public boolean isAppendAction() {
+        return appendAction;
     }
 
     /**
-     * HTTP PUT処理を行うメソッドの接頭文字列の配列を取得します。
+     * URIにアクション名を含めるかどうかを指定する。
      * 
-     * @return 接頭文字列の配列
+     * @param appendAction 含める場合はture
      */
-    public String[] getHttpPutPrefixArray() {
-        return httpPutPrefixArray;
-    }
-
-    /**
-     * HTTP PUT処理を行うメソッドの接頭文字列の配列を設定します。
-     * 
-     * @param httpPutPrefixArray 接頭文字列の配列
-     */
-    public void setHttpPutPrefixArray(String[] httpPutPrefixArray) {
-        this.httpPutPrefixArray = httpPutPrefixArray;
-    }
-
-    /**
-     * HTTP DELETE処理を行うメソッドの接頭文字列の配列を取得します。
-     * 
-     * @return 接頭文字列の配列
-     */
-    public String[] getHttpDeletePrefixArray() {
-        return httpDeletePrefixArray;
-    }
-
-    /**
-     * HTTP DELETE処理を行うメソッドの接頭文字列の配列を設定します。
-     * 
-     * @param httpDeletePrefixArray 接頭文字列の配列
-     */
-    public void setHttpDeletePrefixArray(String[] httpDeletePrefixArray) {
-        this.httpDeletePrefixArray = httpDeletePrefixArray;
-    }
-
-    /**
-     * リクエストのエンコードを行うかどうかを返します。
-     * 
-     * @return エンコードを行う場合はtrue
-     */
-    public boolean isForceEncode() {
-        return isForceEncode;
-    }
-
-    /**
-     * リクエストのエンコードを行うかどうかを設定します。
-     *  
-     * @param isForceEncode エンコードを行う場合はtrue
-     */
-    public void setForceEncode(boolean isForceEncode) {
-        this.isForceEncode = isForceEncode;
+    public void setAppendAction(boolean appendAction) {
+        this.appendAction = appendAction;
     }
 
 }

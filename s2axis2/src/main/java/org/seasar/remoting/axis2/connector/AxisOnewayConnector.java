@@ -21,6 +21,7 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.rpc.client.RPCServiceClient;
 import org.seasar.framework.message.MessageFormatter;
+import org.seasar.remoting.axis2.util.RPCUtil;
 
 /**
  * 一方向形式（Oneway）で、RPCとしてサービスを呼び出すためのConnectorです。
@@ -48,10 +49,11 @@ public class AxisOnewayConnector extends AbstractRPCConnector {
                     msgArgs));
         }
 
-        OMElement request = createRequest(method, args);
+        OMElement request = RPCUtil.createRequest(method, args);
 
         client.fireAndForget(request);
 
         return null;
     }
+
 }

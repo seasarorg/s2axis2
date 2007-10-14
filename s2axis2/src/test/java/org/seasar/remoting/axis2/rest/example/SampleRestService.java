@@ -9,18 +9,18 @@ public interface SampleRestService {
 
     RestDto beanEcho(RestDto dto);
 
-    @RestMethod(name = "echo2", httpMethod = RestMethod.HttpMethod.POST)
+    @RestMethod(name = "echo2", httpMethod = RestMethod.HTTP_METHOD_POST)
     RestDto beanEcho2(RestDto dto);
 
     String getHello();
 
-    @RestMethod(name = "hello2", httpMethod = RestMethod.HttpMethod.GET)
+    @RestMethod(name = "hello2", httpMethod = RestMethod.HTTP_METHOD_GET)
     String getHello2();
 
     String postEcho(@RestUriParam("msg")
     String message);
 
-    @RestMethod(name = "echo2", httpMethod = RestMethod.HttpMethod.POST)
+    @RestMethod(name = "echo2", httpMethod = RestMethod.HTTP_METHOD_POST)
     String postEcho2(@RestUriParam("id")
     Integer id, @RestUriParam("msg")
     String message);

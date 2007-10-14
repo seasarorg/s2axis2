@@ -30,47 +30,25 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface RestMethod {
 
+    /** GET */
+    String HTTP_METHOD_GET    = "GET";
+
+    /** POST */
+    String HTTP_METHOD_POST   = "POST";
+
+    /** PUT */
+    String HTTP_METHOD_PUT    = "PUT";
+
+    /** DELETE */
+    String HTTP_METHOD_DELETE = "DELETE";
+
     /** サービスの呼び出し名（URIに利用される） */
     String name() default "";
 
     /** HTTPのメソッドタイプ */
-    HttpMethod httpMethod() default HttpMethod.GET;
+    String httpMethod() default "";
 
-    /**
-     * HTTPのメソッドタイプです。
-     * 
-     * @author takanori
-     */
-    enum HttpMethod {
-        /** GET */
-        GET("GET"),
+    /** Content-Type */
+    String contentType() default "";
 
-        /** POST */
-        POST("POST"),
-
-        /** PUT */
-        PUT("PUT"),
-
-        /** DELETE */
-        DELETE("DELETE");
-
-        /** HTTPメソッド */
-        private String name;
-
-        /**
-         * HTTPメソッドを指定して、このオブジェクトを生成します。
-         * 
-         * @param name HTTPのメソッド
-         */
-        private HttpMethod(String name) {
-            this.name = name;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        public String toString() {
-            return name;
-        }
-    }
 }

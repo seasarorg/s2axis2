@@ -33,9 +33,17 @@ public class RESTConnectorTest extends S2TestCase {
         super.tearDown();
     }
 
-    public void testGetTargetUrl_success() throws Exception {
+    public void testGetTargetUrl_service() throws Exception {
         Method method = SampleRestService.class.getMethod("getHello",
                 (Class[])null);
+        String actual = this.restConnector.getTargetUrl(method);
+        assertEquals("http://localhost:8080/RestService", actual);
+    }
+
+    public void testGetTargetUrl_method() throws Exception {
+        Method method = SampleRestService.class.getMethod("getHello",
+                (Class[])null);
+        this.restConnector.setAppendAction(true);
         String actual = this.restConnector.getTargetUrl(method);
         assertEquals("http://localhost:8080/RestService/getHello", actual);
     }

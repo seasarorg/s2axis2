@@ -20,18 +20,15 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.xml.namespace.QName;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.addressing.EndpointReference;
 import org.apache.axis2.client.Options;
 import org.apache.axis2.databinding.utils.BeanUtil;
-import org.apache.axis2.rpc.client.RPCServiceClient;
-import org.apache.axis2.transport.http.HTTPConstants;
-import org.apache.axis2.description.java2wsdl.Java2WSDLUtils;
 import org.apache.axis2.engine.AxisConfiguration;
 import org.apache.axis2.engine.DefaultObjectSupplier;
+import org.apache.axis2.rpc.client.RPCServiceClient;
+import org.apache.axis2.transport.http.HTTPConstants;
 import org.seasar.remoting.axis2.S2AxisClientException;
 import org.seasar.remoting.axis2.builder.S2XFormURLEncodedBuilder;
 import org.seasar.remoting.axis2.transport.http.S2XFormURLEncodedFormatter;
@@ -144,53 +141,6 @@ public abstract class AbstractRPCConnector extends AbstractAxisConnector {
      */
     protected RPCServiceClient getClient() {
         return (RPCServiceClient)super.client;
-    }
-
-    /**
-     * Webサービスの実行メソッドのQNameを生成します。
-     * 
-     * @param method Webサービスの実行メソッド
-     * @return QName
-     * @throws AxisFault
-     */
-    protected static QName createOperationQName(Method method) throws Exception {
-
-        String className = method.getDeclaringClass().getName();
-        ClassLoader loader = Thread.currentThread().getContextClassLoader();
-
-        StringBuffer nsBuff;
-        try {
-            nsBuff = Java2WSDLUtils.schemaNamespaceFromClassName(className,
-                    loader);
-        } catch (Exception ex) {
-            // TODO 例外処理の見直し
-            throw ex;
-        }
-        String schemaTargetNameSpace = nsBuff.toString();
-
-        QName qName = new QName(schemaTargetNameSpace, method.getName());
-
-        return qName;
-    }
-
-    /**
-     * OMElement型のリクエストを生成します。
-     * 
-     * @param method Webサービスの実行メソッド
-     * @param args Webサービスの実行メソッドの引数
-     * @return リクエスト
-     * @throws AxisFault
-     */
-    protected OMElement createRequest(Method method, Object[] args)
-            throws Exception {
-
-        QName qName = createOperationQName(method);
-
-        // see org.apache.axis2.rpc.client.RPCServiceClient
-        OMElement request = BeanUtil.getOMElement(qName, args, null, false,
-                null);
-
-        return request;
     }
 
     /**
