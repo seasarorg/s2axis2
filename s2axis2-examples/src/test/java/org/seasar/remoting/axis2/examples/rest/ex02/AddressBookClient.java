@@ -1,18 +1,29 @@
+/*
+ * Copyright 2004-2007 the Seasar Foundation and the Others.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
 package org.seasar.remoting.axis2.examples.rest.ex02;
-
-import java.io.UnsupportedEncodingException;
 
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.Constants;
 import org.apache.axis2.addressing.EndpointReference;
 import org.apache.axis2.client.Options;
 import org.apache.axis2.client.ServiceClient;
-import org.apache.axis2.description.WSDL20DefaultValueHolder;
-import org.apache.axis2.description.WSDL2Constants;
-import org.apache.axis2.transport.http.util.URIEncoderDecoder;
 
 public class AddressBookClient {
 
@@ -47,11 +58,6 @@ public class AddressBookClient {
 
         options.setProperty(Constants.Configuration.ENABLE_REST,
                 Constants.VALUE_TRUE);
-        options.setProperty(Constants.Configuration.ENABLE_REST_THROUGH_GET,
-                Constants.VALUE_TRUE);
-        options.setProperty(
-                Constants.Configuration.MESSAGE_TYPE,
-                org.apache.axis2.transport.http.HTTPConstants.MEDIA_TYPE_X_WWW_FORM);
 
         this.serviceClient.setOptions(options);
     }
@@ -103,26 +109,43 @@ public class AddressBookClient {
     public OMElement getAddPayload(Entry entry) {
 
         OMFactory fac = OMAbstractFactory.getOMFactory();
-        OMElement rootElement = fac.createOMElement("addEntry", null);
+        OMNamespace ns = fac.createOMNamespace(
+                "http://ex02.rest.examples.axis2.remoting.seasar.org", "");
 
-        OMElement id = fac.createOMElement("id", null, rootElement);
+        OMElement rootElement = fac.createOMElement("addEntry", ns);
+
+        OMElement dto = fac.createOMElement("entity", null, rootElement);
+
+        OMElement id = fac.createOMElement("id", null, dto);
         id.setText(getQueryText(entry.getId()));
 
-        OMElement name = fac.createOMElement("name", null, rootElement);
+        OMElement name = fac.createOMElement("name", null, dto);
         name.setText(getQueryText(entry.getName()));
 
-        OMElement street = fac.createOMElement("street", null, rootElement);
+        OMElement street = fac.createOMElement("street", null, dto);
         street.setText(getQueryText(entry.getStreet()));
 
-        OMElement city = fac.createOMElement("city", null, rootElement);
+        OMElement city = fac.createOMElement("city", null, dto);
         city.setText(getQueryText(entry.getCity()));
 
-        OMElement state = fac.createOMElement("state", null, rootElement);
+        OMElement state = fac.createOMElement("state", null, dto);
         state.setText(getQueryText(entry.getState()));
 
-        OMElement postalCode = fac.createOMElement("postalCode", null,
-                rootElement);
+        OMElement postalCode = fac.createOMElement("postalCode", null, dto);
         postalCode.setText(getQueryText(entry.getPostalCode()));
+
+        return rootElement;
+    }
+
+    public OMElement getFindPayload(Integer id) {
+        OMFactory fac = OMAbstractFactory.getOMFactory();
+        OMNamespace ns = fac.createOMNamespace(
+                "http://ex02.rest.examples.axis2.remoting.seasar.org", "");
+
+        OMElement rootElement = fac.createOMElement("findEntry", ns);
+
+        OMElement idElem = fac.createOMElement("id", null, rootElement);
+        idElem.setText(getQueryText(id));
 
         return rootElement;
     }
@@ -130,37 +153,27 @@ public class AddressBookClient {
     protected String getQueryText(Object value) {
         if (value == null) {
             return "";
+        } else {
+            return value.toString();
         }
-
-        String queryParameterSeparator = WSDL20DefaultValueHolder.getDefaultValue(WSDL2Constants.ATTR_WHTTP_QUERY_PARAMETER_SEPARATOR);
-        String legalCharacters = WSDL2Constants.LEGAL_CHARACTERS_IN_QUERY.replaceAll(
-                queryParameterSeparator, "");
-
-        String text;
-        try {
-            text = URIEncoderDecoder.quoteIllegal(value.toString(),
-                    legalCharacters);
-        } catch (UnsupportedEncodingException ex) {
-            ex.printStackTrace();
-
-            text = value.toString();
-        }
-
-        return text;
     }
 
     public static void main(String[] args1) throws AxisFault {
 
-        String url = "http://127.0.0.1:8088/s2axis2-examples/services/AddressBookService";
+        String url = "http://127.0.0.1:8080/s2axis2-examples/services/addressBook";
 
         AddressBookClient client = new AddressBookClient();
         client.init();
 
-        // /////////////////////////////////////////////////////////////////////
+        OMElement request;
+        OMElement response;
 
-        /*
-         * Creates an Entry and stores it in the AddressBook.
-         */
+        client.setUp(url, "findEntry");
+        request = client.getFindPayload(Integer.valueOf(0));
+
+        response = client.serviceClient.sendReceive(request);
+        System.out.println(response);
+
         for (int i = 0; i < 5; i++) {
             Entry entry = new Entry();
 
@@ -172,10 +185,16 @@ public class AddressBookClient {
             entry.setPostalCode("123-" + i);
 
             client.setUp(url, "addEntry");
-            OMElement om = client.getAddPayload(entry);
+            request = client.getAddPayload(entry);
 
-            client.serviceClient.sendRobust(om);
+            client.serviceClient.sendRobust(request);
         }
+
+        client.setUp(url, "findEntry");
+        request = client.getFindPayload(Integer.valueOf(0));
+
+        response = client.serviceClient.sendReceive(request);
+        System.out.println(response);
 
     }
 }

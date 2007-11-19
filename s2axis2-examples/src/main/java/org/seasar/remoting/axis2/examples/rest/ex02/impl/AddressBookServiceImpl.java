@@ -35,14 +35,6 @@ public class AddressBookServiceImpl implements AddressBookService {
         this.entries.put(entry.getId(), entry);
     }
 
-    public void addEntryByParams(Integer id, String name, String street) {
-        Entry entry = new Entry();
-        entry.setId(id);
-        entry.setName(name);
-        entry.setStreet(street);
-        this.entries.put(entry.getId(), entry);
-    }
-
     public void updateEntry(Entry entry) {
         if (entry == null) {
             return;

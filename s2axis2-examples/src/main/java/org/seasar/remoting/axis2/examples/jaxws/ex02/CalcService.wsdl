@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<definitions targetNamespace="http://ex02.jaxws.examples.axis2.remoting.seasar.org/" name="CalcService" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ex02.jaxws.examples.axis2.remoting.seasar.org/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <types>
+    <xsd:schema>
+      <xsd:import namespace="http://ex02.jaxws.examples.axis2.remoting.seasar.org/" schemaLocation="CalcService_schema1.xsd"/>
+    </xsd:schema>
+  </types>
+  <message name="add">
+    <part name="parameters" element="tns:add"/>
+  </message>
+  <message name="addResponse">
+    <part name="parameters" element="tns:addResponse"/>
+  </message>
+  <portType name="Calc">
+    <operation name="add">
+      <input message="tns:add"/>
+      <output message="tns:addResponse"/>
+    </operation>
+  </portType>
+  <binding name="CalculatorServicePortBinding" type="tns:Calc">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+    <operation name="add">
+      <soap:operation soapAction="add"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+  </binding>
+  <service name="CalcService">
+    <port name="CalculatorServicePort" binding="tns:CalculatorServicePortBinding">
+      <soap:address location="REPLACE_WITH_ACTUAL_URL"/>
+    </port>
+  </service>
+</definitions>
+
