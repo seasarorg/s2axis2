@@ -17,12 +17,10 @@ package org.seasar.remoting.axis2.deployer;
 
 import java.util.List;
 
-import org.apache.axis2.AxisFault;
 import org.apache.axis2.context.ConfigurationContext;
 import org.apache.axis2.description.AxisService;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.MetaDef;
-import org.seasar.framework.log.Logger;
 import org.seasar.remoting.axis2.deployment.XmlBasedServiceBuilder;
 
 /**
@@ -32,11 +30,9 @@ import org.seasar.remoting.axis2.deployment.XmlBasedServiceBuilder;
  * 
  * @author takanori
  */
-public class ServiceXmlDeployer implements ItemDeployer {
+public class ServiceXmlDeployer extends AxisSerivceDeployer {
 
     private XmlBasedServiceBuilder xmlBasedServiceBuilder;
-
-    private static final Logger    logger = Logger.getLogger(ServiceComponentDeployer.class);
 
     /**
      * デフォルトのコンストラクタです。
@@ -50,32 +46,26 @@ public class ServiceXmlDeployer implements ItemDeployer {
                        ComponentDef componentDef,
                        MetaDef metaDef) {
 
-        Object metaData = metaDef.getValue();
+        Object metaData;
+        if (metaDef != null) {
+            metaData = metaDef.getValue();
+        } else {
+            metaData = null;
+        }
 
         List serviceList;
         if (metaData instanceof String) {
-            String servicexmlPath = (String) metaData;
+            String servicexmlPath = (String)metaData;
             serviceList = createService(configCtx, servicexmlPath);
         } else {
             throw new DeployFailedException("EAXS0002",
-                    new Object[] { componentDef.getComponentName() });
+                    new Object[] { metaData });
         }
 
         for (int i = 0; serviceList != null && i < serviceList.size(); i++) {
 
-            AxisService service = (AxisService) serviceList.get(i);
-
-            try {
-                configCtx.getAxisConfiguration().addService(service);
-
-                if (logger.isDebugEnabled()) {
-                    logger.log("DAXS0001", new Object[] { service.getName() });
-                }
-
-            } catch (AxisFault ex) {
-                throw new DeployFailedException("EAXS0002",
-                        new Object[] { service.getName() }, ex);
-            }
+            AxisService axisService = (AxisService)serviceList.get(i);
+            deployAxisService(configCtx.getAxisConfiguration(), axisService);
         }
     }
 
@@ -93,10 +83,6 @@ public class ServiceXmlDeployer implements ItemDeployer {
                 configCtx, servicexmlPath);
 
         return serviceList;
-    }
-
-    public XmlBasedServiceBuilder getXmlBasedServiceBuilder() {
-        return this.xmlBasedServiceBuilder;
     }
 
     public void setXmlBasedServiceBuilder(XmlBasedServiceBuilder xmlBasedServiceBuilder) {

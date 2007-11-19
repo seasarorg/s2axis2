@@ -17,7 +17,6 @@ package org.seasar.remoting.axis2.deployment.impl;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -31,21 +30,15 @@ import org.apache.axis2.context.ConfigurationContext;
 import org.apache.axis2.deployment.util.Utils;
 import org.apache.axis2.description.AxisService;
 import org.apache.axis2.description.Parameter;
-import org.apache.axis2.description.WSDL2Constants;
 import org.apache.axis2.description.java2wsdl.DefaultNamespaceGenerator;
 import org.apache.axis2.description.java2wsdl.Java2WSDLUtils;
 import org.apache.axis2.engine.AxisConfiguration;
-import org.apache.axis2.engine.MessageReceiver;
-import org.apache.axis2.rpc.receivers.RPCInOnlyMessageReceiver;
-import org.apache.axis2.rpc.receivers.RPCMessageReceiver;
 import org.seasar.framework.container.ComponentDef;
-import org.seasar.framework.log.Logger;
 import org.seasar.framework.util.StringUtil;
 import org.seasar.remoting.axis2.ServiceDef;
-import org.seasar.remoting.axis2.builder.S2XFormURLEncodedBuilder;
 import org.seasar.remoting.axis2.deployer.DeployFailedException;
+import org.seasar.remoting.axis2.deployment.AbstractServiceBuilder;
 import org.seasar.remoting.axis2.deployment.ComponentBasedServiceBuilder;
-import org.seasar.remoting.axis2.transport.http.S2XFormURLEncodedFormatter;
 
 /**
  * コンポーネントベースでサービスを構築するクラスです。
@@ -53,29 +46,13 @@ import org.seasar.remoting.axis2.transport.http.S2XFormURLEncodedFormatter;
  * @author takanori
  * 
  */
-public class ComponentBasedServiceBuilderImpl implements
-        ComponentBasedServiceBuilder {
-
-    /** デフォルトのMessageReceiver */
-    private Map<String, MessageReceiver> defaultMessageReceivers = new HashMap<String, MessageReceiver>();
-
-    private Class                        serviceObjectSupplierClass;
-
-    private static final Logger          logger                  = Logger.getLogger(ComponentBasedServiceBuilderImpl.class);
+public class ComponentBasedServiceBuilderImpl extends AbstractServiceBuilder
+        implements ComponentBasedServiceBuilder {
 
     /**
      * デフォルトのコンストラクタ。
      */
-    public ComponentBasedServiceBuilderImpl() {
-
-        MessageReceiver ioReceiver = new RPCMessageReceiver();
-        this.defaultMessageReceivers.put(WSDL2Constants.MEP_URI_IN_OUT,
-                ioReceiver);
-
-        MessageReceiver inOnlyReceiver = new RPCInOnlyMessageReceiver();
-        this.defaultMessageReceivers.put(WSDL2Constants.MEP_URI_IN_ONLY,
-                inOnlyReceiver);
-    }
+    public ComponentBasedServiceBuilderImpl() {}
 
     /**
      * {@inheritDoc}
@@ -103,11 +80,8 @@ public class ComponentBasedServiceBuilderImpl implements
         AxisConfiguration axisConfig = configCtx.getAxisConfiguration();
         ClassLoader loader = axisConfig.getServiceClassLoader();
 
-        // FIXME REST用の設定
-        axisConfig.addMessageBuilder("application/x-www-form-urlencoded",
-                new S2XFormURLEncodedBuilder());
-        axisConfig.addMessageFormatter("application/x-www-form-urlencoded",
-                new S2XFormURLEncodedFormatter());
+        buildMessageBuilder(axisConfig);
+        buildServiceParameter(service);
 
         // ServiceClass
         Class serviceClass = componentDef.getComponentClass();
@@ -146,8 +120,8 @@ public class ComponentBasedServiceBuilderImpl implements
         service.setSchemaTargetNamespace(schemaNamespace);
 
         // MessageReceiver
-        addMessageReceiver(service, this.defaultMessageReceivers);
-        Map msgReceivers = serviceDef.getMessageReceivers();
+        addMessageReceiver(service, createMessageReceiverDefAtRPC());
+        Map<String, Class> msgReceivers = serviceDef.getMessageReceivers();
         if (msgReceivers != null) {
             addMessageReceiver(service, msgReceivers);
         }
@@ -156,17 +130,6 @@ public class ComponentBasedServiceBuilderImpl implements
         List<String> excludeOperations = createExcludeOperations(serviceClass,
                 serviceType);
         excludeOperations.addAll(serviceDef.getExcludeOperations());
-
-        // Service Object Supplier Class
-        Parameter paramServiceObjectSupplier = new Parameter(
-                Constants.SERVICE_OBJECT_SUPPLIER,
-                serviceObjectSupplierClass.getName());
-        try {
-            service.addParameter(paramServiceObjectSupplier);
-        } catch (AxisFault ex) {
-            throw new DeployFailedException("EAXS0003",
-                    new Object[] { service.getName() }, ex);
-        }
 
         // サービスの生成
         try {
@@ -185,9 +148,6 @@ public class ComponentBasedServiceBuilderImpl implements
             String opName = (String)excludeOperations.get(i);
             service.removeOperation(new QName(opName));
         }
-
-        // WSDLの公開設定
-        service.setWsdlFound(true);
 
         return service;
     }
@@ -322,41 +282,6 @@ public class ComponentBasedServiceBuilderImpl implements
         String schemaNamespace = nsBuff.toString();
 
         return schemaNamespace;
-    }
-
-    /**
-     * 指定されたAxisServiceに、MessageReceiverを追加します。<br>
-     * 
-     * @param service
-     *            AxisService
-     * @param msgReceivers
-     *            MessageReceiverのマップ
-     */
-    private void addMessageReceiver(AxisService service, Map msgReceivers) {
-        if (service == null || msgReceivers == null) {
-            return;
-        }
-
-        Object[] mepArray = msgReceivers.keySet().toArray();
-        for (int i = 0; i < mepArray.length; i++) {
-            Object key = mepArray[i];
-            Object value = msgReceivers.get(key);
-
-            if ((key instanceof String) && (value instanceof MessageReceiver)) {
-                service.addMessageReceiver((String)key, (MessageReceiver)value);
-
-                if (logger.isDebugEnabled()) {
-                    Object[] args = new Object[] { service.getName(), key,
-                            value };
-                    logger.log("DAXS0005", args);
-                }
-            }
-
-        }
-    }
-
-    public void setServiceObjectSupplierClass(Class serviceObjectSupplierClass) {
-        this.serviceObjectSupplierClass = serviceObjectSupplierClass;
     }
 
 }

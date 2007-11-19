@@ -19,11 +19,11 @@
 				
 				<initMethod name="addMessageReceiver">
 					<arg>"http://www.w3.org/2004/08/wsdl/in-out"</arg>
-					<arg>new org.apache.axis2.rpc.receivers.RPCMessageReceiver()</arg>
+					<arg>@org.apache.axis2.rpc.receivers.RPCMessageReceiver@class</arg>
 				</initMethod>
 				<initMethod name="addMessageReceiver">
 					<arg>"http://www.w3.org/2004/08/wsdl/in-only"</arg>
-					<arg>new org.apache.axis2.rpc.receivers.RPCInOnlyMessageReceiver()</arg>
+					<arg>@org.apache.axis2.rpc.receivers.RPCInOnlyMessageReceiver@class</arg>
 				</initMethod>
 			</component>
 		</meta>

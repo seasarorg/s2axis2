@@ -19,7 +19,6 @@ import java.lang.reflect.Method;
 
 import org.seasar.framework.util.ArrayUtil;
 import org.seasar.framework.util.MethodUtil;
-import org.seasar.remoting.axis2.S2AxisClientException;
 
 /**
  * Webサービスのメソッドの指定に誤りがある場合に発生する例外です。

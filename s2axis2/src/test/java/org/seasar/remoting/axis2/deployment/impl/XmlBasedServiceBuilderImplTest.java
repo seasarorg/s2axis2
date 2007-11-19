@@ -36,7 +36,7 @@ public class XmlBasedServiceBuilderImplTest extends S2TestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        include("s2axis2-test.dicon");
+        include("s2axis2-test-servicexml.dicon");
 
         this.configCtx = createConfigurationContext();
     }

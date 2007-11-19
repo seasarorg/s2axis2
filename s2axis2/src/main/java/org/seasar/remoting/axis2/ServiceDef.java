@@ -20,8 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.axis2.engine.MessageReceiver;
-
 /**
  * 
  * サービスの設定情報を保持するクラスです。<br>
@@ -44,19 +42,19 @@ import org.apache.axis2.engine.MessageReceiver;
 public class ServiceDef {
 
     /** サービスとして公開するクラス／インタフェースの型 */
-    private Class                        serviceType       = null;
+    private Class              serviceType       = null;
 
     /** スキーマ定義をする際に対象となる名前空間 */
-    private String                       targetNamespace   = null;
+    private String             targetNamespace   = null;
 
     /** スキーマの名前空間 */
-    private String                       schemaNamespace   = null;
+    private String             schemaNamespace   = null;
 
     /** サービスで公開しないメソッドのリスト */
-    private List<String>                 excludeOperations = new ArrayList<String>();
+    private List<String>       excludeOperations = new ArrayList<String>();
 
     /** サービスがデフォルトで使用するMessageReceiverのマップ */
-    private Map<String, MessageReceiver> messageReceivers  = new HashMap<String, MessageReceiver>();
+    private Map<String, Class> messageReceivers  = new HashMap<String, Class>();
 
     /**
      * コンストラクタ。
@@ -153,7 +151,7 @@ public class ServiceDef {
      * 
      * @return サービスがデフォルトで使用するMessageReceiver
      */
-    public Map getMessageReceivers() {
+    public Map<String, Class> getMessageReceivers() {
         return messageReceivers;
     }
 
@@ -163,12 +161,12 @@ public class ServiceDef {
      * @param mep MEP
      * @param receiver MessageReceiver
      */
-    public void addMessageReceiver(String mep, MessageReceiver receiver) {
+    public void addMessageReceiver(String mep, Class receiverClass) {
         if (this.messageReceivers == null) {
-            this.messageReceivers = new HashMap<String, MessageReceiver>();
+            this.messageReceivers = new HashMap<String, Class>();
         }
 
-        this.messageReceivers.put(mep, receiver);
+        this.messageReceivers.put(mep, receiverClass);
     }
 
 }

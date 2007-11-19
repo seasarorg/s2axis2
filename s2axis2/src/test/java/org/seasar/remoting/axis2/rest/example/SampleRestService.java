@@ -7,10 +7,10 @@ import org.seasar.remoting.axis2.annotation.RestUriParam;
 @RestUriTemplate("/RestService")
 public interface SampleRestService {
 
-    RestDto beanEcho(RestDto dto);
+    SampleRestDto beanEcho(SampleRestDto dto);
 
     @RestMethod(name = "echo2", httpMethod = RestMethod.HTTP_METHOD_POST)
-    RestDto beanEcho2(RestDto dto);
+    SampleRestDto beanEcho2(SampleRestDto dto);
 
     String getHello();
 
@@ -29,6 +29,6 @@ public interface SampleRestService {
     Integer id, String message);
 
     String invalid2(@RestUriParam("id")
-    Integer id, RestDto dto);
+    Integer id, SampleRestDto dto);
 
 }

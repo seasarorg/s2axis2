@@ -15,12 +15,10 @@
  */
 package org.seasar.remoting.axis2.deployer;
 
-import org.apache.axis2.AxisFault;
 import org.apache.axis2.context.ConfigurationContext;
 import org.apache.axis2.description.AxisService;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.MetaDef;
-import org.seasar.framework.log.Logger;
 import org.seasar.remoting.axis2.ServiceDef;
 import org.seasar.remoting.axis2.deployment.ComponentBasedServiceBuilder;
 
@@ -32,11 +30,9 @@ import org.seasar.remoting.axis2.deployment.ComponentBasedServiceBuilder;
  * 
  * @author takanori
  */
-public class ServiceComponentDeployer implements ItemDeployer {
+public class ServiceComponentDeployer extends AxisSerivceDeployer {
 
     private ComponentBasedServiceBuilder componentBasedServiceBuilder;
-
-    private static final Logger          logger = Logger.getLogger(ServiceComponentDeployer.class);
 
     /**
      * デフォルトのコンストラクタです。
@@ -50,20 +46,9 @@ public class ServiceComponentDeployer implements ItemDeployer {
                        ComponentDef componentDef,
                        MetaDef metaDef) {
 
-        AxisService service = createService(configCtx, componentDef, metaDef);
-        if (service != null) {
-            try {
-                configCtx.getAxisConfiguration().addService(service);
-
-                if (logger.isDebugEnabled()) {
-                    logger.log("DAXS0001", new Object[] { service.getName() });
-                }
-
-            } catch (AxisFault ex) {
-                throw new DeployFailedException("EAXS0002",
-                        new Object[] { service.getName() }, ex);
-            }
-        }
+        AxisService axisService = createService(configCtx, componentDef,
+                metaDef);
+        deployAxisService(configCtx.getAxisConfiguration(), axisService);
     }
 
     /**
@@ -78,7 +63,12 @@ public class ServiceComponentDeployer implements ItemDeployer {
                                         ComponentDef componentDef,
                                         MetaDef metaDef) {
 
-        Object metaData = metaDef.getValue();
+        Object metaData;
+        if (metaDef != null) {
+            metaData = metaDef.getValue();
+        } else {
+            metaData = null;
+        }
 
         AxisService service;
         if (metaData == null) {
@@ -96,10 +86,6 @@ public class ServiceComponentDeployer implements ItemDeployer {
         }
 
         return service;
-    }
-
-    public ComponentBasedServiceBuilder getComponentBasedServiceBuilder() {
-        return this.componentBasedServiceBuilder;
     }
 
     public void setComponentBasedServiceBuilder(ComponentBasedServiceBuilder serviceBuilder) {

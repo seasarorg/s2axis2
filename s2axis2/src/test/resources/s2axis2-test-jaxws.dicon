@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+	"http://www.seasar.org/dtd/components21.dtd">
+<components namespace="axis">
+
+	<include path="s2axis2.dicon"/>
+
+	<component name="JAXWSSample1" class="org.seasar.remoting.axis2.mock.impl.JAXWSSample1">
+		<meta name="axis-service"/>
+	</component>
+	
+</components>

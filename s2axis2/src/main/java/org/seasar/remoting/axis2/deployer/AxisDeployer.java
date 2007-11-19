@@ -16,10 +16,13 @@
 package org.seasar.remoting.axis2.deployer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.jws.WebService;
 import javax.servlet.ServletContext;
 
 import org.apache.axis2.context.ConfigurationContext;
@@ -37,21 +40,22 @@ import org.seasar.remoting.axis2.S2AxisConstants;
  */
 public class AxisDeployer {
 
-    protected static final Pattern   META_NAME_PATTERN        = Pattern.compile("(?:s2-axis:|axis-)(.+)");
+    protected static final Pattern             META_NAME_PATTERN = Pattern.compile("(?:s2-axis:|axis-)(.+)");
 
-    protected S2Container            container                = null;
+    protected S2Container                      container         = null;
 
-    protected ConfigurationContext   configCtx                = null;
+    protected ConfigurationContext             configCtx         = null;
 
-    private ServiceComponentDeployer serviceComponentDeployer = null;
-
-    private ServiceXmlDeployer       serviceXmlDeployer       = null;
+    protected Map<String, AxisSerivceDeployer> deployerMap       = new HashMap<String, AxisSerivceDeployer>();
 
     /**
      * デフォルトコンストラクタです。
      */
     public AxisDeployer() {}
 
+    /**
+     * S2コンテナに登録されたサービスをデプロイします。
+     */
     public void deploy() {
         if (this.configCtx != null
                 && this.configCtx.getAxisConfiguration() != null) {
@@ -59,6 +63,11 @@ public class AxisDeployer {
         }
     }
 
+    /**
+     * S2コンテナに登録されたサービスをデプロイします。
+     * 
+     * @param container S2コンテナ
+     */
     protected void forEach(final S2Container container) {
         final int componentDefSize = container.getComponentDefSize();
         for (int i = 0; i < componentDefSize; ++i) {
@@ -73,25 +82,62 @@ public class AxisDeployer {
         }
     }
 
+    /**
+     * コンポーネントのメタデータ定義を確認し、
+     * Axis2のメタデータ定義が指定されている場合は、サービスとしてデプロイします。
+     * 
+     * @param componentDef コンポーネント定義
+     */
     protected void process(final ComponentDef componentDef) {
         final MetaDef serviceMetaDef = getMetaDef(componentDef,
                 S2AxisConstants.META_SERVICE);
         if (serviceMetaDef != null) {
-            this.serviceComponentDeployer.deploy(this.configCtx, componentDef,
-                    serviceMetaDef);
+            // WebServiceアノテーションの有無をチェックし、
+            // 指定されている場合は、JAX-WSとしてのデプロイ
+            // 指定されていない場合は、Axis2の通常のデプロイ
+            Class serviceClass = componentDef.getComponentClass();
+            WebService webService = (WebService)serviceClass.getAnnotation(WebService.class);
+
+            AxisSerivceDeployer serviceDeployer;
+            if (webService != null) {
+                serviceDeployer = this.deployerMap.get(S2AxisConstants.DEPLOYER_JWS);
+            } else {
+                serviceDeployer = this.deployerMap.get(S2AxisConstants.DEPLOYER_SERCIE_CLASS);
+            }
+
+            if (serviceDeployer == null) {
+                // TODO throw exception
+            }
+            serviceDeployer.deploy(this.configCtx, componentDef, serviceMetaDef);
         }
 
         // TODO モジュールのデプロイ
     }
 
+    /**
+     * コンテナに<code>service.xml</code>での定義がなされているかどうかを確認し、
+     * 定義が存在する場合は、サービスとしてデプロイします。
+     * 
+     * @param container コンテナ
+     */
     protected void process(final S2Container container) {
         final MetaDef[] metaDefs = getMetaDefs(container,
                 S2AxisConstants.META_DEPLOY);
+
+        AxisSerivceDeployer serviceDeployer = this.deployerMap.get(S2AxisConstants.DEPLOYER_SERICE_XML);
+
         for (int i = 0; metaDefs != null && i < metaDefs.length; ++i) {
-            this.serviceXmlDeployer.deploy(this.configCtx, null, metaDefs[i]);
+            serviceDeployer.deploy(this.configCtx, null, metaDefs[i]);
         }
     }
 
+    /**
+     * 指定されたメタデータ定義を取得します。
+     * 
+     * @param metaDefSupport {@link MetaDefAware}
+     * @param localName メタデータ定義の名前
+     * @return メタデータ定義
+     */
     protected MetaDef getMetaDef(final MetaDefAware metaDefSupport,
                                  final String localName) {
         for (int i = 0; i < metaDefSupport.getMetaDefSize(); ++i) {
@@ -103,6 +149,13 @@ public class AxisDeployer {
         return null;
     }
 
+    /**
+     * 指定されたメタデータ定義を取得します。
+     * 
+     * @param metaDefSupport {@link MetaDefAware}
+     * @param localName メタデータ定義の名前
+     * @return メタデータ定義の配列
+     */
     protected MetaDef[] getMetaDefs(final MetaDefAware metaDefSupport,
                                     final String localName) {
         final List<MetaDef> result = new ArrayList<MetaDef>();
@@ -115,6 +168,12 @@ public class AxisDeployer {
         return (MetaDef[])result.toArray(new MetaDef[result.size()]);
     }
 
+    /**
+     * メタデータ定義のローカル名を取得します。
+     * 
+     * @param metaDef メタデータ定義
+     * @return ローカル名を
+     */
     protected String getLocalName(final MetaDef metaDef) {
         final Matcher matcher = META_NAME_PATTERN.matcher(metaDef.getName());
         return matcher.matches() ? matcher.group(1) : null;
@@ -132,12 +191,8 @@ public class AxisDeployer {
         return configCtx;
     }
 
-    public void setServiceComponentDeployer(ServiceComponentDeployer serviceComponentDeployer) {
-        this.serviceComponentDeployer = serviceComponentDeployer;
-    }
-
-    public void setServiceXmlDeployer(ServiceXmlDeployer serviceXmlDeployer) {
-        this.serviceXmlDeployer = serviceXmlDeployer;
+    public void addServiceDeployer(String key, AxisSerivceDeployer deployer) {
+        this.deployerMap.put(key, deployer);
     }
 
 }

@@ -39,7 +39,7 @@ public class ServiceDefTest extends S2TestCase {
         ComponentDef componentDef = container.getComponentDef("ServiceDefTest");
         MetaDef metaDef = componentDef.getMetaDef("axis-service");
 
-        ServiceDef serviceDef = (ServiceDef) metaDef.getValue();
+        ServiceDef serviceDef = (ServiceDef)metaDef.getValue();
 
         assertEquals(ServiceMock.class, serviceDef.getServiceType());
         assertEquals("http://examples", serviceDef.getTargetNamespace());
@@ -49,11 +49,11 @@ public class ServiceDefTest extends S2TestCase {
         assertTrue(serviceDef.getExcludeOperations().contains("method2"));
 
         Map receivers = serviceDef.getMessageReceivers();
-        Object obj;
-        obj = receivers.get("http://www.w3.org/2004/08/wsdl/in-out");
-        assertTrue(obj instanceof RPCMessageReceiver);
-        obj = receivers.get("http://www.w3.org/2004/08/wsdl/in-only");
-        assertTrue(obj instanceof RPCInOnlyMessageReceiver);
+        Class clazz;
+        clazz = (Class)receivers.get("http://www.w3.org/2004/08/wsdl/in-out");
+        assertTrue(RPCMessageReceiver.class.isAssignableFrom(clazz));
+        clazz = (Class)receivers.get("http://www.w3.org/2004/08/wsdl/in-only");
+        assertTrue(RPCInOnlyMessageReceiver.class.isAssignableFrom(clazz));
     }
 
     public void setContainer(S2Container container) {

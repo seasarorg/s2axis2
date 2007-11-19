@@ -3,11 +3,6 @@
     "http://www.seasar.org/dtd/components21.dtd">
 <components namespace="axis">
     <!-- for server -->
-    <component name="deployer"
-        class="org.seasar.remoting.axis2.deployer.AxisDeployer">
-        <initMethod name="deploy"/>
-    </component>
-    
     <component name="serviceComponentDeployer"
         class="org.seasar.remoting.axis2.deployer.ServiceComponentDeployer">
     </component>
@@ -21,6 +16,31 @@
     </component>
     <component
         class="org.seasar.remoting.axis2.deployment.impl.XmlBasedServiceBuilderImpl">
+    </component>
+    
+    <component name="jaxwsDeployer"
+        class="org.seasar.remoting.axis2.deployer.JAXWSDeployer">
+    </component>
+    <component
+        class="org.seasar.remoting.axis2.deployment.impl.JAXWSServiceBuilderImpl">
+        <property name="serviceObjectSupplierClass">@org.seasar.remoting.axis2.receivers.S2ServiceObjectSupplier@class</property>
+    </component>
+    
+    <component name="deployer"
+        class="org.seasar.remoting.axis2.deployer.AxisDeployer">
+        <initMethod name="addServiceDeployer">
+          <arg>@org.seasar.remoting.axis2.S2AxisConstants@DEPLOYER_SERCIE_CLASS</arg>
+          <arg>serviceComponentDeployer</arg>
+        </initMethod>
+        <initMethod name="addServiceDeployer">
+          <arg>@org.seasar.remoting.axis2.S2AxisConstants@DEPLOYER_SERICE_XML</arg>
+          <arg>serviceXmlDeployer</arg>
+        </initMethod>
+        <initMethod name="addServiceDeployer">
+          <arg>@org.seasar.remoting.axis2.S2AxisConstants@DEPLOYER_JWS</arg>
+          <arg>jaxwsDeployer</arg>
+        </initMethod>
+        <initMethod name="deploy"/>
     </component>
 
     

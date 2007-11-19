@@ -16,24 +16,38 @@
 package org.seasar.remoting.axis2.deployer;
 
 import org.apache.axis2.context.ConfigurationContext;
+import org.apache.axis2.description.AxisService;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.MetaDef;
+import org.seasar.remoting.axis2.deployment.JAXWSServiceBuilder;
 
 /**
- * コンポーネントをAxisにデプロイするためのインタフェースです。
  * 
  * @author takanori
  */
-public interface ItemDeployer {
+public class JAXWSDeployer extends AxisSerivceDeployer {
+
+    private JAXWSServiceBuilder jaxwsServiceBuilder;
 
     /**
-     * 指定されたコンポーネントをデプロイします。
-     * 
-     * @param configCtx Axisの設定情報
-     * @param componentDef コンポーネント定義
-     * @param metaDef メタデータ
+     * デフォルトのコンストラクタです。
      */
-    void deploy(ConfigurationContext configCtx,
-                ComponentDef componentDef,
-                MetaDef metaDef);
+    public JAXWSDeployer() {}
+
+    /**
+     * {@inheritDoc}
+     */
+    public void deploy(ConfigurationContext configCtx,
+                       ComponentDef componentDef,
+                       MetaDef metaDef) {
+
+        AxisService axisService = this.jaxwsServiceBuilder.populateService(
+                configCtx, componentDef);
+        deployAxisService(configCtx.getAxisConfiguration(), axisService);
+    }
+
+    public void setJaxwsServiceBuilder(JAXWSServiceBuilder jaxwsServiceBuilder) {
+        this.jaxwsServiceBuilder = jaxwsServiceBuilder;
+    }
+
 }

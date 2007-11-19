@@ -19,7 +19,7 @@ import java.lang.reflect.Method;
 
 import org.apache.axiom.om.OMElement;
 import org.seasar.extension.unit.S2TestCase;
-import org.seasar.remoting.axis2.rest.example.RestDto;
+import org.seasar.remoting.axis2.rest.example.SampleRestDto;
 import org.seasar.remoting.axis2.rest.example.SampleRestService;
 
 public class RESTRequestBuilderTest extends S2TestCase {
@@ -50,20 +50,20 @@ public class RESTRequestBuilderTest extends S2TestCase {
     public void testCreateRequestByBean_hasBean1() throws Exception {
 
         Method method = SampleRestService.class.getMethod("beanEcho",
-                new Class[] { RestDto.class });
+                new Class[] { SampleRestDto.class });
 
         StringBuffer buff = new StringBuffer();
         buff.append("<beanEcho xmlns=\"http://example.rest.axis2.remoting.seasar.org\">");
-        buff.append("<restDto xmlns=\"\" type=\"org.seasar.remoting.axis2.rest.example.RestDto\">");
+        buff.append("<sampleRestDto xmlns=\"\" type=\"org.seasar.remoting.axis2.rest.example.SampleRestDto\">");
         buff.append("<id>1</id>");
         buff.append("<name></name>");
         buff.append("<msg>テスト</msg>");
-        buff.append("</restDto>");
+        buff.append("</sampleRestDto>");
         buff.append("</beanEcho>");
 
         String expectedData = buff.toString();
 
-        RestDto dto = new RestDto();
+        SampleRestDto dto = new SampleRestDto();
         dto.setId(Integer.valueOf(1));
         dto.setName(null);
         dto.setMessage("テスト");
@@ -76,20 +76,20 @@ public class RESTRequestBuilderTest extends S2TestCase {
     public void testCreateRequestByBean_hasBean2() throws Exception {
 
         Method method = SampleRestService.class.getMethod("beanEcho2",
-                new Class[] { RestDto.class });
+                new Class[] { SampleRestDto.class });
 
         StringBuffer buff = new StringBuffer();
         buff.append("<echo2 xmlns=\"http://example.rest.axis2.remoting.seasar.org\">");
-        buff.append("<restDto xmlns=\"\" type=\"org.seasar.remoting.axis2.rest.example.RestDto\">");
+        buff.append("<sampleRestDto xmlns=\"\" type=\"org.seasar.remoting.axis2.rest.example.SampleRestDto\">");
         buff.append("<id>1</id>");
         buff.append("<name>name</name>");
         buff.append("<msg>test</msg>");
-        buff.append("</restDto>");
+        buff.append("</sampleRestDto>");
         buff.append("</echo2>");
 
         String expectedData = buff.toString();
 
-        RestDto dto = new RestDto();
+        SampleRestDto dto = new SampleRestDto();
         dto.setId(Integer.valueOf(1));
         dto.setName("name");
         dto.setMessage("test");
@@ -101,7 +101,7 @@ public class RESTRequestBuilderTest extends S2TestCase {
     public void testCreateRequestByBean_null() throws Exception {
 
         Method method = SampleRestService.class.getMethod("beanEcho",
-                new Class[] { RestDto.class });
+                new Class[] { SampleRestDto.class });
 
         String expectedData = "<beanEcho xmlns=\"http://example.rest.axis2.remoting.seasar.org\" />";
 
@@ -200,20 +200,20 @@ public class RESTRequestBuilderTest extends S2TestCase {
 
     public void testCreate_bean() throws Exception {
         Method method = SampleRestService.class.getMethod("beanEcho",
-                new Class[] { RestDto.class });
+                new Class[] { SampleRestDto.class });
 
         StringBuffer buff = new StringBuffer();
         buff.append("<beanEcho xmlns=\"http://example.rest.axis2.remoting.seasar.org\">");
-        buff.append("<restDto xmlns=\"\" type=\"org.seasar.remoting.axis2.rest.example.RestDto\">");
+        buff.append("<sampleRestDto xmlns=\"\" type=\"org.seasar.remoting.axis2.rest.example.SampleRestDto\">");
         buff.append("<id>1</id>");
         buff.append("<name>name</name>");
         buff.append("<msg>test</msg>");
-        buff.append("</restDto>");
+        buff.append("</sampleRestDto>");
         buff.append("</beanEcho>");
 
         String expectedData = buff.toString();
 
-        RestDto dto = new RestDto();
+        SampleRestDto dto = new SampleRestDto();
         dto.setId(Integer.valueOf(1));
         dto.setName("name");
         dto.setMessage("test");
@@ -242,9 +242,9 @@ public class RESTRequestBuilderTest extends S2TestCase {
 
     public void testCreate_invalid() throws Exception {
         Method method = SampleRestService.class.getMethod("invalid2",
-                new Class[] { Integer.class, RestDto.class });
+                new Class[] { Integer.class, SampleRestDto.class });
 
-        RestDto dto = new RestDto();
+        SampleRestDto dto = new SampleRestDto();
         dto.setId(Integer.valueOf(1));
         dto.setName("name");
         dto.setMessage("test");
