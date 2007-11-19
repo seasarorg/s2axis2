@@ -26,6 +26,8 @@ import org.apache.axis2.description.AxisService;
  */
 public class S2ServiceObjectSupplier implements ServiceObjectSupplier {
 
+    ServiceHolder serviceHolder = new ServiceHolder();
+
     /**
      * デフォルトコンストラクタ。
      */
@@ -37,10 +39,8 @@ public class S2ServiceObjectSupplier implements ServiceObjectSupplier {
     public Object getServiceObject(AxisService axisService) throws AxisFault {
         Object serviceObject;
 
-        ServiceHolder serviceHolder = new ServiceHolder();
-
         try {
-            serviceObject = serviceHolder.getServiceObject(axisService);
+            serviceObject = this.serviceHolder.getServiceObject(axisService);
         } catch (Exception ex) {
             throw AxisFault.makeFault(ex);
         }

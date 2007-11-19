@@ -15,6 +15,8 @@
  */
 package org.seasar.remoting.axis2.common.dto;
 
+import org.seasar.framework.util.ArrayUtil;
+
 public class Employee {
 
     private Integer        empno;
@@ -97,7 +99,7 @@ public class Employee {
         buf.append(mgr).append(", ");
         buf.append(hiredate).append(", ");
         buf.append(depertment).append(", ");
-        buf.append(roles).append(", ");
+        buf.append(ArrayUtil.toString(roles)).append(", ");
         buf.append("]");
         return buf.toString();
     }
