@@ -68,7 +68,6 @@
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/ognl-2.6.9-patch-20070624.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/poi-3.0-FINAL.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/portlet-api-1.0.jar"/>
-	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/s2axis2-0.4.0-SNAPSHOT.jar" sourcepath="libext/s2axis2-0.4.0-SNAPSHOT-sources.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/s2remoting-1.1.2.jar" sourcepath="libext/s2remoting-1.1.2-sources.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/s2-extension-2.4.17.jar" sourcepath="libext/s2-extension-2.4.17-sources.jar"/>
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/s2-framework-2.4.17.jar" sourcepath="libext/s2-framework-2.4.17-sources.jar"/>
@@ -85,5 +84,6 @@
 	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/XmlSchema-1.3.2.jar"/>
 	<classpathentry kind="lib" path="libext/junit-3.8.2.jar"/>
 	<classpathentry kind="lib" path="libext/junit-addons-1.4.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/s2axis2-0.4.0.jar"/>
 	<classpathentry kind="output" path="src/main/webapp/WEB-INF/classes"/>
 </classpath>

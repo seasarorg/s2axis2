@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="s2axis2-examples" default="dist" basedir=".">
-  <property name="ver" value="0.4.0-SNAPSHOT"/>
+  <property name="ver" value="0.4.0"/>
 
   <path id="axis.classpath">
     <pathelement location="src/main/webapp/WEB-INF/classes" />
