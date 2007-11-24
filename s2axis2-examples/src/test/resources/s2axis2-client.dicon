@@ -3,8 +3,15 @@
     "http://www.seasar.org/dtd/components21.dtd">
 <components>
 
-	<include path="s2axis2.dicon" />
+    <include path="s2axis2.dicon" />
     
+    <!--
+        Axis2のプロパティをカスタマイズしたい場合は、以下の定義を変更してください。
+        
+          AXIS2_REPO : サービスを配置するリポジトリのパス
+          AXIS2_CONF : Axis2のデフォルト定義ファイルのパス
+    -->
+    <!--
     <component name="properties" class="java.util.Properties" autoBinding="none">
         <initMethod name="setProperty">
             <arg>@org.apache.axis2.Constants@AXIS2_REPO</arg>
@@ -15,8 +22,7 @@
             <arg>"src/main/webapp/WEB-INF/conf/axis2.xml"</arg>
         </initMethod>
     </component>
-    
-    <component class="org.apache.axis2.description.AxisService" autoBinding="none"/>
+    -->
     
     <component name="ioRemoting"
                class="org.seasar.remoting.common.interceptor.RemotingInterceptor">
@@ -26,7 +32,6 @@
     <component name="ioConnector"
                class="org.seasar.remoting.axis2.connector.AxisInOutConnector">
         <property name="baseURL">baseURL</property>
-        <property name="properties">properties</property>
         <property name="timeout">60000</property>
     </component>
         
@@ -38,7 +43,6 @@
     <component name="oneWayConnector"
                class="org.seasar.remoting.axis2.connector.AxisOnewayConnector">
         <property name="baseURL">baseURL</property>
-        <property name="properties">properties</property>
     </component>
         
     <component name="baseURL" class="java.net.URL" autoBinding="none">

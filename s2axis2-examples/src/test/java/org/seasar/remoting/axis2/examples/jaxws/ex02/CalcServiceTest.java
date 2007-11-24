@@ -30,27 +30,34 @@ import junit.framework.TestCase;
  */
 public class CalcServiceTest extends TestCase {
 
+    private URL    url;
+
+    private String targetNamespace;
+
+    private String portName;
+
     public CalcServiceTest(String name) {
         super(name);
     }
 
-    public void setUp() {}
+    public void setUp() throws MalformedURLException {
+        this.targetNamespace = "http://ex02.jaxws.examples.axis2.remoting.seasar.org/";
+        this.portName = "CalcService.CalculatorServicePort";
+        this.url = new URL("http://localhost:8080/s2axis2-examples/services/"
+                + this.portName + "?wsdl");
+    }
 
     public void testAdd() throws MalformedURLException {
 
-        URL url = new URL(
-                "http://localhost:8088/s2axis2-examples/services/CalcService.CalculatorServicePort?wsdl");
-        QName serviceName = new QName(
-                "http://ex02.jaxws.examples.axis2.remoting.seasar.org/",
-                "CalcService.CalculatorServicePort");
+        // wsgenでオプションを指定しない場合、serivceNmae,portNameが変わるため、
+        // Axis2のデフォルトの命名規則で明示的に指定。
+        CalcService service = new CalcService(this.url, new QName(
+                this.targetNamespace, this.portName));
+        Calc calc = service.getPort(new QName(targetNamespace, this.portName
+                + "SOAP11port_http"), Calc.class);
 
-        CalcService service = new CalcService(url, serviceName);
-        Calc calc = service.getCalculatorServicePort();
         int actual = calc.add(1, 2);
 
         assertEquals(3, actual);
-        
-        calc.add(2, 3);
     }
-
 }

@@ -19,7 +19,12 @@ import javax.jws.WebMethod;
 import javax.jws.WebService;
 
 @WebService
-public interface JAXWSEcho {
+public class JAXWSEcho {
+
+    public JAXWSEcho() {}
+
     @WebMethod
-    public String echo(int id, String message);
+    public String echo(int id, String message) {
+        return "[id = " + id + "] " + message;
+    }
 }

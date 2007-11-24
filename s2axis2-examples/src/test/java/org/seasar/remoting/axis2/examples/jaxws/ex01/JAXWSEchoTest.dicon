@@ -3,9 +3,15 @@
 	"http://www.seasar.org/dtd/components21.dtd">
 <components>
 	<include path="s2axis2-client.dicon"/>
+	
+    <component name="jaxwsRemoting"
+               class="org.seasar.remoting.common.interceptor.RemotingInterceptor">
+        <property name="connector">ioConnector</property>
+        <property name="forceRemote">true</property>
+    </component>
 
-    <component name="JAXWSEchoService.JAXWSEchoServicePort"
+    <component name="JAXWSEchoService.JAXWSEchoPort"
         class="org.seasar.remoting.axis2.examples.jaxws.ex01.JAXWSEcho">
-		<aspect>ioRemoting</aspect>
+		<aspect pointcut="echo">jaxwsRemoting</aspect>
 	</component>
 </components>

@@ -2,7 +2,7 @@
 <!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
 	"http://www.seasar.org/dtd/components21.dtd">
 <components>
-	<component class="org.seasar.remoting.axis2.examples.jaxws.ex01.JAXWSEchoService">
+	<component class="org.seasar.remoting.axis2.examples.jaxws.ex01.JAXWSEcho">
 		<meta name="axis-service"/>
 	</component>
 </components>
