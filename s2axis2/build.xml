@@ -1,38 +1,58 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="s2axis2" default="dist" basedir=".">
-  <property name="ver" value="0.4.0"/>
+	<tstamp>
+		<format property="releaseDate" pattern="yyyy-MM-dd" locale="ja,JP"/>
+	</tstamp>
+	
+	<property name="project.name" value="s2axis2"/>
+	<property name="ver" value="0.4.0"/>
+	<property name="www.dir" value="../s2axis-www"/>
+	<property name="release.dir" value="${www.dir}/download/${releaseDate}"/>
+	
+	<target name="dist">
+		<zip zipfile="target/${project.name}-${ver}.zip">
+			<zipfileset prefix="${project.name}" dir=".">
+				<exclude name=".settings/**"/>
+				<exclude name="target/**"/>
+				<exclude name="libext/**"/>
+				<exclude name="repo/**"/>
+				<exclude name="jcoverage.ser"/>
+			</zipfileset>
+			<zipfileset prefix="${project.name}/lib" dir="target">
+				<include name="${project.name}-${ver}.jar"/>
+			</zipfileset>
+			<!--
+			<zipfileset prefix="s2axis2/resources" dir="src/test/resources">
+				<include name="log4j.properties"/>
+			</zipfileset>
+			-->
+			<zipfileset prefix="${project.name}/doc" dir="${www.dir}">
+				<include name="ja/**"/>
+			</zipfileset>
+		</zip>
+		
+		<zip zipfile="target/${project.name}-${ver}-sources.zip">
+			<zipfileset prefix="${project.name}-sources" dir="src/main/java" />
+			<zipfileset prefix="${project.name}-sources" dir="src/main/resources" />
+		</zip>
+		
+		<mkdir dir="${release.dir}" />
+		<copy todir="${release.dir}">
+			<fileset dir="target">
+				<include name="${project.name}-${ver}*.zip"/>
+			</fileset>
+		</copy>
+	</target>
 
-  <target name="dist">
-    <zip zipfile="target/s2axis2-${ver}.zip">
-      <zipfileset prefix="s2axis2" dir=".">
-        <exclude name="**/target/**"/>
-        <exclude name=".settings"/>
-        <exclude name=".settings/**"/>
-      	<exclude name="libext/**"/>
-      </zipfileset>
-      <zipfileset prefix="s2axis2/lib" dir="target">
-        <include name="s2axis2-${ver}.jar"/>
-      </zipfileset>
-      <zipfileset prefix="s2axis2/resources" dir="src/test/resources">
-        <include name="log4j.properties"/>
-      </zipfileset>
-      <zipfileset prefix="s2axis2/doc" dir="../s2axis-www">
-        <exclude name="**/download/**"/>
-        <exclude name=".project"/>
-      </zipfileset>
-    </zip>
-  </target>
-
-  <target name="jar">
-    <jar destfile="target/s2axis2-${ver}.jar"
-      basedir="target/classes"
-      excludes="**/*Test.class"/>
-    <!--
-    <jar destfile="target/axis2-patch.jar"
-      basedir="target/classes"
-      includes="**/org/apache/axis2/**"/>
-    -->
-  </target>
+	<target name="jar">
+		<jar destfile="target/${project.name}-${ver}.jar"
+			basedir="target/classes"
+			excludes="**/*Test.class"/>
+		<!--
+		<jar destfile="target/axis2-patch.jar"
+			basedir="target/classes"
+			includes="**/org/apache/axis2/**"/>
+		-->
+	</target>
 
 </project>
-
