@@ -8,6 +8,7 @@
         <exclude name="**/target/**"/>
         <exclude name=".settings"/>
         <exclude name=".settings/**"/>
+      	<exclude name="libext/**"/>
       </zipfileset>
       <zipfileset prefix="s2axis2/lib" dir="target">
         <include name="s2axis2-${ver}.jar"/>
