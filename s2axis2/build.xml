@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="s2axis2" default="dist" basedir=".">
-  <property name="ver" value="0.4.0-SNAPSHOT"/>
+  <property name="ver" value="0.4.0"/>
 
   <target name="dist">
     <zip zipfile="target/s2axis2-${ver}.zip">
