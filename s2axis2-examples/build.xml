@@ -1,24 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="s2axis2-examples" default="dist" basedir=".">
-  <property name="ver" value="0.4.0"/>
+	<tstamp>
+		<format property="releaseDate" pattern="yyyy-MM-dd" locale="ja,JP"/>
+	</tstamp>
+	
+	<property name="project.name" value="s2axis2-examples"/>
+	<property name="ver" value="0.4.0"/>
+	<property name="release.dir" value="../s2axis-www/download/${releaseDate}"/>
 
-  <path id="axis.classpath">
-    <pathelement location="src/main/webapp/WEB-INF/classes" />
-    <fileset dir="src/main/webapp/WEB-INF/lib">
-      <include name="**/*.jar" />
-    </fileset>
-  </path>
+	<path id="axis.classpath">
+		<pathelement location="src/main/webapp/WEB-INF/classes" />
+		<fileset dir="src/main/webapp/WEB-INF/lib">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
 
-  <taskdef resource="axis-tasks.properties" classpathref="axis.classpath" />
+	<taskdef resource="axis-tasks.properties" classpathref="axis.classpath" />
 
-  <target name="dist">
-    <mkdir dir="target" />
-    <zip destfile="target/s2axis2-examples-${ver}.zip">
-    <zipfileset dir="."
-                prefix="s2axis2-examples"
-                includes="* .settings/** src/** libext/** licenses/**"
-                excludes="target work"/>
-    </zip>
+	<target name="dist">
+		<zip destfile="target/${project.name}-${ver}.zip">
+			<zipfileset prefix="${project.name}" dir=".">
+				<exclude name="target/**"/>
+				<exclude name="work/**"/>
+				<exclude name="repo/**"/>
+			</zipfileset>
+		</zip>
+		
+		<mkdir dir="${release.dir}" />
+		<copy todir="${release.dir}">
+			<fileset dir="target">
+				<include name="${project.name}-${ver}*.zip"/>
+			</fileset>
+		</copy>
   </target>
 
 </project>
