@@ -15,29 +15,34 @@
  */
 package org.seasar.remoting.axis2.receivers;
 
+import org.seasar.framework.exception.SRuntimeException;
+
 /**
+ * 指定されたサービスが見つからない場合に発生する例外です。
  * 
  * @author takanori
- * 
  */
-public class NotFoundServiceException extends Exception {
+public class NotFoundServiceException extends SRuntimeException {
 
     private static final long serialVersionUID = 1L;
 
-    public NotFoundServiceException() {
-        super();
+    /**
+     * この例外を作成します。
+     * 
+     * @param serviceName サービス名
+     */
+    public NotFoundServiceException(String serviceName) {
+        this(serviceName, null);
     }
 
-    public NotFoundServiceException(String arg0) {
-        super(arg0);
-    }
-
-    public NotFoundServiceException(Throwable arg0) {
-        super(arg0);
-    }
-
-    public NotFoundServiceException(String arg0, Throwable arg1) {
-        super(arg0, arg1);
+    /**
+     * この例外を作成します。
+     * 
+     * @param serviceName サービス名
+     * @param cause 原因
+     */
+    public NotFoundServiceException(String serviceName, Throwable cause) {
+        super("EAXS0006", new Object[] { serviceName }, cause);
     }
 
 }

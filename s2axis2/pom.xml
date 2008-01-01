@@ -9,7 +9,7 @@
   <artifactId>s2axis2</artifactId>
   <packaging>jar</packaging>
   <name>S2Axis2 Project</name>
-  <version>0.4.0</version>
+  <version>0.5.0-SNAPSHOT</version>
   <description></description>
   <url>http://s2axis.seasar.org/</url>
   <issueManagement>

@@ -20,7 +20,7 @@ import org.apache.axis2.ServiceObjectSupplier;
 import org.apache.axis2.description.AxisService;
 
 /**
- * S2コンテナで管理されるオブジェクトを、 Axis2で利用するMessageReciverに提供します。
+ * S2コンテナで管理されるオブジェクトを、 Axis2で利用するMessageReceiverに提供します。
  * 
  * @author takanori
  */

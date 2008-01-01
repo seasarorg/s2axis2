@@ -54,6 +54,7 @@ public class S2ServiceObjectSupplierTest extends S2TestCase {
         Class serviceClass = ServiceMock.class;
 
         AxisService service = new AxisService();
+        service.setName("TestService");
         service.setClassLoader(Thread.currentThread().getContextClassLoader());
         service.addParameter(new Parameter(Constants.SERVICE_CLASS,
                 serviceClass.getName()));

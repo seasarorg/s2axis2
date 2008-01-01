@@ -24,7 +24,7 @@ import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 import org.seasar.remoting.axis2.util.AxisServiceUtil;
 
 /**
- * MessageReciverで利用される、サービスオブジェクトを返すクラスです。
+ * MessageReceiverで利用される、サービスオブジェクトを返すクラスです。
  * 
  * @author takanori
  */
@@ -37,7 +37,12 @@ public class ServiceHolder {
     /**
      * デフォルトのコンストラクタ。
      */
-    public ServiceHolder() {
+    public ServiceHolder() {}
+
+    /**
+     * このオブジェクトを初期化します。
+     */
+    public void init() {
         this.container = SingletonS2ContainerFactory.getContainer();
     }
 
@@ -47,10 +52,8 @@ public class ServiceHolder {
      * 
      * @param msgContext MessageContext
      * @return サービスオブジェクト
-     * @throws NotFoundServiceException サービスオブジェクトが見つからない場合
      */
-    public Object getServiceObject(AxisService service)
-            throws NotFoundServiceException {
+    public Object getServiceObject(AxisService service) {
 
         Object serviceObj;
         try {
@@ -59,16 +62,20 @@ public class ServiceHolder {
 
             if (implInfoParam != null) {
                 Class implClass = Class.forName(
-                        ((String) implInfoParam.getValue()).trim(), true,
+                        ((String)implInfoParam.getValue()).trim(), true,
                         classLoader);
 
                 // S2コンテナが保持しているオブジェクトを取得する。
                 serviceObj = getComponent(service, implClass);
             } else {
-                throw new NotFoundServiceException("Can't find SERVICE_CLASS.");
+                throw new NotFoundServiceException(service.getName());
             }
         } catch (Exception ex) {
-            throw new NotFoundServiceException(ex);
+            if (ex instanceof NotFoundServiceException) {
+                throw (NotFoundServiceException)ex;
+            } else {
+                throw new NotFoundServiceException(service.getName(), ex);
+            }
         }
 
         return serviceObj;
@@ -81,6 +88,10 @@ public class ServiceHolder {
      * @return コンポーネント
      */
     protected Object getComponent(AxisService service, Class clazz) {
+
+        if (this.container == null) {
+            init();
+        }
 
         Object component;
 
