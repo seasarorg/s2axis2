@@ -16,7 +16,7 @@ public class ServiceXmlDeployerTest extends S2TestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
-        include("s2axis2-test-servicexml.dicon");
+        include("s2axis2-test-servicesxml.dicon");
 
         this.configCtx = new ConfigurationContext(new AxisConfiguration());
     }

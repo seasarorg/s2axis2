@@ -24,7 +24,7 @@ package org.seasar.remoting.axis2;
 public interface S2AxisConstants {
 
     /**
-     * diconファイルで、service.xmlをデプロイするを指示するために <code>&lt;meta&gt;</code> 要素に指定する
+     * diconファイルで、services.xmlをデプロイするを指示するために <code>&lt;meta&gt;</code> 要素に指定する
      * <code>name</code> 属性値のローカル名(接頭辞 <code>"axis-"</code> の後ろ)です。
      */
     public static final String META_DEPLOY                = "deploy";
@@ -35,23 +35,14 @@ public interface S2AxisConstants {
      */
     public static final String META_SERVICE               = "service";
 
-    /**
-     * diconファイルで、コンポーネントがAxisハンドラであることを示すために <code>&lt;meta&gt;</code>
-     * 要素に指定する <code>name</code> 属性値のローカル名(接頭辞 <code>"axis-"</code> の後ろ)です。
-     */
-    public static final String META_HANDLER               = "handler";
-
-    /** AxisServletのサーブレット名 */
-    public static final String AXIS_SERVLET               = "AxisServlet";
-
     /** サーブレットコンテキストからConfigurationContextを取得するためのキー */
     public static final String ATTR_CONFIGURATION_CONTEXT = "CONFIGURATION_CONTEXT";
 
     /** サービスのDeployerのキー : service class */
     public static final String DEPLOYER_SERCIE_CLASS      = "serviceClass";
 
-    /** サービスのDeployerのキー ： service.xml */
-    public static final String DEPLOYER_SERICE_XML        = "serviceXml";
+    /** サービスのDeployerのキー ： services.xml */
+    public static final String DEPLOYER_SERICES_XML        = "servicesXml";
 
     /** サービスのDeployerのキー ： jax-ws */
     public static final String DEPLOYER_JWS               = "jws";

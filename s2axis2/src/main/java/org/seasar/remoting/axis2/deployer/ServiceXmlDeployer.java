@@ -24,7 +24,7 @@ import org.seasar.framework.container.MetaDef;
 import org.seasar.remoting.axis2.deployment.XmlBasedServiceBuilder;
 
 /**
- * Axis2のservice.xmlファイルに従って、サービスをデプロイします。<br>
+ * Axis2のservices.xmlファイルに従って、サービスをデプロイします。<br>
  * 生成されたサービスは、デプロイ時に指定される<code>ConfigurationContext</code>が保持する<code>AxisConfiguration</code>に登録されます。<br>
  * そのようにすることで、<code>AxisServlet</code>がサービスをデプロイします。
  * 

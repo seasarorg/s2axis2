@@ -106,7 +106,7 @@ public class AxisDeployer {
             }
 
             if (serviceDeployer == null) {
-                // TODO throw exception
+                throw new DeployFailedException("");
             }
             serviceDeployer.deploy(this.configCtx, componentDef, serviceMetaDef);
         }
@@ -115,7 +115,7 @@ public class AxisDeployer {
     }
 
     /**
-     * コンテナに<code>service.xml</code>での定義がなされているかどうかを確認し、
+     * コンテナに<code>services.xml</code>での定義がなされているかどうかを確認し、
      * 定義が存在する場合は、サービスとしてデプロイします。
      * 
      * @param container コンテナ
@@ -124,7 +124,7 @@ public class AxisDeployer {
         final MetaDef[] metaDefs = getMetaDefs(container,
                 S2AxisConstants.META_DEPLOY);
 
-        AxisSerivceDeployer serviceDeployer = this.deployerMap.get(S2AxisConstants.DEPLOYER_SERICE_XML);
+        AxisSerivceDeployer serviceDeployer = this.deployerMap.get(S2AxisConstants.DEPLOYER_SERICES_XML);
 
         for (int i = 0; metaDefs != null && i < metaDefs.length; ++i) {
             serviceDeployer.deploy(this.configCtx, null, metaDefs[i]);

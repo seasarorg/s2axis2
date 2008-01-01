@@ -33,7 +33,7 @@
           <arg>serviceComponentDeployer</arg>
         </initMethod>
         <initMethod name="addServiceDeployer">
-          <arg>@org.seasar.remoting.axis2.S2AxisConstants@DEPLOYER_SERICE_XML</arg>
+          <arg>@org.seasar.remoting.axis2.S2AxisConstants@DEPLOYER_SERICES_XML</arg>
           <arg>serviceXmlDeployer</arg>
         </initMethod>
         <initMethod name="addServiceDeployer">
