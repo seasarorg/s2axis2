@@ -25,7 +25,7 @@ import org.seasar.remoting.axis2.deployment.JAXWSServiceBuilder;
  * 
  * @author takanori
  */
-public class JAXWSDeployer extends AxisSerivceDeployer {
+public class JAXWSDeployer extends AxisServiceDeployer {
 
     private JAXWSServiceBuilder jaxwsServiceBuilder;
 

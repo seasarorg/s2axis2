@@ -30,7 +30,7 @@ import org.seasar.remoting.axis2.deployment.ComponentBasedServiceBuilder;
  * 
  * @author takanori
  */
-public class ServiceComponentDeployer extends AxisSerivceDeployer {
+public class ServiceComponentDeployer extends AxisServiceDeployer {
 
     private ComponentBasedServiceBuilder componentBasedServiceBuilder;
 

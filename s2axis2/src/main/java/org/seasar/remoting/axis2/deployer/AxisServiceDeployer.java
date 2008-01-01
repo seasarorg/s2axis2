@@ -28,9 +28,9 @@ import org.seasar.framework.log.Logger;
  * 
  * @author takanori
  */
-public abstract class AxisSerivceDeployer {
+public abstract class AxisServiceDeployer {
 
-    private static final Logger logger = Logger.getLogger(AxisSerivceDeployer.class);
+    private static final Logger logger = Logger.getLogger(AxisServiceDeployer.class);
 
     /**
      * 指定されたコンポーネントをデプロイします。

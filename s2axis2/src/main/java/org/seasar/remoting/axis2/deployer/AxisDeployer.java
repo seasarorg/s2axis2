@@ -46,7 +46,7 @@ public class AxisDeployer {
 
     protected ConfigurationContext             configCtx         = null;
 
-    protected Map<String, AxisSerivceDeployer> deployerMap       = new HashMap<String, AxisSerivceDeployer>();
+    protected Map<String, AxisServiceDeployer> deployerMap       = new HashMap<String, AxisServiceDeployer>();
 
     /**
      * デフォルトコンストラクタです。
@@ -98,7 +98,7 @@ public class AxisDeployer {
             Class serviceClass = componentDef.getComponentClass();
             WebService webService = (WebService)serviceClass.getAnnotation(WebService.class);
 
-            AxisSerivceDeployer serviceDeployer;
+            AxisServiceDeployer serviceDeployer;
             if (webService != null) {
                 serviceDeployer = this.deployerMap.get(S2AxisConstants.DEPLOYER_JWS);
             } else {
@@ -124,7 +124,7 @@ public class AxisDeployer {
         final MetaDef[] metaDefs = getMetaDefs(container,
                 S2AxisConstants.META_DEPLOY);
 
-        AxisSerivceDeployer serviceDeployer = this.deployerMap.get(S2AxisConstants.DEPLOYER_SERICES_XML);
+        AxisServiceDeployer serviceDeployer = this.deployerMap.get(S2AxisConstants.DEPLOYER_SERICES_XML);
 
         for (int i = 0; metaDefs != null && i < metaDefs.length; ++i) {
             serviceDeployer.deploy(this.configCtx, null, metaDefs[i]);
@@ -191,7 +191,7 @@ public class AxisDeployer {
         return configCtx;
     }
 
-    public void addServiceDeployer(String key, AxisSerivceDeployer deployer) {
+    public void addServiceDeployer(String key, AxisServiceDeployer deployer) {
         this.deployerMap.put(key, deployer);
     }
 

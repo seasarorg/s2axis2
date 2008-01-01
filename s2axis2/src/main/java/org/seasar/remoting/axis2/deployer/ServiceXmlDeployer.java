@@ -30,7 +30,7 @@ import org.seasar.remoting.axis2.deployment.XmlBasedServiceBuilder;
  * 
  * @author takanori
  */
-public class ServiceXmlDeployer extends AxisSerivceDeployer {
+public class ServiceXmlDeployer extends AxisServiceDeployer {
 
     private XmlBasedServiceBuilder xmlBasedServiceBuilder;
 
