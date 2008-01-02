@@ -55,8 +55,6 @@ public class S2ServiceBuilder {
         ServiceBuilder serviceBuilder = new ServiceBuilder(this.configCtx,
                 service);
 
-        // TODO WSDLの対応
-
         try {
             service = serviceBuilder.populateService(rootElement);
         } catch (DeploymentException ex) {

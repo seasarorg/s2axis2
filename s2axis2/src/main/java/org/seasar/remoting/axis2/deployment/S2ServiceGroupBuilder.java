@@ -59,8 +59,6 @@ public class S2ServiceGroupBuilder {
         ServiceGroupBuilder serviceGroupBuilder = new ServiceGroupBuilder(
                 rootElement, new HashMap(), this.configCtx);
 
-        // TODO WSDLの対応
-
         List<AxisService> serviceList;
         try {
             serviceList = serviceGroupBuilder.populateServiceGroup(serviceGroup);
