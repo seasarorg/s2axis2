@@ -15,10 +15,13 @@
  */
 package org.seasar.remoting.axis2.util;
 
+import java.io.File;
+
 import org.apache.axis2.Constants;
 import org.seasar.extension.unit.S2TestCase;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.S2Container;
+import org.seasar.remoting.axis2.mock.impl.ServiceMockImpl;
 
 public class AxisServiceUtilTest extends S2TestCase {
 
@@ -59,5 +62,25 @@ public class AxisServiceUtilTest extends S2TestCase {
         String axisScope = AxisServiceUtil.getAxisScope(componentDef.getInstanceDef());
 
         assertEquals(Constants.SCOPE_REQUEST, axisScope);
+    }
+
+    public void testGetWSDLResource_fromServiceClass() {
+        File wsdlFile = AxisServiceUtil.getWSDLResource("ServiceMockFromClass",
+                ServiceMockImpl.class.getName());
+        assertNotNull(wsdlFile);
+        assertTrue(wsdlFile.exists());
+    }
+
+    public void testGetWSDLResource_fromMetaInf() {
+        File wsdlFile = AxisServiceUtil.getWSDLResource("ServiceMockFromMetaInf",
+                ServiceMockImpl.class.getName());
+        assertNotNull(wsdlFile);
+        assertTrue(wsdlFile.exists());
+    }
+
+    public void testGetWSDLResource_notExist() {
+        File wsdlFile = AxisServiceUtil.getWSDLResource("ServiceMockDummy",
+                ServiceMockImpl.class.getName());
+        assertNull(wsdlFile);
     }
 }

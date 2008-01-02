@@ -83,6 +83,23 @@ public class ComponentBasedServiceBuilderImpl extends AbstractServiceBuilder
         buildMessageBuilder(axisConfig);
         buildServiceParameter(service);
 
+        // Parameter
+        Map<String, Object> parameterMap = serviceDef.getParameterMap();
+        if (parameterMap != null && parameterMap.size() > 0) {
+            try {
+                Set<String> keySet = parameterMap.keySet();
+                String[] keyArray = (String[])keySet.toArray(new String[0]);
+                for (int index = 0; index < keyArray.length; index++) {
+                    String name = keyArray[index];
+                    Object value = parameterMap.get(name);
+                    service.addParameter(name, value);
+                }
+            } catch (AxisFault ex) {
+                throw new DeployFailedException("EAXS0003",
+                        new Object[] { service.getName() }, ex);
+            }
+        }
+
         // ServiceClass
         Class serviceClass = componentDef.getComponentClass();
         String className = serviceClass.getName();

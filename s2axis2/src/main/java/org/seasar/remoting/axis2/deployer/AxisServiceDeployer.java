@@ -15,13 +15,30 @@
  */
 package org.seasar.remoting.axis2.deployer;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
+import javax.xml.stream.XMLStreamException;
+
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMException;
+import org.apache.axiom.om.OMNamespace;
 import org.apache.axis2.AxisFault;
+import org.apache.axis2.Constants;
 import org.apache.axis2.context.ConfigurationContext;
 import org.apache.axis2.description.AxisService;
+import org.apache.axis2.description.WSDL11ToAxisServiceBuilder;
+import org.apache.axis2.description.WSDL20ToAxisServiceBuilder;
+import org.apache.axis2.description.WSDL2Constants;
+import org.apache.axis2.description.WSDLToAxisServiceBuilder;
 import org.apache.axis2.engine.AxisConfiguration;
+import org.apache.axis2.util.XMLUtils;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.MetaDef;
 import org.seasar.framework.log.Logger;
+import org.seasar.remoting.axis2.util.AxisServiceUtil;
 
 /**
  * コンポーネントをAxisにデプロイする抽象クラスです。
@@ -51,6 +68,9 @@ public abstract class AxisServiceDeployer {
      */
     protected void deployAxisService(AxisConfiguration axisConfig,
                                      AxisService axisService) {
+
+        setupCustomWSDL(axisService);
+
         try {
             axisService.setWsdlFound(true);
             axisConfig.addService(axisService);
@@ -63,5 +83,68 @@ public abstract class AxisServiceDeployer {
             throw new DeployFailedException("EAXS0002",
                     new Object[] { axisService.getName() }, ex);
         }
+    }
+
+    /**
+     * 
+     * @param axisService
+     */
+    protected void setupCustomWSDL(AxisService axisService) {
+
+        if (axisService == null || !axisService.isUseUserWSDL()) {
+            return;
+        }
+
+        String serviceName = axisService.getName();
+        String serviceClassName = (String)axisService.getParameterValue(Constants.SERVICE_CLASS);
+        File wsdlFile = AxisServiceUtil.getWSDLResource(serviceName,
+                serviceClassName);
+
+        if (wsdlFile == null) {
+            throw new DeployFailedException("EAXS0009",
+                    new Object[] { serviceName });
+        }
+
+        String wsdlUri = wsdlFile.toURI().toString();
+
+        try {
+            InputStream in = new FileInputStream(wsdlFile);
+            OMNamespace documentElementNS = ((OMElement)XMLUtils.toOM(in)).getNamespace();
+
+            String nsURI = documentElementNS.getNamespaceURI();
+            WSDLToAxisServiceBuilder wsdlToAxisServiceBuilder;
+
+            // WSDLのバージョンに合わせて処理する。
+            if (Constants.NS_URI_WSDL11.equals(nsURI)) {
+                // WSDL 1.1
+                InputStream wsdlIn = new FileInputStream(wsdlFile);
+                wsdlToAxisServiceBuilder = new WSDL11ToAxisServiceBuilder(
+                        wsdlIn, axisService);
+            } else if (WSDL2Constants.WSDL_NAMESPACE.equals(nsURI)) {
+                // WSDL 2.0
+                wsdlToAxisServiceBuilder = new WSDL20ToAxisServiceBuilder(
+                        wsdlUri, axisService);
+            } else {
+                throw new DeployFailedException("EAXS0010", new Object[] {
+                        serviceName, wsdlFile });
+            }
+
+            wsdlToAxisServiceBuilder.setBaseUri(wsdlUri);
+            wsdlToAxisServiceBuilder.populateService();
+        } catch (FileNotFoundException ex) {
+            throw new DeployFailedException("EAXS0010", new Object[] {
+                    serviceName, wsdlFile });
+        } catch (OMException ex) {
+            throw new DeployFailedException("EAXS0010", new Object[] {
+                    serviceName, wsdlFile });
+        } catch (XMLStreamException ex) {
+            throw new DeployFailedException("EAXS0010", new Object[] {
+                    serviceName, wsdlFile });
+        } catch (AxisFault ex) {
+            throw new DeployFailedException("EAXS0010", new Object[] {
+                    serviceName, wsdlFile });
+        }
+
+        logger.log("DAXS0008", new Object[] { serviceName, wsdlFile });
     }
 }

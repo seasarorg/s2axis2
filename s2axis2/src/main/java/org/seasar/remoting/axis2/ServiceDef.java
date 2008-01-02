@@ -42,19 +42,22 @@ import java.util.Map;
 public class ServiceDef {
 
     /** サービスとして公開するクラス／インタフェースの型 */
-    private Class              serviceType       = null;
+    private Class               serviceType       = null;
 
     /** スキーマ定義をする際に対象となる名前空間 */
-    private String             targetNamespace   = null;
+    private String              targetNamespace   = null;
 
     /** スキーマの名前空間 */
-    private String             schemaNamespace   = null;
+    private String              schemaNamespace   = null;
 
     /** サービスで公開しないメソッドのリスト */
-    private List<String>       excludeOperations = new ArrayList<String>();
+    private List<String>        excludeOperations = new ArrayList<String>();
 
     /** サービスがデフォルトで使用するMessageReceiverのマップ */
-    private Map<String, Class> messageReceivers  = new HashMap<String, Class>();
+    private Map<String, Class>  messageReceivers  = new HashMap<String, Class>();
+
+    /** サービスに適用するパラメータのマップ */
+    private Map<String, Object> parameterMap      = new HashMap<String, Object>();
 
     /**
      * コンストラクタ。
@@ -167,6 +170,29 @@ public class ServiceDef {
         }
 
         this.messageReceivers.put(mep, receiverClass);
+    }
+
+    /**
+     * サービスに適用するパラメータのマップを取得します。
+     * 
+     * @return パラメータのマップ
+     */
+    public Map<String, Object> getParameterMap() {
+        return parameterMap;
+    }
+
+    /**
+     * サービスに適用するパラメータを追加します。
+     * 
+     * @param name パラメータ名
+     * @param value パラメータ値
+     */
+    public void addParameter(String name, Object value) {
+        if (this.parameterMap == null) {
+            this.parameterMap = new HashMap<String, Object>();
+        }
+
+        this.parameterMap.put(name, value);
     }
 
 }

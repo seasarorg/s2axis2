@@ -15,8 +15,13 @@
  */
 package org.seasar.remoting.axis2.util;
 
+import java.io.File;
+
 import org.apache.axis2.Constants;
+import org.apache.axis2.deployment.DeploymentConstants;
 import org.seasar.framework.container.InstanceDef;
+import org.seasar.framework.util.ClassUtil;
+import org.seasar.framework.util.ResourceUtil;
 
 /**
  * AxisServiceに関するユーティリティです。
@@ -43,7 +48,7 @@ public class AxisServiceUtil {
      * </tr>
      * <tr>
      * <td>session</td>
-     * <td>transport session</td>
+     * <td>transportsession</td>
      * </tr>
      * <tr>
      * <td>request</td>
@@ -83,6 +88,68 @@ public class AxisServiceUtil {
         }
 
         return axisScope;
+    }
+
+    /**
+     * WSDLファイルを取得します。<br>
+     * WSDLファイルは、以下のパターンに従って取得します。
+     * 
+     * <pre>
+     * <i>サービスクラスが存在するパス</i>/<i>サービス名</i>.wsdl
+     * META-INF/<i>サービス名</i>.wsdl
+     * </pre>
+     * 
+     * WSDLファイルが存在しない場合は、nullを返します。
+     * 
+     * @param serviceName サービス名
+     * @param serviceClassName サービスクラス名
+     * @return WSDLファイル
+     */
+    public static File getWSDLResource(String serviceName,
+                                       String serviceClassName) {
+
+        String wsdlName = serviceName + DeploymentConstants.SUFFIX_WSDL;
+        File wsdlFile;
+
+        wsdlFile = getWSDLFromServiceClass(wsdlName, serviceClassName);
+        if (wsdlFile == null) {
+            wsdlFile = getWSDLFromMetaInf(wsdlName);
+        }
+
+        return wsdlFile;
+    }
+
+    /**
+     * 指定されたサービスから、WSDLファイルを取得します。
+     * 
+     * @param wsdlName WSDLファイル名
+     * @param serviceClassName サービスクラス名
+     * @return WSDLファイル
+     */
+    private static File getWSDLFromServiceClass(String wsdlName,
+                                                String serviceClassName) {
+        String classResourcePath = ClassUtil.getResourcePath(serviceClassName);
+        String parentPath = (new File(classResourcePath)).getParent();
+
+        String path = parentPath + File.separator + wsdlName;
+        File file = ResourceUtil.getResourceAsFileNoException(path);
+
+        return file;
+    }
+
+    /**
+     * META-INF配下から、WSDLファイルを取得します。
+     * 
+     * @param wsdlName WSDLファイル名
+     * @return WSDLファイル
+     */
+    private static File getWSDLFromMetaInf(String wsdlName) {
+        String parentPath = DeploymentConstants.META_INF;
+
+        String path = parentPath + File.separator + wsdlName;
+        File file = ResourceUtil.getResourceAsFileNoException(path);
+
+        return file;
     }
 
 }
