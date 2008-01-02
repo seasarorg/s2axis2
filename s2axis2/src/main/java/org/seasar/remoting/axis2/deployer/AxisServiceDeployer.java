@@ -75,10 +75,7 @@ public abstract class AxisServiceDeployer {
             axisService.setWsdlFound(true);
             axisConfig.addService(axisService);
 
-            if (logger.isDebugEnabled()) {
-                logger.log("DAXS0001", new Object[] { axisService.getName() });
-            }
-
+            logger.log("IAXS0001", new Object[] { axisService.getName() });
         } catch (AxisFault ex) {
             throw new DeployFailedException("EAXS0002",
                     new Object[] { axisService.getName() }, ex);
@@ -145,6 +142,8 @@ public abstract class AxisServiceDeployer {
                     serviceName, wsdlFile });
         }
 
-        logger.log("DAXS0008", new Object[] { serviceName, wsdlFile });
+        if (logger.isDebugEnabled()) {
+            logger.log("DAXS0008", new Object[] { serviceName, wsdlFile });
+        }
     }
 }
