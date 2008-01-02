@@ -2,7 +2,8 @@
 <!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
 	"http://www.seasar.org/dtd/components21.dtd">
 <components>
-	<meta name="axis-deploy">
-		"org/seasar/remoting/axis2/examples/ex05/services.xml"
-	</meta>
+	<component name="FileUpload"
+		class="org.seasar.remoting.axis2.examples.rest.fileUpload.impl.FileUploadImpl">
+		<meta name="axis-service"/>
+	</component>
 </components>

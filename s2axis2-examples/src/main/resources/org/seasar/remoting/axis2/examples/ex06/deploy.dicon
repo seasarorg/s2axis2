@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container 2.4//EN"
+	"http://www.seasar.org/dtd/components24.dtd">
+<components>
+	<component name="EchoFormCustomWSDL" class="org.seasar.remoting.axis2.examples.ex01.EchoImpl">
+		<meta name="axis-service">
+			<component class="org.seasar.remoting.axis2.ServiceDef">
+				<initMethod name="addParameter">
+					<arg>"useOriginalwsdl"</arg>
+					<arg>"true"</arg>
+				</initMethod>
+				<initMethod name="addParameter">
+					<arg>"modifyUserWSDLPortAddress"</arg>
+					<arg>"false"</arg>
+				</initMethod>
+			</component>
+		</meta>
+	</component>
+
+	<meta name="axis-deploy">
+		"org/seasar/remoting/axis2/examples/ex06/services.xml"
+	</meta>
+</components>
