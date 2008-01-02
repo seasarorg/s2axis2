@@ -17,10 +17,13 @@ package org.seasar.remoting.axis2.connector;
 
 import java.lang.reflect.Method;
 
+import org.apache.axis2.client.Options;
+
 public class RPCConnectorMock extends AbstractRPCConnector {
 
     @Override
-    protected Object execute(Method method, Object[] args) throws Exception {
+    protected Object execute(Method method, Object[] args, Options options)
+            throws Exception {
         return null;
     }
 

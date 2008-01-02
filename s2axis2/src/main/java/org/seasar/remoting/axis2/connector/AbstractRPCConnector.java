@@ -25,13 +25,11 @@ import org.apache.axis2.AxisFault;
 import org.apache.axis2.addressing.EndpointReference;
 import org.apache.axis2.client.Options;
 import org.apache.axis2.databinding.utils.BeanUtil;
-import org.apache.axis2.engine.AxisConfiguration;
 import org.apache.axis2.engine.DefaultObjectSupplier;
 import org.apache.axis2.rpc.client.RPCServiceClient;
 import org.apache.axis2.transport.http.HTTPConstants;
-import org.seasar.remoting.axis2.builder.S2XFormURLEncodedBuilder;
+import org.seasar.framework.util.SerializeUtil;
 import org.seasar.remoting.axis2.client.S2AxisClientException;
-import org.seasar.remoting.axis2.transport.http.S2XFormURLEncodedFormatter;
 import org.seasar.remoting.axis2.xml.OMElementDeserializer;
 import org.seasar.remoting.axis2.xml.XMLBindException;
 
@@ -41,6 +39,9 @@ import org.seasar.remoting.axis2.xml.XMLBindException;
  * @author takanori
  */
 public abstract class AbstractRPCConnector extends AbstractAxisConnector {
+
+    /** 初期化フラグ */
+    protected boolean                           isInitialized   = false;
 
     /** サービスの応答メッセージからオブジェクトを生成するデシアライザのマップ */
     protected Map<Class, OMElementDeserializer> deserializerMap = new HashMap<Class, OMElementDeserializer>();
@@ -52,11 +53,13 @@ public abstract class AbstractRPCConnector extends AbstractAxisConnector {
 
     /**
      * このオブジェクトの初期化を行います。
-     * 
-     * @param method サービスのメソッド
-     * @throws AxisFault
      */
-    protected void init(Method method) throws AxisFault {
+    protected void init() {
+
+        if (this.isInitialized) {
+            return;
+        }
+
         if (super.options == null) {
             super.options = new Options();
         }
@@ -73,21 +76,15 @@ public abstract class AbstractRPCConnector extends AbstractAxisConnector {
                     super.timeout);
         }
 
-        // WS-Addressingを利用する場合の設定
-        super.options.setAction("urn:" + method.getName());
-
         if (super.client == null) {
-            super.client = new RPCServiceClient();
+            try {
+                super.client = new RPCServiceClient();
+            } catch (AxisFault ex) {
+                throw new S2AxisClientException("EAXS1001", null, ex);
+            }
         }
 
-        // FIXME REST用の設定
-        AxisConfiguration axisConfig = super.client.getAxisConfiguration();
-        axisConfig.addMessageBuilder("application/x-www-form-urlencoded",
-                new S2XFormURLEncodedBuilder());
-        axisConfig.addMessageFormatter("application/x-www-form-urlencoded",
-                new S2XFormURLEncodedFormatter());
-
-        super.client.setOptions(super.options);
+        this.isInitialized = true;
     }
 
     /**
@@ -102,37 +99,49 @@ public abstract class AbstractRPCConnector extends AbstractAxisConnector {
     protected Object invoke(URL url, Method method, Object[] args)
             throws Throwable {
 
-        try {
-            init(method);
-        } catch (AxisFault ex) {
-            throw new S2AxisClientException("EAXS1001", null, ex);
+        init();
+
+        // clientで利用するOptionsが競合してしまうため、
+        // 送受信が完了するまで、このオブジェクトを排他する。
+        synchronized (this) {
+            // ローカル変数化するために、Optionsのディープコピーを行う。
+            // propertyがコピーされないため、parentに指定する。
+            // ServiceClientは、セッション情報がクリアされてしまうため、コピーしない。
+            Options options = (Options)SerializeUtil.serialize(super.options);
+            options.setParent(super.options);
+            super.client.setOptions(options);
+
+            // WS-Addressingを利用する場合の設定
+            options.setAction("urn:" + method.getName());
+
+            // エンドポイントの指定
+            EndpointReference targetEPR = new EndpointReference(url.toString());
+            options.setTo(targetEPR);
+
+            Object returnValue;
+            try {
+                returnValue = execute(method, args, options);
+            } catch (Exception ex) {
+                throw new S2AxisClientException("EAXS1002",
+                        new Object[] { targetEPR }, ex);
+            }
+
+            return returnValue;
         }
-
-        EndpointReference targetEPR = new EndpointReference(url.toString());
-        super.options.setTo(targetEPR);
-
-        Object returnValue;
-        try {
-            returnValue = execute(method, args);
-        } catch (Exception ex) {
-            throw new S2AxisClientException("EAXS1002",
-                    new Object[] { targetEPR }, ex);
-        }
-
-        return returnValue;
     }
 
     /**
      * Webサービスを呼び出します。
      * 
-     * @param options オプション
      * @param method Webサービスの実行メソッド
      * @param args Webサービスの引数
+     * @param options オプション
      * @return Webサービスの呼び出し結果
      * @throws Exception 通信に失敗した場合
      */
-    abstract protected Object execute(Method method, Object[] args)
-            throws Exception;
+    abstract protected Object execute(Method method,
+                                      Object[] args,
+                                      Options options) throws Exception;
 
     /**
      * このオブジェクトが持つ、RPCServiceClientを返します。

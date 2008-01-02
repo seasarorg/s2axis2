@@ -19,6 +19,7 @@ import java.lang.reflect.Method;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axis2.AxisFault;
+import org.apache.axis2.client.Options;
 import org.apache.axis2.rpc.client.RPCServiceClient;
 import org.seasar.framework.message.MessageFormatter;
 import org.seasar.remoting.axis2.util.RPCUtil;
@@ -38,7 +39,8 @@ public class AxisOnewayConnector extends AbstractRPCConnector {
     /**
      * {@inheritDoc}
      */
-    protected Object execute(Method method, Object[] args) throws Exception {
+    protected Object execute(Method method, Object[] args, Options options)
+            throws Exception {
 
         RPCServiceClient client = getClient();
 

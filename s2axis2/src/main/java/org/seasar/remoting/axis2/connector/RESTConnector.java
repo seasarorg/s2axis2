@@ -18,15 +18,18 @@ package org.seasar.remoting.axis2.connector;
 import java.lang.reflect.Method;
 
 import org.apache.axiom.om.OMElement;
-import org.apache.axis2.AxisFault;
 import org.apache.axis2.Constants;
 import org.apache.axis2.addressing.EndpointReference;
+import org.apache.axis2.client.Options;
+import org.apache.axis2.engine.AxisConfiguration;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 import org.seasar.framework.util.StringUtil;
+import org.seasar.remoting.axis2.builder.S2XFormURLEncodedBuilder;
 import org.seasar.remoting.axis2.client.RESTContext;
 import org.seasar.remoting.axis2.client.RESTRequestBuilder;
 import org.seasar.remoting.axis2.client.RequestBuilder;
+import org.seasar.remoting.axis2.transport.http.S2XFormURLEncodedFormatter;
 import org.seasar.remoting.axis2.util.RESTUtil;
 
 /**
@@ -54,48 +57,13 @@ public class RESTConnector extends AbstractRPCConnector {
     public RESTConnector() {}
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected Object execute(Method method, Object[] args) throws Exception {
-
-        init(method);
-
-        // エンドポイントの設定
-        // REST形式での通信用に設定し直す。 
-        String targetUrl = getTargetUrl(method);
-        EndpointReference targetEPR = new EndpointReference(targetUrl);
-        super.options.setTo(targetEPR);
-
-        Class returnType = method.getReturnType();
-
-        OMElement request = this.requestBuilder.create(method, args,
-                super.options);
-
-        OMElement response;
-        if (returnType.equals(void.class)) {
-            super.client.sendRobust(request);
-            response = null;
-        } else {
-            response = super.client.sendReceive(request);
-        }
-
-        Object result = deserialize(returnType, response);
-
-        return result;
-    }
-
-    /**
      * このオブジェクトの初期化を行います。 <br>
-     * Optionsに、 REST形式の呼び出しを行う際のパラメータを設定します。
-     * 
-     * @param method サービスのメソッド
-     * @throws AxisFault
+     * parentOptionsに、 REST形式の呼び出しを行う際のパラメータを設定します。
      */
     @Override
-    protected void init(Method method) throws AxisFault {
+    protected void init() {
 
-        super.init(method);
+        super.init();
 
         if (this.restContext == null) {
             this.restContext = getRestContext();
@@ -112,17 +80,53 @@ public class RESTConnector extends AbstractRPCConnector {
             super.options.setProperty(keyEnableRest, Constants.VALUE_TRUE);
         }
 
+        // FIXME REST用の設定
+        AxisConfiguration axisConfig = super.client.getAxisConfiguration();
+        axisConfig.addMessageBuilder("application/x-www-form-urlencoded",
+                new S2XFormURLEncodedBuilder());
+        axisConfig.addMessageFormatter("application/x-www-form-urlencoded",
+                new S2XFormURLEncodedFormatter());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Object execute(Method method, Object[] args, Options options)
+            throws Exception {
+
         // Content-Typeの指定
         String contentType = this.restContext.getContentType(method);
         if (!StringUtil.isEmpty(contentType)) {
-            super.options.setProperty(Constants.Configuration.MESSAGE_TYPE,
+            options.setProperty(Constants.Configuration.MESSAGE_TYPE,
                     contentType);
         }
 
         // HttpMethodの指定
         String httpMethod = this.restContext.getHttpMethod(method);
-        super.options.setProperty(Constants.Configuration.HTTP_METHOD,
-                httpMethod);
+        options.setProperty(Constants.Configuration.HTTP_METHOD, httpMethod);
+
+        // エンドポイントの設定
+        // REST形式での通信用に設定し直す。 
+        String targetUrl = getTargetUrl(method);
+        EndpointReference targetEPR = new EndpointReference(targetUrl);
+        options.setTo(targetEPR);
+
+        Class returnType = method.getReturnType();
+
+        OMElement request = this.requestBuilder.create(method, args, options);
+
+        OMElement response;
+        if (returnType.equals(void.class)) {
+            super.client.sendRobust(request);
+            response = null;
+        } else {
+            response = super.client.sendReceive(request);
+        }
+
+        Object result = deserialize(returnType, response);
+
+        return result;
     }
 
     /**
@@ -152,9 +156,6 @@ public class RESTConnector extends AbstractRPCConnector {
         S2Container container = SingletonS2ContainerFactory.getContainer().getRoot();
         RequestBuilder requestBuilder = null;
         if (requestBuilder == null) {
-            requestBuilder = (RequestBuilder)container.getComponent("RESTRequestBuilder");
-        }
-        if (requestBuilder == null) {
             requestBuilder = (RequestBuilder)container.getComponent(RESTRequestBuilder.class);
         }
 
@@ -169,9 +170,6 @@ public class RESTConnector extends AbstractRPCConnector {
     protected RESTContext getRestContext() {
         S2Container container = SingletonS2ContainerFactory.getContainer().getRoot();
         RESTContext context = null;
-        if (context == null) {
-            context = (RESTContext)container.getComponent("RESTContext");
-        }
         if (context == null) {
             context = (RESTContext)container.getComponent(RESTContext.class);
         }

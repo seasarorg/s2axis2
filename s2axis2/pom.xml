@@ -169,25 +169,21 @@
       <groupId>org.seasar.container</groupId>
       <artifactId>s2-extension</artifactId>
       <version>${s2container.version}</version>
-      <type>jar</type>
     </dependency>
     <dependency>
       <groupId>org.seasar.container</groupId>
       <artifactId>s2-framework</artifactId>
       <version>${s2container.version}</version>
-      <type>jar</type>
     </dependency>
     <dependency>
       <groupId>org.seasar.container</groupId>
       <artifactId>s2-tiger</artifactId>
       <version>${s2container.version}</version>
-      <type>jar</type>
     </dependency>
     <dependency>
       <groupId>org.seasar.remoting</groupId>
       <artifactId>s2remoting</artifactId>
       <version>${s2remoting.version}</version>
-      <type>jar</type>
     </dependency>
     <dependency>
       <groupId>org.apache.axis2</groupId>
@@ -280,15 +276,15 @@
       <version>${axis.version}</version>
     </dependency>
     <dependency>
-      <groupId>javax.servlet</groupId> 
-      <artifactId>servlet-api</artifactId> 
-      <version>2.3</version> 
-    </dependency>
-    <dependency>
       <groupId>commons-beanutils</groupId>
       <artifactId>commons-beanutils</artifactId>
       <version>1.7.0</version>
-      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId> 
+      <artifactId>servlet-api</artifactId> 
+      <version>2.3</version> 
+      <scope>provided</scope>
     </dependency>
   </dependencies>
   <distributionManagement>

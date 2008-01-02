@@ -19,6 +19,7 @@ import java.lang.reflect.Method;
 
 import javax.xml.namespace.QName;
 
+import org.apache.axis2.client.Options;
 import org.apache.axis2.rpc.client.RPCServiceClient;
 import org.seasar.remoting.axis2.util.RPCUtil;
 
@@ -37,7 +38,8 @@ public class AxisInOutConnector extends AbstractRPCConnector {
     /**
      * {@inheritDoc}
      */
-    protected Object execute(Method method, Object[] args) throws Exception {
+    protected Object execute(Method method, Object[] args, Options options)
+            throws Exception {
 
         RPCServiceClient client = getClient();
 
