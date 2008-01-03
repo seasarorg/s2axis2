@@ -1,11 +1,9 @@
 <FindBugsFilter>
-
 	<Match classregex=".*" >
 		<BugCode name="EI,EI2" />
 	</Match>
-
 	<Match> 
 		<Class name="~.*Test" />
-	</Match>
-	
+		<BugCode name="NP,UwF" />
+	</Match>	
 </FindBugsFilter>
