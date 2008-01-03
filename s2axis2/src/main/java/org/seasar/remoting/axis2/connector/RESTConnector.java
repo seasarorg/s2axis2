@@ -29,6 +29,7 @@ import org.seasar.remoting.axis2.builder.S2XFormURLEncodedBuilder;
 import org.seasar.remoting.axis2.client.RESTContext;
 import org.seasar.remoting.axis2.client.RESTRequestBuilder;
 import org.seasar.remoting.axis2.client.RequestBuilder;
+import org.seasar.remoting.axis2.client.S2AxisClientContext;
 import org.seasar.remoting.axis2.transport.http.S2XFormURLEncodedFormatter;
 import org.seasar.remoting.axis2.util.RESTUtil;
 
@@ -107,9 +108,15 @@ public class RESTConnector extends AbstractRPCConnector {
         options.setProperty(Constants.Configuration.HTTP_METHOD, httpMethod);
 
         // エンドポイントの設定
-        // REST形式での通信用に設定し直す。 
-        String targetUrl = getTargetUrl(method);
-        EndpointReference targetEPR = new EndpointReference(targetUrl);
+        String localEPR = S2AxisClientContext.getEndpointURL();
+        EndpointReference targetEPR;
+        if (!StringUtil.isEmpty(localEPR)) {
+            targetEPR = new EndpointReference(localEPR);
+        } else {
+            // REST形式での通信用に設定し直す。 
+            String targetUrl = getTargetUrl(method);
+            targetEPR = new EndpointReference(targetUrl);
+        }
         options.setTo(targetEPR);
 
         Class returnType = method.getReturnType();

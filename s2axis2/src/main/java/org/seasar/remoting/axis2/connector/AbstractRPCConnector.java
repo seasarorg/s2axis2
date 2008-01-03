@@ -29,6 +29,8 @@ import org.apache.axis2.engine.DefaultObjectSupplier;
 import org.apache.axis2.rpc.client.RPCServiceClient;
 import org.apache.axis2.transport.http.HTTPConstants;
 import org.seasar.framework.util.SerializeUtil;
+import org.seasar.framework.util.StringUtil;
+import org.seasar.remoting.axis2.client.S2AxisClientContext;
 import org.seasar.remoting.axis2.client.S2AxisClientException;
 import org.seasar.remoting.axis2.xml.OMElementDeserializer;
 import org.seasar.remoting.axis2.xml.XMLBindException;
@@ -115,7 +117,13 @@ public abstract class AbstractRPCConnector extends AbstractAxisConnector {
             options.setAction("urn:" + method.getName());
 
             // エンドポイントの指定
-            EndpointReference targetEPR = new EndpointReference(url.toString());
+            String localEPR = S2AxisClientContext.getEndpointURL();
+            EndpointReference targetEPR;
+            if (!StringUtil.isEmpty(localEPR)) {
+                targetEPR = new EndpointReference(localEPR);
+            } else {
+                targetEPR = new EndpointReference(url.toString());
+            }
             options.setTo(targetEPR);
 
             Object returnValue;
