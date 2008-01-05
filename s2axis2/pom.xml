@@ -71,7 +71,7 @@
 			scm:svn:https://www.seasar.org/svn/s2axis/trunk/s2axis2/
 		</developerConnection>
 		<url>
-			http://www.seasar.org/websvn/listing.php?repname=s2axis2
+			http://svn.seasar.org/browse/trunk/s2axis2/?root=s2axis
 		</url>
 	</scm>
 	<organization>
