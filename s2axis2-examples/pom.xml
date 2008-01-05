@@ -14,7 +14,7 @@
 		<system>JIRA</system>
 		<url><![CDATA[https://www.seasar.org/issues/browse/AXIS]]></url>
 	</issueManagement>
-	<inceptionYear>2008</inceptionYear>
+	<inceptionYear>2007</inceptionYear>
 	<mailingLists>
 		<mailingList>
 			<name>Seasar-user</name>
