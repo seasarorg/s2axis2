@@ -158,17 +158,15 @@
 						</link>
 					</links>
 				</configuration>
-				<!--
-					<executions>
+				<executions>
 					<execution>
-					<id>javadoc-jar</id>
-					<phase>package</phase>
-					<goals>
-					<goal>jar</goal>
-					</goals>
+						<id>javadoc-jar</id>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
 					</execution>
-					</executions>
-				-->
+				</executions>
 			</plugin>
 		</plugins>
 		<extensions>
