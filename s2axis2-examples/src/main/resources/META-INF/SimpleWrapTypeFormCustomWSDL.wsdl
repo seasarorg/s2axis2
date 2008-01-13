@@ -1,0 +1,1450 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+	xmlns:ns0="http://ex01.examples.axis2.remoting.seasar.org"
+	xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+	xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+	xmlns:ns1="http://org.apache.axis2/xsd"
+	xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	targetNamespace="http://ex01.examples.axis2.remoting.seasar.org">
+	<wsdl:types>
+		<xs:schema
+			xmlns:ns="http://ex01.examples.axis2.remoting.seasar.org"
+			attributeFormDefault="qualified" elementFormDefault="qualified"
+			targetNamespace="http://ex01.examples.axis2.remoting.seasar.org">
+			<xs:element name="setArrayParam">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element maxOccurs="unbounded" minOccurs="0"
+							name="arrayParam" nillable="true" type="xs:anyType" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="setArrayParamResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="return"
+							type="xs:boolean" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="setArrayStringParam">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element maxOccurs="unbounded" minOccurs="0"
+							name="arrayStringParam" nillable="true" type="xs:string" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="setArrayStringParamResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="return"
+							type="xs:boolean" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="setBooleanParam">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="booleanParam"
+							type="xs:boolean" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="setBooleanParamResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="return"
+							type="xs:boolean" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="setByteParam">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="byteParam"
+							nillable="true" type="xs:byte" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="setByteParamResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="return"
+							type="xs:boolean" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="setCalendarParam">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="calendarParam"
+							nillable="true" type="xs:dateTime" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="setCalendarParamResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="return"
+							type="xs:boolean" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="setCharParam">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="charParam"
+							nillable="true" type="xs:anyType" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="setCharParamResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="return"
+							type="xs:boolean" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="setDateParam">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="dateParam"
+							nillable="true" type="xs:dateTime" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="setDateParamResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="return"
+							type="xs:boolean" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="setDoubleParam">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="doubleParam"
+							type="xs:double" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="setDoubleParamResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="return"
+							type="xs:boolean" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="setFloatParam">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="floatParam"
+							type="xs:float" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="setFloatParamResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="return"
+							type="xs:boolean" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="setIntParam">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="intParam"
+							type="xs:int" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="setIntParamResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="return"
+							type="xs:boolean" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="setLongParam">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="longParam"
+							type="xs:long" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="setLongParamResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="return"
+							type="xs:boolean" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="setShortParam">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="shortParam"
+							type="xs:short" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="setShortParamResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="return"
+							type="xs:boolean" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="setStringParam">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="stringParam"
+							nillable="true" type="xs:string" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="setStringParamResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="return"
+							type="xs:boolean" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="getBooleanParamResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="return"
+							type="xs:boolean" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="getByteParamResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="return"
+							nillable="true" type="xs:byte" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="getCharParamResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="return"
+							nillable="true" type="xs:anyType" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="getDoubleParamResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="return"
+							type="xs:double" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="getFloatParamResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="return"
+							type="xs:float" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="getIntParamResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="return"
+							type="xs:int" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="getLongParamResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="return"
+							type="xs:long" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="getArrayParamResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element maxOccurs="unbounded" minOccurs="0"
+							name="return" nillable="true" type="xs:anyType" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="getShortParamResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="return"
+							type="xs:short" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="getStringParamResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="return"
+							nillable="true" type="xs:string" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="getArrayStringParamResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element maxOccurs="unbounded" minOccurs="0"
+							name="return" nillable="true" type="xs:string" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="getCalendarParamResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="return"
+							nillable="true" type="xs:dateTime" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="getDateParamResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="return"
+							nillable="true" type="xs:dateTime" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:schema>
+	</wsdl:types>
+	<wsdl:message name="getIntParamRequest" />
+	<wsdl:message name="getIntParamResponse">
+		<wsdl:part name="parameters" element="ns0:getIntParamResponse"/>
+	</wsdl:message>
+	<wsdl:message name="setArrayParamRequest">
+		<wsdl:part name="parameters" element="ns0:setArrayParam" />
+	</wsdl:message>
+	<wsdl:message name="setArrayParamResponse">
+		<wsdl:part name="parameters"
+			element="ns0:setArrayParamResponse" />
+	</wsdl:message>
+	<wsdl:message name="getFloatParamRequest" />
+	<wsdl:message name="getFloatParamResponse">
+		<wsdl:part name="parameters"
+			element="ns0:getFloatParamResponse" />
+	</wsdl:message>
+	<wsdl:message name="setBooleanParamRequest">
+		<wsdl:part name="parameters" element="ns0:setBooleanParam" />
+	</wsdl:message>
+	<wsdl:message name="setBooleanParamResponse">
+		<wsdl:part name="parameters"
+			element="ns0:setBooleanParamResponse" />
+	</wsdl:message>
+	<wsdl:message name="getArrayParamRequest" />
+	<wsdl:message name="getArrayParamResponse">
+		<wsdl:part name="parameters"
+			element="ns0:getArrayParamResponse" />
+	</wsdl:message>
+	<wsdl:message name="setDoubleParamRequest">
+		<wsdl:part name="parameters" element="ns0:setDoubleParam" />
+	</wsdl:message>
+	<wsdl:message name="setDoubleParamResponse">
+		<wsdl:part name="parameters"
+			element="ns0:setDoubleParamResponse" />
+	</wsdl:message>
+	<wsdl:message name="getDateParamRequest" />
+	<wsdl:message name="getDateParamResponse">
+		<wsdl:part name="parameters" element="ns0:getDateParamResponse" />
+	</wsdl:message>
+	<wsdl:message name="setIntParamRequest">
+		<wsdl:part name="parameters" element="ns0:setIntParam" />
+	</wsdl:message>
+	<wsdl:message name="setIntParamResponse">
+		<wsdl:part name="parameters" element="ns0:setIntParamResponse" />
+	</wsdl:message>
+	<wsdl:message name="getDoubleParamRequest" />
+	<wsdl:message name="getDoubleParamResponse">
+		<wsdl:part name="parameters"
+			element="ns0:getDoubleParamResponse" />
+	</wsdl:message>
+	<wsdl:message name="setCharParamRequest">
+		<wsdl:part name="parameters" element="ns0:setCharParam" />
+	</wsdl:message>
+	<wsdl:message name="setCharParamResponse">
+		<wsdl:part name="parameters" element="ns0:setCharParamResponse" />
+	</wsdl:message>
+	<wsdl:message name="setLongParamRequest">
+		<wsdl:part name="parameters" element="ns0:setLongParam" />
+	</wsdl:message>
+	<wsdl:message name="setLongParamResponse">
+		<wsdl:part name="parameters" element="ns0:setLongParamResponse" />
+	</wsdl:message>
+	<wsdl:message name="setDateParamRequest">
+		<wsdl:part name="parameters" element="ns0:setDateParam" />
+	</wsdl:message>
+	<wsdl:message name="setDateParamResponse">
+		<wsdl:part name="parameters" element="ns0:setDateParamResponse" />
+	</wsdl:message>
+	<wsdl:message name="setStringParamRequest">
+		<wsdl:part name="parameters" element="ns0:setStringParam" />
+	</wsdl:message>
+	<wsdl:message name="setStringParamResponse">
+		<wsdl:part name="parameters"
+			element="ns0:setStringParamResponse" />
+	</wsdl:message>
+	<wsdl:message name="getShortParamRequest" />
+	<wsdl:message name="getShortParamResponse">
+		<wsdl:part name="parameters"
+			element="ns0:getShortParamResponse" />
+	</wsdl:message>
+	<wsdl:message name="setShortParamRequest">
+		<wsdl:part name="parameters" element="ns0:setShortParam" />
+	</wsdl:message>
+	<wsdl:message name="setShortParamResponse">
+		<wsdl:part name="parameters"
+			element="ns0:setShortParamResponse" />
+	</wsdl:message>
+	<wsdl:message name="getArrayStringParamRequest" />
+	<wsdl:message name="getArrayStringParamResponse">
+		<wsdl:part name="parameters"
+			element="ns0:getArrayStringParamResponse" />
+	</wsdl:message>
+	<wsdl:message name="getLongParamRequest" />
+	<wsdl:message name="getLongParamResponse">
+		<wsdl:part name="parameters" element="ns0:getLongParamResponse" />
+	</wsdl:message>
+	<wsdl:message name="getCharParamRequest" />
+	<wsdl:message name="getCharParamResponse">
+		<wsdl:part name="parameters" element="ns0:getCharParamResponse" />
+	</wsdl:message>
+	<wsdl:message name="setArrayStringParamRequest">
+		<wsdl:part name="parameters" element="ns0:setArrayStringParam" />
+	</wsdl:message>
+	<wsdl:message name="setArrayStringParamResponse">
+		<wsdl:part name="parameters"
+			element="ns0:setArrayStringParamResponse" />
+	</wsdl:message>
+	<wsdl:message name="setFloatParamRequest">
+		<wsdl:part name="parameters" element="ns0:setFloatParam" />
+	</wsdl:message>
+	<wsdl:message name="setFloatParamResponse">
+		<wsdl:part name="parameters"
+			element="ns0:setFloatParamResponse" />
+	</wsdl:message>
+	<wsdl:message name="getCalendarParamRequest" />
+	<wsdl:message name="getCalendarParamResponse">
+		<wsdl:part name="parameters"
+			element="ns0:getCalendarParamResponse" />
+	</wsdl:message>
+	<wsdl:message name="getBooleanParamRequest" />
+	<wsdl:message name="getBooleanParamResponse">
+		<wsdl:part name="parameters"
+			element="ns0:getBooleanParamResponse" />
+	</wsdl:message>
+	<wsdl:message name="getByteParamRequest" />
+	<wsdl:message name="getByteParamResponse">
+		<wsdl:part name="parameters" element="ns0:getByteParamResponse" />
+	</wsdl:message>
+	<wsdl:message name="getStringParamRequest" />
+	<wsdl:message name="getStringParamResponse">
+		<wsdl:part name="parameters"
+			element="ns0:getStringParamResponse" />
+	</wsdl:message>
+	<wsdl:message name="setCalendarParamRequest">
+		<wsdl:part name="parameters" element="ns0:setCalendarParam" />
+	</wsdl:message>
+	<wsdl:message name="setCalendarParamResponse">
+		<wsdl:part name="parameters"
+			element="ns0:setCalendarParamResponse" />
+	</wsdl:message>
+	<wsdl:message name="setByteParamRequest">
+		<wsdl:part name="parameters" element="ns0:setByteParam" />
+	</wsdl:message>
+	<wsdl:message name="setByteParamResponse">
+		<wsdl:part name="parameters" element="ns0:setByteParamResponse" />
+	</wsdl:message>
+	<wsdl:portType name="SimpleWrapTypeFormCustomWSDLPortType">
+		<wsdl:operation name="getIntParam">
+			<wsdl:input message="ns0:getIntParamRequest"
+				wsaw:Action="urn:getIntParam" />
+			<wsdl:output message="ns0:getIntParamResponse"
+				wsaw:Action="urn:getIntParamResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="setArrayParam">
+			<wsdl:input message="ns0:setArrayParamRequest"
+				wsaw:Action="urn:setArrayParam" />
+			<wsdl:output message="ns0:setArrayParamResponse"
+				wsaw:Action="urn:setArrayParamResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="getFloatParam">
+			<wsdl:input message="ns0:getFloatParamRequest"
+				wsaw:Action="urn:getFloatParam" />
+			<wsdl:output message="ns0:getFloatParamResponse"
+				wsaw:Action="urn:getFloatParamResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="setBooleanParam">
+			<wsdl:input message="ns0:setBooleanParamRequest"
+				wsaw:Action="urn:setBooleanParam" />
+			<wsdl:output message="ns0:setBooleanParamResponse"
+				wsaw:Action="urn:setBooleanParamResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="getArrayParam">
+			<wsdl:input message="ns0:getArrayParamRequest"
+				wsaw:Action="urn:getArrayParam" />
+			<wsdl:output message="ns0:getArrayParamResponse"
+				wsaw:Action="urn:getArrayParamResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="setDoubleParam">
+			<wsdl:input message="ns0:setDoubleParamRequest"
+				wsaw:Action="urn:setDoubleParam" />
+			<wsdl:output message="ns0:setDoubleParamResponse"
+				wsaw:Action="urn:setDoubleParamResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="getDateParam">
+			<wsdl:input message="ns0:getDateParamRequest"
+				wsaw:Action="urn:getDateParam" />
+			<wsdl:output message="ns0:getDateParamResponse"
+				wsaw:Action="urn:getDateParamResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="setIntParam">
+			<wsdl:input message="ns0:setIntParamRequest"
+				wsaw:Action="urn:setIntParam" />
+			<wsdl:output message="ns0:setIntParamResponse"
+				wsaw:Action="urn:setIntParamResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="getDoubleParam">
+			<wsdl:input message="ns0:getDoubleParamRequest"
+				wsaw:Action="urn:getDoubleParam" />
+			<wsdl:output message="ns0:getDoubleParamResponse"
+				wsaw:Action="urn:getDoubleParamResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="setCharParam">
+			<wsdl:input message="ns0:setCharParamRequest"
+				wsaw:Action="urn:setCharParam" />
+			<wsdl:output message="ns0:setCharParamResponse"
+				wsaw:Action="urn:setCharParamResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="setLongParam">
+			<wsdl:input message="ns0:setLongParamRequest"
+				wsaw:Action="urn:setLongParam" />
+			<wsdl:output message="ns0:setLongParamResponse"
+				wsaw:Action="urn:setLongParamResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="setDateParam">
+			<wsdl:input message="ns0:setDateParamRequest"
+				wsaw:Action="urn:setDateParam" />
+			<wsdl:output message="ns0:setDateParamResponse"
+				wsaw:Action="urn:setDateParamResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="setStringParam">
+			<wsdl:input message="ns0:setStringParamRequest"
+				wsaw:Action="urn:setStringParam" />
+			<wsdl:output message="ns0:setStringParamResponse"
+				wsaw:Action="urn:setStringParamResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="getShortParam">
+			<wsdl:input message="ns0:getShortParamRequest"
+				wsaw:Action="urn:getShortParam" />
+			<wsdl:output message="ns0:getShortParamResponse"
+				wsaw:Action="urn:getShortParamResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="setShortParam">
+			<wsdl:input message="ns0:setShortParamRequest"
+				wsaw:Action="urn:setShortParam" />
+			<wsdl:output message="ns0:setShortParamResponse"
+				wsaw:Action="urn:setShortParamResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="getArrayStringParam">
+			<wsdl:input message="ns0:getArrayStringParamRequest"
+				wsaw:Action="urn:getArrayStringParam" />
+			<wsdl:output message="ns0:getArrayStringParamResponse"
+				wsaw:Action="urn:getArrayStringParamResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="getLongParam">
+			<wsdl:input message="ns0:getLongParamRequest"
+				wsaw:Action="urn:getLongParam" />
+			<wsdl:output message="ns0:getLongParamResponse"
+				wsaw:Action="urn:getLongParamResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="getCharParam">
+			<wsdl:input message="ns0:getCharParamRequest"
+				wsaw:Action="urn:getCharParam" />
+			<wsdl:output message="ns0:getCharParamResponse"
+				wsaw:Action="urn:getCharParamResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="setArrayStringParam">
+			<wsdl:input message="ns0:setArrayStringParamRequest"
+				wsaw:Action="urn:setArrayStringParam" />
+			<wsdl:output message="ns0:setArrayStringParamResponse"
+				wsaw:Action="urn:setArrayStringParamResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="setFloatParam">
+			<wsdl:input message="ns0:setFloatParamRequest"
+				wsaw:Action="urn:setFloatParam" />
+			<wsdl:output message="ns0:setFloatParamResponse"
+				wsaw:Action="urn:setFloatParamResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="getCalendarParam">
+			<wsdl:input message="ns0:getCalendarParamRequest"
+				wsaw:Action="urn:getCalendarParam" />
+			<wsdl:output message="ns0:getCalendarParamResponse"
+				wsaw:Action="urn:getCalendarParamResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="getBooleanParam">
+			<wsdl:input message="ns0:getBooleanParamRequest"
+				wsaw:Action="urn:getBooleanParam" />
+			<wsdl:output message="ns0:getBooleanParamResponse"
+				wsaw:Action="urn:getBooleanParamResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="getByteParam">
+			<wsdl:input message="ns0:getByteParamRequest"
+				wsaw:Action="urn:getByteParam" />
+			<wsdl:output message="ns0:getByteParamResponse"
+				wsaw:Action="urn:getByteParamResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="getStringParam">
+			<wsdl:input message="ns0:getStringParamRequest"
+				wsaw:Action="urn:getStringParam" />
+			<wsdl:output message="ns0:getStringParamResponse"
+				wsaw:Action="urn:getStringParamResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="setCalendarParam">
+			<wsdl:input message="ns0:setCalendarParamRequest"
+				wsaw:Action="urn:setCalendarParam" />
+			<wsdl:output message="ns0:setCalendarParamResponse"
+				wsaw:Action="urn:setCalendarParamResponse" />
+		</wsdl:operation>
+		<wsdl:operation name="setByteParam">
+			<wsdl:input message="ns0:setByteParamRequest"
+				wsaw:Action="urn:setByteParam" />
+			<wsdl:output message="ns0:setByteParamResponse"
+				wsaw:Action="urn:setByteParamResponse" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="SimpleWrapTypeFormCustomWSDLSOAP11Binding"
+		type="ns0:SimpleWrapTypeFormCustomWSDLPortType">
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http"
+			style="document" />
+		<wsdl:operation name="getIntParam">
+			<soap:operation soapAction="urn:getIntParam"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setArrayParam">
+			<soap:operation soapAction="urn:setArrayParam"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getFloatParam">
+			<soap:operation soapAction="urn:getFloatParam"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setBooleanParam">
+			<soap:operation soapAction="urn:setBooleanParam"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getArrayParam">
+			<soap:operation soapAction="urn:getArrayParam"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setDoubleParam">
+			<soap:operation soapAction="urn:setDoubleParam"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getDateParam">
+			<soap:operation soapAction="urn:getDateParam"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setIntParam">
+			<soap:operation soapAction="urn:setIntParam"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getDoubleParam">
+			<soap:operation soapAction="urn:getDoubleParam"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setCharParam">
+			<soap:operation soapAction="urn:setCharParam"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setLongParam">
+			<soap:operation soapAction="urn:setLongParam"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setDateParam">
+			<soap:operation soapAction="urn:setDateParam"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setStringParam">
+			<soap:operation soapAction="urn:setStringParam"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getShortParam">
+			<soap:operation soapAction="urn:getShortParam"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setShortParam">
+			<soap:operation soapAction="urn:setShortParam"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getArrayStringParam">
+			<soap:operation soapAction="urn:getArrayStringParam"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getLongParam">
+			<soap:operation soapAction="urn:getLongParam"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getCharParam">
+			<soap:operation soapAction="urn:getCharParam"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setArrayStringParam">
+			<soap:operation soapAction="urn:setArrayStringParam"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setFloatParam">
+			<soap:operation soapAction="urn:setFloatParam"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getCalendarParam">
+			<soap:operation soapAction="urn:getCalendarParam"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getBooleanParam">
+			<soap:operation soapAction="urn:getBooleanParam"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getByteParam">
+			<soap:operation soapAction="urn:getByteParam"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getStringParam">
+			<soap:operation soapAction="urn:getStringParam"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setCalendarParam">
+			<soap:operation soapAction="urn:setCalendarParam"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setByteParam">
+			<soap:operation soapAction="urn:setByteParam"
+				style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:binding name="SimpleWrapTypeFormCustomWSDLSOAP12Binding"
+		type="ns0:SimpleWrapTypeFormCustomWSDLPortType">
+		<soap12:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="getIntParam">
+			<soap12:operation soapAction="urn:getIntParam"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setArrayParam">
+			<soap12:operation soapAction="urn:setArrayParam"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getFloatParam">
+			<soap12:operation soapAction="urn:getFloatParam"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setBooleanParam">
+			<soap12:operation soapAction="urn:setBooleanParam"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getArrayParam">
+			<soap12:operation soapAction="urn:getArrayParam"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setDoubleParam">
+			<soap12:operation soapAction="urn:setDoubleParam"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getDateParam">
+			<soap12:operation soapAction="urn:getDateParam"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setIntParam">
+			<soap12:operation soapAction="urn:setIntParam"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getDoubleParam">
+			<soap12:operation soapAction="urn:getDoubleParam"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setCharParam">
+			<soap12:operation soapAction="urn:setCharParam"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setLongParam">
+			<soap12:operation soapAction="urn:setLongParam"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setDateParam">
+			<soap12:operation soapAction="urn:setDateParam"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setStringParam">
+			<soap12:operation soapAction="urn:setStringParam"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getShortParam">
+			<soap12:operation soapAction="urn:getShortParam"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setShortParam">
+			<soap12:operation soapAction="urn:setShortParam"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getArrayStringParam">
+			<soap12:operation soapAction="urn:getArrayStringParam"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getLongParam">
+			<soap12:operation soapAction="urn:getLongParam"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getCharParam">
+			<soap12:operation soapAction="urn:getCharParam"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setArrayStringParam">
+			<soap12:operation soapAction="urn:setArrayStringParam"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setFloatParam">
+			<soap12:operation soapAction="urn:setFloatParam"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getCalendarParam">
+			<soap12:operation soapAction="urn:getCalendarParam"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getBooleanParam">
+			<soap12:operation soapAction="urn:getBooleanParam"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getByteParam">
+			<soap12:operation soapAction="urn:getByteParam"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getStringParam">
+			<soap12:operation soapAction="urn:getStringParam"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setCalendarParam">
+			<soap12:operation soapAction="urn:setCalendarParam"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setByteParam">
+			<soap12:operation soapAction="urn:setByteParam"
+				style="document" />
+			<wsdl:input>
+				<soap12:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap12:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:binding name="SimpleWrapTypeFormCustomWSDLHttpBinding"
+		type="ns0:SimpleWrapTypeFormCustomWSDLPortType">
+		<http:binding verb="POST" />
+		<wsdl:operation name="getIntParam">
+			<http:operation
+				location="SimpleWrapTypeFormCustomWSDL/getIntParam" />
+			<wsdl:input>
+				<mime:content part="getIntParam" type="text/xml" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content part="getIntParam" type="text/xml" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setArrayParam">
+			<http:operation
+				location="SimpleWrapTypeFormCustomWSDL/setArrayParam" />
+			<wsdl:input>
+				<mime:content part="setArrayParam" type="text/xml" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content part="setArrayParam" type="text/xml" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getFloatParam">
+			<http:operation
+				location="SimpleWrapTypeFormCustomWSDL/getFloatParam" />
+			<wsdl:input>
+				<mime:content part="getFloatParam" type="text/xml" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content part="getFloatParam" type="text/xml" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setBooleanParam">
+			<http:operation
+				location="SimpleWrapTypeFormCustomWSDL/setBooleanParam" />
+			<wsdl:input>
+				<mime:content part="setBooleanParam" type="text/xml" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content part="setBooleanParam" type="text/xml" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getArrayParam">
+			<http:operation
+				location="SimpleWrapTypeFormCustomWSDL/getArrayParam" />
+			<wsdl:input>
+				<mime:content part="getArrayParam" type="text/xml" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content part="getArrayParam" type="text/xml" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setDoubleParam">
+			<http:operation
+				location="SimpleWrapTypeFormCustomWSDL/setDoubleParam" />
+			<wsdl:input>
+				<mime:content part="setDoubleParam" type="text/xml" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content part="setDoubleParam" type="text/xml" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getDateParam">
+			<http:operation
+				location="SimpleWrapTypeFormCustomWSDL/getDateParam" />
+			<wsdl:input>
+				<mime:content part="getDateParam" type="text/xml" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content part="getDateParam" type="text/xml" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setIntParam">
+			<http:operation
+				location="SimpleWrapTypeFormCustomWSDL/setIntParam" />
+			<wsdl:input>
+				<mime:content part="setIntParam" type="text/xml" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content part="setIntParam" type="text/xml" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getDoubleParam">
+			<http:operation
+				location="SimpleWrapTypeFormCustomWSDL/getDoubleParam" />
+			<wsdl:input>
+				<mime:content part="getDoubleParam" type="text/xml" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content part="getDoubleParam" type="text/xml" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setCharParam">
+			<http:operation
+				location="SimpleWrapTypeFormCustomWSDL/setCharParam" />
+			<wsdl:input>
+				<mime:content part="setCharParam" type="text/xml" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content part="setCharParam" type="text/xml" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setLongParam">
+			<http:operation
+				location="SimpleWrapTypeFormCustomWSDL/setLongParam" />
+			<wsdl:input>
+				<mime:content part="setLongParam" type="text/xml" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content part="setLongParam" type="text/xml" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setDateParam">
+			<http:operation
+				location="SimpleWrapTypeFormCustomWSDL/setDateParam" />
+			<wsdl:input>
+				<mime:content part="setDateParam" type="text/xml" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content part="setDateParam" type="text/xml" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setStringParam">
+			<http:operation
+				location="SimpleWrapTypeFormCustomWSDL/setStringParam" />
+			<wsdl:input>
+				<mime:content part="setStringParam" type="text/xml" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content part="setStringParam" type="text/xml" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getShortParam">
+			<http:operation
+				location="SimpleWrapTypeFormCustomWSDL/getShortParam" />
+			<wsdl:input>
+				<mime:content part="getShortParam" type="text/xml" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content part="getShortParam" type="text/xml" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setShortParam">
+			<http:operation
+				location="SimpleWrapTypeFormCustomWSDL/setShortParam" />
+			<wsdl:input>
+				<mime:content part="setShortParam" type="text/xml" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content part="setShortParam" type="text/xml" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getArrayStringParam">
+			<http:operation
+				location="SimpleWrapTypeFormCustomWSDL/getArrayStringParam" />
+			<wsdl:input>
+				<mime:content part="getArrayStringParam"
+					type="text/xml" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content part="getArrayStringParam"
+					type="text/xml" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getLongParam">
+			<http:operation
+				location="SimpleWrapTypeFormCustomWSDL/getLongParam" />
+			<wsdl:input>
+				<mime:content part="getLongParam" type="text/xml" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content part="getLongParam" type="text/xml" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getCharParam">
+			<http:operation
+				location="SimpleWrapTypeFormCustomWSDL/getCharParam" />
+			<wsdl:input>
+				<mime:content part="getCharParam" type="text/xml" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content part="getCharParam" type="text/xml" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setArrayStringParam">
+			<http:operation
+				location="SimpleWrapTypeFormCustomWSDL/setArrayStringParam" />
+			<wsdl:input>
+				<mime:content part="setArrayStringParam"
+					type="text/xml" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content part="setArrayStringParam"
+					type="text/xml" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setFloatParam">
+			<http:operation
+				location="SimpleWrapTypeFormCustomWSDL/setFloatParam" />
+			<wsdl:input>
+				<mime:content part="setFloatParam" type="text/xml" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content part="setFloatParam" type="text/xml" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getCalendarParam">
+			<http:operation
+				location="SimpleWrapTypeFormCustomWSDL/getCalendarParam" />
+			<wsdl:input>
+				<mime:content part="getCalendarParam" type="text/xml" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content part="getCalendarParam" type="text/xml" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getBooleanParam">
+			<http:operation
+				location="SimpleWrapTypeFormCustomWSDL/getBooleanParam" />
+			<wsdl:input>
+				<mime:content part="getBooleanParam" type="text/xml" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content part="getBooleanParam" type="text/xml" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getByteParam">
+			<http:operation
+				location="SimpleWrapTypeFormCustomWSDL/getByteParam" />
+			<wsdl:input>
+				<mime:content part="getByteParam" type="text/xml" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content part="getByteParam" type="text/xml" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="getStringParam">
+			<http:operation
+				location="SimpleWrapTypeFormCustomWSDL/getStringParam" />
+			<wsdl:input>
+				<mime:content part="getStringParam" type="text/xml" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content part="getStringParam" type="text/xml" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setCalendarParam">
+			<http:operation
+				location="SimpleWrapTypeFormCustomWSDL/setCalendarParam" />
+			<wsdl:input>
+				<mime:content part="setCalendarParam" type="text/xml" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content part="setCalendarParam" type="text/xml" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="setByteParam">
+			<http:operation
+				location="SimpleWrapTypeFormCustomWSDL/setByteParam" />
+			<wsdl:input>
+				<mime:content part="setByteParam" type="text/xml" />
+			</wsdl:input>
+			<wsdl:output>
+				<mime:content part="setByteParam" type="text/xml" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="SimpleWrapTypeFormCustomWSDL">
+		<wsdl:port name="SimpleWrapTypeFormCustomWSDLSOAP12port_http"
+			binding="ns0:SimpleWrapTypeFormCustomWSDLSOAP12Binding">
+			<soap12:address
+				location="http://localhost:8080/s2axis2-examples/services/SimpleWrapTypeFormCustomWSDL" />
+		</wsdl:port>
+		<wsdl:port name="SimpleWrapTypeFormCustomWSDLHttpport"
+			binding="ns0:SimpleWrapTypeFormCustomWSDLHttpBinding">
+			<http:address
+				location="http://localhost:8080/s2axis2-examples/services/SimpleWrapTypeFormCustomWSDL" />
+		</wsdl:port>
+		<wsdl:port name="SimpleWrapTypeFormCustomWSDLSOAP11port_http"
+			binding="ns0:SimpleWrapTypeFormCustomWSDLSOAP11Binding">
+			<soap:address
+				location="http://localhost:8080/s2axis2-examples/services/SimpleWrapTypeFormCustomWSDL" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
