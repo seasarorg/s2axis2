@@ -1,17 +1,13 @@
 /*
  * Copyright 2004-2008 the Seasar Foundation and the Others.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the
+ * License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 package org.seasar.remoting.axis2.deployment.impl;
 
@@ -35,6 +31,7 @@ import org.apache.axis2.description.java2wsdl.Java2WSDLUtils;
 import org.apache.axis2.engine.AxisConfiguration;
 import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.util.StringUtil;
+import org.seasar.remoting.axis2.S2AxisConstants;
 import org.seasar.remoting.axis2.ServiceDef;
 import org.seasar.remoting.axis2.deployer.DeployFailedException;
 import org.seasar.remoting.axis2.deployment.AbstractServiceBuilder;
@@ -76,16 +73,38 @@ public class ComponentBasedServiceBuilderImpl extends AbstractServiceBuilder
             serviceDef = new ServiceDef();
         }
 
-        AxisService service = new AxisService(componentDef.getComponentName());
+        String serviceName = componentDef.getComponentName();
+
         AxisConfiguration axisConfig = configCtx.getAxisConfiguration();
         ClassLoader loader = axisConfig.getServiceClassLoader();
 
-        buildMessageBuilder(axisConfig);
-        buildServiceParameter(service);
-
         // Parameter
         Map<String, Object> parameterMap = serviceDef.getParameterMap();
+
+        // AxisServiceの生成
+        // カスタム WSDLの適用をチェックする。
+        //   →適用する場合は、WSDLファイルを基に生成。
+        //   →適用しない場合は、サービス名のみを指定して生成。
+        AxisService service;
         if (parameterMap != null && parameterMap.size() > 0) {
+            Object useOriginalwsdlValue = parameterMap.get(S2AxisConstants.PARAM_KEY_USE_ORIGINAL_WSDL);
+
+            boolean useOriginalwsdl;
+            if (useOriginalwsdlValue == null) {
+                useOriginalwsdl = false;
+            } else if (useOriginalwsdlValue instanceof Boolean) {
+                useOriginalwsdl = ((Boolean)useOriginalwsdlValue).booleanValue();
+            } else {
+                useOriginalwsdl = Boolean.valueOf(useOriginalwsdlValue.toString());
+            }
+
+            if (useOriginalwsdl) {
+                service = createWsdlService(serviceName);
+            } else {
+                service = new AxisService(serviceName);
+            }
+
+            // Parameterの適用
             try {
                 Set<String> keySet = parameterMap.keySet();
                 String[] keyArray = (String[])keySet.toArray(new String[0]);
@@ -98,7 +117,12 @@ public class ComponentBasedServiceBuilderImpl extends AbstractServiceBuilder
                 throw new DeployFailedException("EAXS0003",
                         new Object[] { service.getName() }, ex);
             }
+        } else {
+            service = new AxisService(serviceName);
         }
+
+        buildMessageBuilder(axisConfig);
+        buildServiceParameter(service);
 
         // ServiceClass
         Class serviceClass = componentDef.getComponentClass();

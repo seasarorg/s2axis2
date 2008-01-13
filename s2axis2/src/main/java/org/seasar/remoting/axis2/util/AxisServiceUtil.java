@@ -1,17 +1,13 @@
 /*
  * Copyright 2004-2008 the Seasar Foundation and the Others.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the
+ * License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 package org.seasar.remoting.axis2.util;
 
@@ -22,6 +18,8 @@ import org.apache.axis2.deployment.DeploymentConstants;
 import org.seasar.framework.container.InstanceDef;
 import org.seasar.framework.util.ClassUtil;
 import org.seasar.framework.util.ResourceUtil;
+import org.seasar.framework.util.StringUtil;
+import org.seasar.remoting.axis2.S2AxisConstants;
 
 /**
  * AxisServiceに関するユーティリティです。
@@ -95,6 +93,24 @@ public class AxisServiceUtil {
      * WSDLファイルは、以下のパターンに従って取得します。
      * 
      * <pre>
+     * META-INF/<i>サービス名</i>.wsdl
+     * </pre>
+     * 
+     * WSDLファイルが存在しない場合は、nullを返します。
+     * 
+     * @param serviceName サービス名
+     * @return WSDLファイル
+     */
+    public static File getWSDLResource(String serviceName) {
+        File wsdlFile = getWSDLResource(serviceName, null);
+        return wsdlFile;
+    }
+
+    /**
+     * WSDLファイルを取得します。<br>
+     * WSDLファイルは、以下のパターンに従って取得します。
+     * 
+     * <pre>
      * <i>サービスクラスが存在するパス</i>/<i>サービス名</i>.wsdl
      * META-INF/<i>サービス名</i>.wsdl
      * </pre>
@@ -108,10 +124,14 @@ public class AxisServiceUtil {
     public static File getWSDLResource(String serviceName,
                                        String serviceClassName) {
 
-        String wsdlName = serviceName + DeploymentConstants.SUFFIX_WSDL;
-        File wsdlFile;
+        String wsdlName;
+        if (StringUtil.isEmpty(serviceName)) {
+            wsdlName = null;
+        } else {
+            wsdlName = serviceName + DeploymentConstants.SUFFIX_WSDL;
+        }
 
-        wsdlFile = getWSDLFromServiceClass(wsdlName, serviceClassName);
+        File wsdlFile = getWSDLFromServiceClass(wsdlName, serviceClassName);
         if (wsdlFile == null) {
             wsdlFile = getWSDLFromMetaInf(wsdlName);
         }
@@ -128,6 +148,12 @@ public class AxisServiceUtil {
      */
     private static File getWSDLFromServiceClass(String wsdlName,
                                                 String serviceClassName) {
+
+        if (StringUtil.isEmpty(wsdlName)
+                || StringUtil.isEmpty(serviceClassName)) {
+            return null;
+        }
+
         String classResourcePath = ClassUtil.getResourcePath(serviceClassName);
         String parentPath = (new File(classResourcePath)).getParent();
 
@@ -144,9 +170,12 @@ public class AxisServiceUtil {
      * @return WSDLファイル
      */
     private static File getWSDLFromMetaInf(String wsdlName) {
-        String parentPath = DeploymentConstants.META_INF;
 
-        String path = parentPath + File.separator + wsdlName;
+        if (StringUtil.isEmpty(wsdlName)) {
+            return null;
+        }
+
+        String path = S2AxisConstants.WSDL_DIR + File.separator + wsdlName;
         File file = ResourceUtil.getResourceAsFileNoException(path);
 
         return file;
