@@ -7,7 +7,7 @@
 	<artifactId>s2axis2-examples</artifactId>
 	<packaging>jar</packaging>
 	<name>S2Axis2 Project - Example</name>
-	<version>0.5.0-SNAPSHOT</version>
+	<version>0.5.0</version>
 	<description></description>
 	<url>http://s2axis.seasar.org/</url>
 	<issueManagement>
