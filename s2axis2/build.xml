@@ -5,7 +5,7 @@
 	</tstamp>
 
 	<property name="project.name" value="s2axis2" />
-	<property name="ver" value="0.5.0-SNAPSHOT" />
+	<property name="ver" value="0.5.0" />
 	<property name="www.dir" value="../s2axis-www" />
 	<property name="release.dir" value="${www.dir}/download/${releaseDate}" />
 
