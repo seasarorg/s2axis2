@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>S2Axis2 - Developer Guidelines</title>
+</head>
+<body>
+<h2><a name="release-process">リリース手順</a></h2>
+<h3>[STEP1]&nbsp;リリース成果物の作成</h3>
+<ol>
+  <li>「s2axis2」プロジェクトで、pom.xml、build.xmlのバージョンが、リリースバージョンになっていることを確認します。<br>
+  </li>
+  <li>「s2axis2」プロジェクトで、以下のコマンドを実行し、リリース成果物を作成します。
+    <pre>ant dist</pre>
+    生成されるのは、以下のものです。生成されたファイルは、s2axis-www/download/yyyy-MM-dd 配下にコピーされます。<br>
+    <ul>
+      <li>s2axis2-x.x.x.zip</li>
+      <li>s2axis2-x.x.x-sources.jar</li>
+    </ul>
+    <br>
+  </li>
+  <li>「s2axis2」プロジェクトから、以下のファイルをで、「s2axis2-example」プロジェクトにコピーします。<br>
+    <ul>
+      <li>s2axis2/target/s2axis2-x.x.x.jar&nbsp;&nbsp;--->&nbsp;&nbsp;s2axis2-examples/src/main/webapp/WEB-INF/lib</li>
+      <li>s2axis2/target/s2axis2-x.x.x-sources.jar&nbsp;&nbsp;--->&nbsp;&nbsp;s2axis2-examples/libext</li>
+    </ul>
+    <br>
+  </li>
+  <li>「s2axis2-example」プロジェクトで、上記でコピーしたファイルにそって、classpathの設定を変更します。<br>
+  </li>
+  <li>「s2axis2-example」プロジェクトで、pom.xml、build.xmlのバージョンが、リリースバージョンになっていることを確認します。<br>
+  </li>
+  <li>「s2axis2-example」プロジェクトで、以下のコマンドを実行し、リリース成果物を作成します。
+    <pre>ant dist</pre>
+    生成されるのは、以下のものです。生成されたファイルは、s2axis-www/download/yyyy-MM-dd 配下にコピーされます。<br>
+    <ul>
+      <li>s2axis2-x.x.x.zip</li>
+      <li>s2axis2-x.x.x-sources.jar</li>
+    </ul>
+  </li>
+</ol>
+<h3>[STEP2]&nbsp;ドキュメントの修正、および、リリース成果物のコミット</h3>
+<ol>
+  <li>「s2axis-www」プロジェクトで、生成されたリリース成果物に合わせて、以下のファイルを修正します。<br>
+    <ul>
+      <li>ja/index.html</li>
+    </ul>
+    <br>
+  </li>
+  <li>修正したHTML、および、STEP1で生成したリリース成果物をSVNリポジトリにコミットします。</li>
+</ol>
+<h3>[STEP3]&nbsp;リリースタグの作成</h3>
+<ol>
+  <li>SVNリポジトリ（https://www.seasar.org/svn/s2axis）を開き、リリースタグを作成します。 タグ配下のディレクトリ構成は以下のようにします。<br>
+    <pre>tags
+    yyyy-MM-dd
+        s2axis-x.x.x
+        s2axis-examples-x.x.x
+        wwww</pre>
+  </li>
+</ol>
+<h3>[STEP4]&nbsp;Mavenリポジトリへのデプロイ</h3>
+<ol>
+  <li>「s2axis2」プロジェクトで、以下のコマンドを実行し、jarファイルをMavenリポジトリにデプロイします。<br>
+    <pre>mvn clean source:jar javadoc:jar deploy -DupdateReleaseInfo=true</pre>
+  </li>
+  <li>デプロイされたjarファイルは、以下のURLから確認できます。<br>
+    <pre>https://www.seasar.org/maven/maven2/org/seasar/axis/s2axis2/</pre>
+  </li>
+</ol>
+<h3>[STEP5]&nbsp;JIRAのIssueの整理</h3>
+<ol>
+  <li>リリースで対応されたIssueをクローズします。<br></li>
+  <li>JIRAでのリリース対象バージョンを「リリース済み」にします。<br><br>
+  [ADMINISTRATION]メニュー&nbsp;→&nbsp;[S2Axis]リンクをクリック&nbsp;→&nbsp;[Versions]の[Manage versions]からリリース対象バージョンの[Release]リンクをクリック<br>
+  </li>
+</ol>
+<h3>[STEP6]&nbsp;サイトの公開</h3>
+<ol>
+  <li>コミッタページにログインし、サイトの公開を行います。<br></li>
+  <li>サイトからリリース成果物をダウンロードし、内容を確認します。<br></li>
+</ol>
+<h3>[STEP7]&nbsp;リリース通知</h3>
+<ol>
+  <li>リリース通知として、以下の作業を行います。<br>
+    <ul>
+      <li><a href="http://www.seasar.org/wiki/index.php?SeasarWhatsNew">SeasarWhatsNew</a>での通知</li>
+      <li><a href="http://www.seasar.org/wiki/index.php?ChangeLog%2FS2Axis">ChangeLog</a>の記述</li>
+      <li><a href="http://www.seasar.org/">The Seasar Projectトップページ</a>の最新情報への記述（「seasar-www」プロジェクトのファイルを更新）</li>
+      <li>seasar-user@ml.seasar.org での通知</li>
+    </ul>
+  </li>
+</ol>
+</body>
+</html>
