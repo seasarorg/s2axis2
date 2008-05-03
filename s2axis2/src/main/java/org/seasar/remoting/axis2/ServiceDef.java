@@ -70,7 +70,7 @@ public class ServiceDef {
      * @return サービスとして公開するクラス／インタフェースの型
      */
     public Class getServiceType() {
-        return serviceType;
+        return this.serviceType;
     }
 
     /**
@@ -88,7 +88,7 @@ public class ServiceDef {
      * @return スキーマ定義をする際に対象となる名前空間
      */
     public String getTargetNamespace() {
-        return targetNamespace;
+        return this.targetNamespace;
     }
 
     /**
@@ -106,7 +106,7 @@ public class ServiceDef {
      * @return スキーマの名前空間
      */
     public String getSchemaNamespace() {
-        return schemaNamespace;
+        return this.schemaNamespace;
     }
 
     /**
@@ -124,7 +124,7 @@ public class ServiceDef {
      * @return サービスで公開しないメソッドのリスト
      */
     public List<String> getExcludeOperations() {
-        return excludeOperations;
+        return this.excludeOperations;
     }
 
     /**
@@ -155,7 +155,7 @@ public class ServiceDef {
      * @return サービスがデフォルトで使用するMessageReceiver
      */
     public Map<String, Class> getMessageReceivers() {
-        return messageReceivers;
+        return this.messageReceivers;
     }
 
     /**
@@ -178,7 +178,7 @@ public class ServiceDef {
      * @return パラメータのマップ
      */
     public Map<String, Object> getParameterMap() {
-        return parameterMap;
+        return this.parameterMap;
     }
 
     /**

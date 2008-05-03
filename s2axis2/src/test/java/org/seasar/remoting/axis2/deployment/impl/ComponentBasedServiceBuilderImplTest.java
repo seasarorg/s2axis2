@@ -24,8 +24,8 @@ import org.seasar.framework.container.ComponentDef;
 import org.seasar.framework.container.MetaDef;
 import org.seasar.framework.container.S2Container;
 import org.seasar.remoting.axis2.ServiceDef;
-import org.seasar.remoting.axis2.mock.ServiceMock;
 import org.seasar.remoting.axis2.mock.SampleService;
+import org.seasar.remoting.axis2.mock.ServiceMock;
 import org.seasar.remoting.axis2.mock.impl.ServiceMockImpl;
 import org.seasar.remoting.axis2.mock.impl.ServiceMockImpl2;
 
@@ -58,6 +58,7 @@ public class ComponentBasedServiceBuilderImplTest extends S2TestCase {
 
     private ConfigurationContext             configCtx;
 
+    @Override
     protected void setUp() throws Exception {
         include("s2axis2-test.dicon");
 
@@ -69,10 +70,11 @@ public class ComponentBasedServiceBuilderImplTest extends S2TestCase {
         this.configCtx = new ConfigurationContext(new AxisConfiguration());
     }
 
+    @Override
     protected void tearDown() throws Exception {}
 
     public void testPopulateService_implClass() {
-        ComponentDef componentDef = container.getComponentDef("ServiceMock");
+        ComponentDef componentDef = this.container.getComponentDef("ServiceMock");
         AxisService service = this.builder.populateService(this.configCtx,
                 componentDef);
 
@@ -87,7 +89,7 @@ public class ComponentBasedServiceBuilderImplTest extends S2TestCase {
     }
 
     public void testPopulateService_serviceType() {
-        ComponentDef componentDef = container.getComponentDef("ServiceMock");
+        ComponentDef componentDef = this.container.getComponentDef("ServiceMock");
 
         this.serviceDef.setTargetNamespace(null);
         this.serviceDef.setSchemaNamespace(null);
@@ -105,7 +107,7 @@ public class ComponentBasedServiceBuilderImplTest extends S2TestCase {
     }
 
     public void testPopulateService_ns() {
-        ComponentDef componentDef = container.getComponentDef("ServiceMock");
+        ComponentDef componentDef = this.container.getComponentDef("ServiceMock");
 
         AxisService service = this.builder.populateService(this.configCtx,
                 componentDef, this.serviceDef);
@@ -118,7 +120,7 @@ public class ComponentBasedServiceBuilderImplTest extends S2TestCase {
     }
 
     public void testPopulateService_withServieDef() {
-        ComponentDef componentDef = container.getComponentDef("ServiceDefTest");
+        ComponentDef componentDef = this.container.getComponentDef("ServiceDefTest");
         MetaDef metaDef = componentDef.getMetaDef("axis-service");
 
         AxisService service = this.builder.populateService(this.configCtx,

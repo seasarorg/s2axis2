@@ -22,10 +22,12 @@ public class AbstractServiceBuilderTest extends S2TestCase {
 
     AbstractServiceBuilder serviceBuilder = new ServiceBuilderMock();
 
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
     }
 
+    @Override
     protected void tearDown() throws Exception {
         super.tearDown();
     }

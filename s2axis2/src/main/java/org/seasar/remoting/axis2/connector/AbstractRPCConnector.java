@@ -98,6 +98,7 @@ public abstract class AbstractRPCConnector extends AbstractAxisConnector {
      * @return Webサービスの呼び出し結果
      * @throws Throwable 通信に失敗した場合
      */
+    @Override
     protected Object invoke(URL url, Method method, Object[] args)
             throws Throwable {
 
@@ -177,7 +178,7 @@ public abstract class AbstractRPCConnector extends AbstractAxisConnector {
 
         Object result;
 
-        OMElementDeserializer deserializer = (OMElementDeserializer)this.deserializerMap.get(returnType);
+        OMElementDeserializer deserializer = this.deserializerMap.get(returnType);
 
         if (deserializer != null) {
             // Bind by deserializer

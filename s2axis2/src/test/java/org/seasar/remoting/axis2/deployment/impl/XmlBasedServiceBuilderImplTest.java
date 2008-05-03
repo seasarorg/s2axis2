@@ -30,6 +30,7 @@ public class XmlBasedServiceBuilderImplTest extends S2TestCase {
 
     ConfigurationContext   configCtx;
 
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
         include("s2axis2-test-servicesxml.dicon");
@@ -37,12 +38,13 @@ public class XmlBasedServiceBuilderImplTest extends S2TestCase {
         this.configCtx = createConfigurationContext();
     }
 
+    @Override
     protected void tearDown() throws Exception {
         super.tearDown();
     }
 
     public void testPopulateService_service1() {
-        List serviceList = builder.populateService(this.configCtx,
+        List serviceList = this.builder.populateService(this.configCtx,
                 "org/seasar/remoting/axis2/deployment/SampleService01.xml");
         assertEquals(1, serviceList.size());
 
@@ -55,7 +57,7 @@ public class XmlBasedServiceBuilderImplTest extends S2TestCase {
     }
 
     public void testPopulateService_service2() {
-        List serviceList = builder.populateService(this.configCtx,
+        List serviceList = this.builder.populateService(this.configCtx,
                 "org/seasar/remoting/axis2/deployment/SampleService02.xml");
         assertEquals(1, serviceList.size());
 
@@ -72,7 +74,7 @@ public class XmlBasedServiceBuilderImplTest extends S2TestCase {
 
     public void testPopulateService_fileNotExist() {
         try {
-            builder.populateService(this.configCtx,
+            this.builder.populateService(this.configCtx,
                     "org/seasar/remoting/axis2/deployment/Dummy.xml");
             fail("not throw Exception");
         } catch (Exception ex) {
@@ -81,7 +83,7 @@ public class XmlBasedServiceBuilderImplTest extends S2TestCase {
     }
 
     public void testPopulateService_serviceGroup1() {
-        List serviceList = builder.populateService(this.configCtx,
+        List serviceList = this.builder.populateService(this.configCtx,
                 "org/seasar/remoting/axis2/deployment/SampleServiceGroup01.xml");
         assertEquals(2, serviceList.size());
 

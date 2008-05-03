@@ -26,11 +26,13 @@ public class RESTRequestBuilderTest extends S2TestCase {
 
     RESTRequestBuilder builder;
 
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
         include("s2axis2.dicon");
     }
 
+    @Override
     protected void tearDown() throws Exception {
         super.tearDown();
     }

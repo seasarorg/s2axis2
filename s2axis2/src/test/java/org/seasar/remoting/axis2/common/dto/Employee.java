@@ -76,7 +76,7 @@ public class Employee {
     }
 
     public Department getDepertment() {
-        return depertment;
+        return this.depertment;
     }
 
     public void setDepertment(Department depertmentDto) {
@@ -84,29 +84,31 @@ public class Employee {
     }
 
     public Role[] getRoles() {
-        return roles;
+        return this.roles;
     }
 
     public void setRoles(Role[] roles) {
         this.roles = roles;
     }
 
+    @Override
     public String toString() {
         StringBuffer buf = new StringBuffer("[");
-        buf.append(empno).append(", ");
-        buf.append(ename).append(", ");
-        buf.append(job).append(", ");
-        buf.append(mgr).append(", ");
-        buf.append(hiredate).append(", ");
-        buf.append(depertment).append(", ");
-        buf.append(ArrayUtil.toString(roles)).append(", ");
+        buf.append(this.empno).append(", ");
+        buf.append(this.ename).append(", ");
+        buf.append(this.job).append(", ");
+        buf.append(this.mgr).append(", ");
+        buf.append(this.hiredate).append(", ");
+        buf.append(this.depertment).append(", ");
+        buf.append(ArrayUtil.toString(this.roles)).append(", ");
         buf.append("]");
         return buf.toString();
     }
 
+    @Override
     public int hashCode() {
-        if (empno != null) {
-            return empno.intValue();
+        if (this.empno != null) {
+            return this.empno.intValue();
         }
         return 0;
     }

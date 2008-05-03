@@ -67,7 +67,7 @@ public class S2ServiceGroupBuilder {
         }
 
         for (int i = 0; serviceList != null && i < serviceList.size(); i++) {
-            AxisService service = (AxisService)serviceList.get(i);
+            AxisService service = serviceList.get(i);
             service.setWsdlFound(true);
         }
 

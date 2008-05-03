@@ -24,11 +24,13 @@ public class RESTConnectorTest extends S2TestCase {
 
     private RESTConnector restConnector;
 
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
         include("s2axis2-rest.dicon");
     }
 
+    @Override
     protected void tearDown() throws Exception {
         super.tearDown();
     }

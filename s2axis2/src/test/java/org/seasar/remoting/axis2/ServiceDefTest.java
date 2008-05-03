@@ -29,14 +29,16 @@ public class ServiceDefTest extends S2TestCase {
 
     private S2Container container;
 
+    @Override
     protected void setUp() throws Exception {
         include("s2axis2-test.dicon");
     }
 
+    @Override
     protected void tearDown() throws Exception {}
 
     public void testServiceDef_readDicon() {
-        ComponentDef componentDef = container.getComponentDef("ServiceDefTest");
+        ComponentDef componentDef = this.container.getComponentDef("ServiceDefTest");
         MetaDef metaDef = componentDef.getMetaDef("axis-service");
 
         ServiceDef serviceDef = (ServiceDef)metaDef.getValue();

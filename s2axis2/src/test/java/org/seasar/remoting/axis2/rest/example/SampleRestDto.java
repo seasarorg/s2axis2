@@ -29,7 +29,7 @@ public class SampleRestDto {
     public SampleRestDto() {}
 
     public Integer getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(Integer id) {
@@ -37,7 +37,7 @@ public class SampleRestDto {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -45,7 +45,7 @@ public class SampleRestDto {
     }
 
     public String getMessage() {
-        return message;
+        return this.message;
     }
 
     public void setMessage(String message) {

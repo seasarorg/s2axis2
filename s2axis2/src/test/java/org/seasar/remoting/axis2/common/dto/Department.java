@@ -49,14 +49,16 @@ public class Department {
         this.loc = loc;
     }
 
+    @Override
     public String toString() {
         StringBuffer buf = new StringBuffer("[");
-        buf.append(deptno).append(", ");
-        buf.append(dname).append(", ");
+        buf.append(this.deptno).append(", ");
+        buf.append(this.dname).append(", ");
         buf.append("]");
         return buf.toString();
     }
 
+    @Override
     public int hashCode() {
         return this.getDeptno();
     }

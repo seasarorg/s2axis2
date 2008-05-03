@@ -17,15 +17,17 @@ package org.seasar.remoting.axis2.util;
 
 import java.lang.reflect.Method;
 
+import junit.framework.TestCase;
+
 import org.seasar.remoting.axis2.annotation.RestMethod;
 import org.seasar.remoting.axis2.annotation.RestUriTemplate;
 
-import junit.framework.TestCase;
-
 public class RESTUtilTest extends TestCase {
 
+    @Override
     public void setUp() throws Exception {}
 
+    @Override
     public void tearDown() throws Exception {}
 
     public void testGetUriTemplate_1() throws Exception {

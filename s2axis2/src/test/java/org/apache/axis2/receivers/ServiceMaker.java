@@ -20,24 +20,22 @@ import org.apache.axis2.context.MessageContext;
 import org.apache.axis2.context.OperationContext;
 import org.apache.axis2.context.ServiceContext;
 
-
 public class ServiceMaker {
-    
+
     AbstractMessageReceiver receiver;
 
     public ServiceMaker() {}
-    
+
     public void make() {
-        
+
         OperationContext opeContext = new OperationContext();
         opeContext.setParent(new ServiceContext());
-        
+
         MessageContext msgContext = new MessageContext();
         msgContext.setOperationContext(opeContext);
         try {
             this.receiver.getTheImplementationObject(new MessageContext());
-        }
-        catch (AxisFault ex) {
+        } catch (AxisFault ex) {
             ex.printStackTrace();
         }
     }

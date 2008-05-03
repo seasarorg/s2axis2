@@ -107,7 +107,7 @@ public class ComponentBasedServiceBuilderImpl extends AbstractServiceBuilder
             // Parameterの適用
             try {
                 Set<String> keySet = parameterMap.keySet();
-                String[] keyArray = (String[])keySet.toArray(new String[0]);
+                String[] keyArray = keySet.toArray(new String[0]);
                 for (int index = 0; index < keyArray.length; index++) {
                     String name = keyArray[index];
                     Object value = parameterMap.get(name);
@@ -186,7 +186,7 @@ public class ComponentBasedServiceBuilderImpl extends AbstractServiceBuilder
 
         // 除外メソッドの削除
         for (int i = 0; i < excludeOperations.size(); i++) {
-            String opName = (String)excludeOperations.get(i);
+            String opName = excludeOperations.get(i);
             service.removeOperation(new QName(opName));
         }
 
@@ -211,7 +211,7 @@ public class ComponentBasedServiceBuilderImpl extends AbstractServiceBuilder
                 serviceType = serviceClass;
                 break;
             case 1:
-                serviceType = (Class)interfaces[0];
+                serviceType = interfaces[0];
                 break;
             default:
                 serviceType = serviceClass;

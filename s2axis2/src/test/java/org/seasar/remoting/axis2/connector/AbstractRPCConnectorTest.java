@@ -19,11 +19,13 @@ import org.seasar.extension.unit.S2TestCase;
 
 public class AbstractRPCConnectorTest extends S2TestCase {
 
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
         include("s2axis2-rpc.dicon");
     }
 
+    @Override
     protected void tearDown() throws Exception {
         super.tearDown();
     }

@@ -19,6 +19,8 @@ import java.lang.reflect.Method;
 
 import javax.xml.namespace.QName;
 
+import junit.framework.TestCase;
+
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMFactory;
@@ -27,14 +29,14 @@ import org.seasar.framework.beans.BeanDesc;
 import org.seasar.framework.beans.factory.BeanDescFactory;
 import org.seasar.remoting.axis2.mock.ServiceMock;
 
-import junit.framework.TestCase;
-
 public class RPCUtilTest extends TestCase {
 
+    @Override
     public void setUp() throws Exception {
         super.setUp();
     }
 
+    @Override
     public void tearDown() throws Exception {
         super.setUp();
     }

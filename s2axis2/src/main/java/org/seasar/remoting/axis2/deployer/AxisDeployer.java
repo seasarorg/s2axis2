@@ -165,7 +165,7 @@ public class AxisDeployer {
                 result.add(metaDef);
             }
         }
-        return (MetaDef[])result.toArray(new MetaDef[result.size()]);
+        return result.toArray(new MetaDef[result.size()]);
     }
 
     /**
@@ -188,7 +188,7 @@ public class AxisDeployer {
     }
 
     public ConfigurationContext getConfigurationContext() {
-        return configCtx;
+        return this.configCtx;
     }
 
     public void addServiceDeployer(String key, AxisServiceDeployer deployer) {

@@ -37,6 +37,7 @@ public class JAXWSDeployer extends AxisServiceDeployer {
     /**
      * {@inheritDoc}
      */
+    @Override
     public void deploy(ConfigurationContext configCtx,
                        ComponentDef componentDef,
                        MetaDef metaDef) {

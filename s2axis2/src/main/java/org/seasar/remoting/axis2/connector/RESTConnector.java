@@ -190,7 +190,7 @@ public class RESTConnector extends AbstractRPCConnector {
      * @return 含める場合はture
      */
     public boolean isAppendAction() {
-        return appendAction;
+        return this.appendAction;
     }
 
     /**

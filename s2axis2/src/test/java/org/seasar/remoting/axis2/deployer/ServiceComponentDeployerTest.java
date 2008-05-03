@@ -34,6 +34,7 @@ public class ServiceComponentDeployerTest extends S2TestCase {
 
     ConfigurationContext     configCtx;
 
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
         include("s2axis2-test.dicon");
@@ -41,6 +42,7 @@ public class ServiceComponentDeployerTest extends S2TestCase {
         this.configCtx = new ConfigurationContext(new AxisConfiguration());
     }
 
+    @Override
     protected void tearDown() throws Exception {
         super.tearDown();
     }

@@ -26,11 +26,13 @@ import org.seasar.remoting.axis2.mock.ServiceMock;
 
 public class S2ServiceObjectSupplierTest extends S2TestCase {
 
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
         include("S2ServiceObjectSupplierTest.dicon");
     }
 
+    @Override
     protected void tearDown() throws Exception {
         super.tearDown();
     }

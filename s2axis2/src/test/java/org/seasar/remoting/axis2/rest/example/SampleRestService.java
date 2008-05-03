@@ -16,8 +16,8 @@
 package org.seasar.remoting.axis2.rest.example;
 
 import org.seasar.remoting.axis2.annotation.RestMethod;
-import org.seasar.remoting.axis2.annotation.RestUriTemplate;
 import org.seasar.remoting.axis2.annotation.RestUriParam;
+import org.seasar.remoting.axis2.annotation.RestUriTemplate;
 
 @RestUriTemplate("/RestService")
 public interface SampleRestService {

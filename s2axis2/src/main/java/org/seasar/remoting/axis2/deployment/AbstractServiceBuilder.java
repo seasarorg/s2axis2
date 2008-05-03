@@ -42,7 +42,6 @@ import org.apache.axis2.util.XMLUtils;
 import org.seasar.framework.log.Logger;
 import org.seasar.framework.util.ClassUtil;
 import org.seasar.framework.util.ResourceUtil;
-import org.seasar.remoting.axis2.S2AxisConstants;
 import org.seasar.remoting.axis2.builder.S2XFormURLEncodedBuilder;
 import org.seasar.remoting.axis2.deployer.DeployFailedException;
 import org.seasar.remoting.axis2.transport.http.S2XFormURLEncodedFormatter;
@@ -189,7 +188,7 @@ public abstract class AbstractServiceBuilder {
             WSDLToAxisServiceBuilder wsdlToAxisServiceBuilder;
 
             // WSDLのバージョンに合わせて処理する。
-            if (Constants.NS_URI_WSDL11.equals(nsURI)) {
+            if (org.apache.axis2.namespace.Constants.NS_URI_WSDL11.equals(nsURI)) {
                 // WSDL 1.1
                 InputStream wsdlIn = new FileInputStream(wsdlFile);
                 wsdlToAxisServiceBuilder = new WSDL11ToAxisServiceBuilder(

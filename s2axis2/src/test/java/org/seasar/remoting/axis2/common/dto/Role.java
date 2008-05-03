@@ -39,14 +39,16 @@ public class Role {
         this.roleName = dname;
     }
 
+    @Override
     public String toString() {
         StringBuffer buf = new StringBuffer("[");
-        buf.append(roleId).append(", ");
-        buf.append(roleName).append(", ");
+        buf.append(this.roleId).append(", ");
+        buf.append(this.roleName).append(", ");
         buf.append("]");
         return buf.toString();
     }
 
+    @Override
     public int hashCode() {
         return this.getRoleId();
     }
