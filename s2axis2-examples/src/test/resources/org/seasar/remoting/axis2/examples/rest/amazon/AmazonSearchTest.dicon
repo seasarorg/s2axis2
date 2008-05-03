@@ -9,7 +9,7 @@
 
     <component name="connector" class="org.seasar.remoting.axis2.connector.RESTConnector">
         <property name="baseURL">
-            new java.net.URL("http://xml-jp.amznxslt.com/")
+            new java.net.URL("http://webservices.amazon.co.jp/")
         </property>
     </component>
 

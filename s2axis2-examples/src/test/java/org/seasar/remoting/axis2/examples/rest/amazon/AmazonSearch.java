@@ -21,7 +21,7 @@ import org.seasar.remoting.axis2.annotation.RestUriTemplate;
 /**
  * @author takanori
  */
-@RestUriTemplate("/onca/xml3")
+@RestUriTemplate("/onca/xml")
 public interface AmazonSearch {
 
     @RestMethod(contentType = "application/x-www-form-urlencoded")

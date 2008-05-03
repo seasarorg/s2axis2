@@ -1,17 +1,13 @@
 /*
  * Copyright 2004-2008 the Seasar Foundation and the Others.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the
+ * License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 package org.seasar.remoting.axis2.examples.rest.amazon;
 
@@ -19,65 +15,53 @@ import org.seasar.remoting.axis2.annotation.RestUriParam;
 
 public class AmazonSearchDto {
 
-    private String t;
+    @RestUriParam("Service")
+    private static final String SERVICE   = "AWSECommerceService";
 
-    @RestUriParam("dev-t")
-    private String devT;
+    @RestUriParam("Operation")
+    private static final String OPERATION = "ItemLookup";
 
-    @RestUriParam("AsinSearch")
-    private String asinSearch;
+    @RestUriParam("AWSAccessKeyId")
+    private String              accessKeyId;
 
-    private String locale;
+    @RestUriParam("AssociateTag")
+    private String              associateTag;
 
-    private String type;
+    @RestUriParam("ItemId")
+    private String              itemId;
 
-    private String f;
+    public AmazonSearchDto() {}
 
-    public String getT() {
-        return t;
+    public String getService() {
+        return SERVICE;
     }
 
-    public void setT(String t) {
-        this.t = t;
+    public String getOperation() {
+        return OPERATION;
     }
 
-    public String getDevT() {
-        return devT;
+    public String getAccessKeyId() {
+        return accessKeyId;
     }
 
-    public void setDevT(String devT) {
-        this.devT = devT;
+    public void setAccessKeyId(String accessKeyId) {
+        this.accessKeyId = accessKeyId;
     }
 
-    public String getAsinSearch() {
-        return asinSearch;
+    public String getAssociateTag() {
+        return associateTag;
     }
 
-    public void setAsinSearch(String asinSearch) {
-        this.asinSearch = asinSearch;
+    public void setAssociateTag(String associateTag) {
+        this.associateTag = associateTag;
     }
 
-    public String getLocale() {
-        return locale;
+    public String getItemId() {
+        return itemId;
     }
 
-    public void setLocale(String locale) {
-        this.locale = locale;
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getF() {
-        return f;
-    }
-
-    public void setF(String f) {
-        this.f = f;
-    }
 }
