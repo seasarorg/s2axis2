@@ -21,4 +21,9 @@
 		instance="singleton">
 		<meta name="axis-service"/>
 	</component>
+	
+	<component name="JDK15Service"
+		class="org.seasar.remoting.axis2.examples.ex01.JDK15ServiceImpl">
+		<meta name="axis-service"/>
+	</component>
 </components>
