@@ -7,7 +7,7 @@
 	<artifactId>s2axis2</artifactId>
 	<packaging>jar</packaging>
 	<name>S2Axis2 Project</name>
-	<version>0.5.0</version>
+	<version>0.6.0</version>
 	<description></description>
 	<url>http://s2axis.seasar.org/</url>
 	<issueManagement>
@@ -63,6 +63,15 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
+
+	<!-- プロジェクトプロパティ -->
+	<properties>
+		<s2container.version>2.4.17</s2container.version>
+		<s2remoting.version>1.1.2</s2remoting.version>
+		<axis.version>1.4</axis.version>
+	</properties>
+
+	<!-- ソースリポジトリ設定 -->
 	<scm>
 		<connection>
 			scm:svn:https://www.seasar.org/svn/s2axis/trunk/s2axis2/
@@ -74,16 +83,16 @@
 			http://svn.seasar.org/browse/trunk/s2axis2/?root=s2axis
 		</url>
 	</scm>
-	<organization>
-		<name>The Seasar Foundation</name>
-		<url>http://www.seasar.org/</url>
-	</organization>
-	<properties>
-		<s2container.version>2.4.17</s2container.version>
-		<s2remoting.version>1.1.2</s2remoting.version>
-		<axis.version>1.3</axis.version>
-	</properties>
+
+	<!-- ビルド設定 -->
 	<build>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-webdav</artifactId>
+				<version>1.0-beta-2</version>
+			</extension>
+		</extensions>
 		<defaultGoal>validate</defaultGoal>
 		<pluginManagement>
 			<plugins>
@@ -129,6 +138,15 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>javadoc-jar</id>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
 				<configuration>
 					<source>1.5</source>
 					<encoding>UTF-8</encoding>
@@ -158,40 +176,11 @@
 						</link>
 					</links>
 				</configuration>
-				<executions>
-					<execution>
-						<id>javadoc-jar</id>
-						<phase>package</phase>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
-		<extensions>
-			<extension>
-				<groupId>org.apache.maven.wagon</groupId>
-				<artifactId>wagon-webdav</artifactId>
-			</extension>
-		</extensions>
 	</build>
-	<distributionManagement>
-		<repository>
-			<uniqueVersion>false</uniqueVersion>
-			<id>maven.seasar.org</id>
-			<name>The Seasar Foundation Maven2 Repository</name>
-			<url>dav:https://www.seasar.org/maven/maven2</url>
-		</repository>
-		<snapshotRepository>
-			<uniqueVersion>false</uniqueVersion>
-			<id>maven.seasar.org</id>
-			<name>
-				The Seasar Foundation Maven2 Snapshot Repository
-			</name>
-			<url>dav:https://www.seasar.org/maven/maven2-snapshot</url>
-		</snapshotRepository>
-	</distributionManagement>
+
+	<!-- リポジトリ設定 -->
 	<repositories>
 		<repository>
 			<id>maven.seasar.org</id>
@@ -214,6 +203,8 @@
 			<url>file:repo</url>
 		</repository>
 	</repositories>
+
+	<!-- 依存関係 -->
 	<dependencies>
 		<dependency>
 			<groupId>org.seasar.container</groupId>
@@ -237,7 +228,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.axis2</groupId>
-			<artifactId>axis2-adb</artifactId>
+			<artifactId>axis2</artifactId>
 			<version>${axis.version}</version>
 		</dependency>
 		<dependency>
@@ -252,26 +243,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.axis2</groupId>
-			<artifactId>axis2-clustering</artifactId>
-			<version>${axis.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.axis2</groupId>
-			<artifactId>axis2-codegen</artifactId>
-			<version>${axis.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.axis2</groupId>
-			<artifactId>axis2-fastinfoset</artifactId>
-			<version>${axis.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.axis2</groupId>
-			<artifactId>axis2-jaxbri</artifactId>
-			<version>${axis.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.axis2</groupId>
 			<artifactId>axis2-jaxws</artifactId>
 			<version>${axis.version}</version>
 		</dependency>
@@ -280,56 +251,78 @@
 			<artifactId>axis2-jaxws-api</artifactId>
 			<version>${axis.version}</version>
 		</dependency>
-		<dependency>
+		<!--
+			<dependency>
+			<groupId>org.apache.axis2</groupId>
+			<artifactId>axis2-clustering</artifactId>
+			<version>${axis.version}</version>
+			</dependency>
+			<dependency>
+			<groupId>org.apache.axis2</groupId>
+			<artifactId>axis2-codegen</artifactId>
+			<version>${axis.version}</version>
+			</dependency>
+			<groupId>org.apache.axis2</groupId>
+			<artifactId>axis2-corba</artifactId>
+			<version>${axis.version}</version>
+			</dependency>
+			<dependency>
+			<groupId>org.apache.axis2</groupId>
+			<artifactId>axis2-fastinfoset</artifactId>
+			<version>${axis.version}</version>
+			</dependency>
+			<dependency>
+			<dependency>
+			<groupId>org.apache.axis2</groupId>
+			<artifactId>axis2-jaxbri</artifactId>
+			<version>${axis.version}</version>
+			</dependency>
+			<dependency>
 			<groupId>org.apache.axis2</groupId>
 			<artifactId>axis2-jibx</artifactId>
 			<version>${axis.version}</version>
-		</dependency>
-		<dependency>
+			</dependency>
+			<dependency>
 			<groupId>org.apache.axis2</groupId>
 			<artifactId>axis2-json</artifactId>
 			<version>${axis.version}</version>
-		</dependency>
-		<dependency>
+			</dependency>
+			<dependency>
 			<groupId>org.apache.axis2</groupId>
 			<artifactId>axis2-jws-api</artifactId>
 			<version>${axis.version}</version>
-		</dependency>
-		<dependency>
+			</dependency>
+			<dependency>
 			<groupId>org.apache.axis2</groupId>
 			<artifactId>axis2-metadata</artifactId>
 			<version>${axis.version}</version>
-		</dependency>
-		<dependency>
+			</dependency>
+			<dependency>
 			<groupId>org.apache.axis2</groupId>
 			<artifactId>axis2-mtompolicy</artifactId>
 			<version>${axis.version}</version>
-		</dependency>
-		<dependency>
+			</dependency>
+			<dependency>
 			<groupId>org.apache.axis2</groupId>
 			<artifactId>axis2-saaj</artifactId>
 			<version>${axis.version}</version>
-		</dependency>
-		<dependency>
+			</dependency>
+			<dependency>
 			<groupId>org.apache.axis2</groupId>
 			<artifactId>axis2-saaj-api</artifactId>
 			<version>${axis.version}</version>
-		</dependency>
-		<dependency>
+			</dependency>
+			<dependency>
 			<groupId>org.apache.axis2</groupId>
 			<artifactId>axis2-spring</artifactId>
 			<version>${axis.version}</version>
-		</dependency>
-		<dependency>
+			</dependency>
+			<dependency>
 			<groupId>org.apache.axis2</groupId>
 			<artifactId>axis2-xmlbeans</artifactId>
 			<version>${axis.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-beanutils</groupId>
-			<artifactId>commons-beanutils</artifactId>
-			<version>1.7.0</version>
-		</dependency>
+			</dependency>
+		-->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
@@ -337,4 +330,22 @@
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
+
+	<!-- リリースリポジトリ設定 -->
+	<distributionManagement>
+		<repository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>maven.seasar.org</id>
+			<name>The Seasar Foundation Maven2 Repository</name>
+			<url>dav:https://www.seasar.org/maven/maven2</url>
+		</repository>
+		<snapshotRepository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>maven.seasar.org</id>
+			<name>
+				The Seasar Foundation Maven2 Snapshot Repository
+			</name>
+			<url>dav:https://www.seasar.org/maven/maven2-snapshot</url>
+		</snapshotRepository>
+	</distributionManagement>
 </project>
