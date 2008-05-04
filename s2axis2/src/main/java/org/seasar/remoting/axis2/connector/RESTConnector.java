@@ -1,17 +1,13 @@
 /*
  * Copyright 2004-2008 the Seasar Foundation and the Others.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the
+ * License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 package org.seasar.remoting.axis2.connector;
 
@@ -21,16 +17,13 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axis2.Constants;
 import org.apache.axis2.addressing.EndpointReference;
 import org.apache.axis2.client.Options;
-import org.apache.axis2.engine.AxisConfiguration;
 import org.seasar.framework.container.S2Container;
 import org.seasar.framework.container.factory.SingletonS2ContainerFactory;
 import org.seasar.framework.util.StringUtil;
-import org.seasar.remoting.axis2.builder.S2XFormURLEncodedBuilder;
 import org.seasar.remoting.axis2.client.RESTContext;
 import org.seasar.remoting.axis2.client.RESTRequestBuilder;
 import org.seasar.remoting.axis2.client.RequestBuilder;
 import org.seasar.remoting.axis2.client.S2AxisClientContext;
-import org.seasar.remoting.axis2.transport.http.S2XFormURLEncodedFormatter;
 import org.seasar.remoting.axis2.util.RESTUtil;
 
 /**
@@ -80,13 +73,6 @@ public class RESTConnector extends AbstractRPCConnector {
         if (super.options.getProperty(keyEnableRest) == null) {
             super.options.setProperty(keyEnableRest, Constants.VALUE_TRUE);
         }
-
-        // FIXME REST用の設定
-        AxisConfiguration axisConfig = super.client.getAxisConfiguration();
-        axisConfig.addMessageBuilder("application/x-www-form-urlencoded",
-                new S2XFormURLEncodedBuilder());
-        axisConfig.addMessageFormatter("application/x-www-form-urlencoded",
-                new S2XFormURLEncodedFormatter());
     }
 
     /**

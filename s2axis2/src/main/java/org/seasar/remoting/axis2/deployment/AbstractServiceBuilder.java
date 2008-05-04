@@ -42,9 +42,7 @@ import org.apache.axis2.util.XMLUtils;
 import org.seasar.framework.log.Logger;
 import org.seasar.framework.util.ClassUtil;
 import org.seasar.framework.util.ResourceUtil;
-import org.seasar.remoting.axis2.builder.S2XFormURLEncodedBuilder;
 import org.seasar.remoting.axis2.deployer.DeployFailedException;
-import org.seasar.remoting.axis2.transport.http.S2XFormURLEncodedFormatter;
 import org.seasar.remoting.axis2.util.AxisServiceUtil;
 
 /**
@@ -89,11 +87,8 @@ public abstract class AbstractServiceBuilder {
      * @param axisConfig AxisConfiguration
      */
     protected void buildMessageBuilder(AxisConfiguration axisConfig) {
-        // REST用の設定
-        axisConfig.addMessageBuilder("application/x-www-form-urlencoded",
-                new S2XFormURLEncodedBuilder());
-        axisConfig.addMessageFormatter("application/x-www-form-urlencoded",
-                new S2XFormURLEncodedFormatter());
+    // MessageBuilder／Formatterの適用を行っていたが、
+    // Axis2本体が修正となったため、処理不要。
     }
 
     /**

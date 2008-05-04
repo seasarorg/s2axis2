@@ -60,7 +60,7 @@
 		<license>
 			<name>The Apache Software License, Version 2.0</name>
 			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-			<distribution>repo</distribution>
+			<distribution>licenses</distribution>
 		</license>
 	</licenses>
 
@@ -228,11 +228,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.axis2</groupId>
-			<artifactId>axis2</artifactId>
-			<version>${axis.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.axis2</groupId>
 			<artifactId>axis2-adb-codegen</artifactId>
 			<version>${axis.version}</version>
 		</dependency>
@@ -244,11 +239,6 @@
 		<dependency>
 			<groupId>org.apache.axis2</groupId>
 			<artifactId>axis2-jaxws</artifactId>
-			<version>${axis.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.axis2</groupId>
-			<artifactId>axis2-jaxws-api</artifactId>
 			<version>${axis.version}</version>
 		</dependency>
 		<!--
