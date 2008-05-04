@@ -10,7 +10,7 @@
         <property name="forceRemote">true</property>
     </component>
 
-    <component name="JAXWSEchoService.JAXWSEchoPort"
+    <component name="JAXWSEchoService"
         class="org.seasar.remoting.axis2.examples.jaxws.ex01.JAXWSEcho">
 		<aspect pointcut="echo">jaxwsRemoting</aspect>
 	</component>

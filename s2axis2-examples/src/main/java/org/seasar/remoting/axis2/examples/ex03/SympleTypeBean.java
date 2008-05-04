@@ -1,17 +1,13 @@
 /*
  * Copyright 2004-2008 the Seasar Foundation and the Others.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the
+ * License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 package org.seasar.remoting.axis2.examples.ex03;
 
@@ -39,7 +35,7 @@ public class SympleTypeBean {
 
     private Date     date        = new Date();
 
-    private Calendar cal         = Calendar.getInstance();
+    // private Calendar cal = Calendar.getInstance();
 
     private Calendar calGMT      = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
 
@@ -109,13 +105,14 @@ public class SympleTypeBean {
         this.date = date;
     }
 
-    public Calendar getCal() {
-        return cal;
-    }
-
-    public void setCal(Calendar cal) {
-        this.cal = cal;
-    }
+    // FIXME
+    // public Calendar getCal() {
+    // return cal;
+    // }
+    //
+    // public void setCal(Calendar cal) {
+    // this.cal = cal;
+    // }
 
     public Calendar getCalGMT() {
         return calGMT;
@@ -136,7 +133,8 @@ public class SympleTypeBean {
         buf.append(doubleParam).append(", ");
         buf.append(boolParam).append(", ");
         buf.append(date).append(", ");
-        buf.append(cal).append(", ");
+        // FIXME
+        // buf.append(cal).append(", ");
         buf.append(calGMT).append("");
         buf.append("]");
         return buf.toString();

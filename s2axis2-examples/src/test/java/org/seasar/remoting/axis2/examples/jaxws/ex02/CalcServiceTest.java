@@ -1,17 +1,13 @@
 /*
  * Copyright 2004-2008 the Seasar Foundation and the Others.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the
+ * License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+ * CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 package org.seasar.remoting.axis2.examples.jaxws.ex02;
 
@@ -42,7 +38,7 @@ public class CalcServiceTest extends TestCase {
 
     public void setUp() throws MalformedURLException {
         this.targetNamespace = "http://ex02.jaxws.examples.axis2.remoting.seasar.org/";
-        this.portName = "CalcService.CalculatorServicePort";
+        this.portName = "CalcService";
         this.url = new URL("http://localhost:8080/s2axis2-examples/services/"
                 + this.portName + "?wsdl");
     }
@@ -54,7 +50,7 @@ public class CalcServiceTest extends TestCase {
         CalcService service = new CalcService(this.url, new QName(
                 this.targetNamespace, this.portName));
         Calc calc = service.getPort(new QName(targetNamespace, this.portName
-                + "SOAP11port_http"), Calc.class);
+                + "HttpSoap11Endpoint"), Calc.class);
 
         int actual = calc.add(1, 2);
 
