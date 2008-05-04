@@ -27,21 +27,30 @@ public class S2AxisClientException extends SRuntimeException {
     private static final long serialVersionUID = 1L;
 
     /**
-     * {@inheritDoc}
+     * 例外を生成します。
+     * 
+     * @param messageCode メッセージコード
      */
     public S2AxisClientException(String messageCode) {
         super(messageCode);
     }
 
     /**
-     * {@inheritDoc}
+     * 例外を生成します。
+     * 
+     * @param messageCode メッセージコード
+     * @param args メッセージ引数
      */
     public S2AxisClientException(String messageCode, Object[] args) {
         super(messageCode, args);
     }
 
     /**
-     * {@inheritDoc}
+     * 例外を生成します。
+     * 
+     * @param messageCode メッセージコード
+     * @param args メッセージ引数
+     * @param cause 原因
      */
     public S2AxisClientException(String messageCode, Object[] args,
             Throwable cause) {

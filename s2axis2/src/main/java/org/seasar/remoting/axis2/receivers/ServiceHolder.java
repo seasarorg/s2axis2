@@ -47,10 +47,9 @@ public class ServiceHolder {
     }
 
     /**
-     * 
      * サービスオブジェクトを返します。
      * 
-     * @param msgContext MessageContext
+     * @param service AxisService
      * @return サービスオブジェクト
      */
     public Object getServiceObject(AxisService service) {

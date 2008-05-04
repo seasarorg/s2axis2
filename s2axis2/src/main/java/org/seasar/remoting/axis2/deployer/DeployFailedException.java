@@ -27,23 +27,33 @@ public class DeployFailedException extends SRuntimeException {
     private static final long serialVersionUID = 1L;
 
     /**
-     * {@inheritDoc}
+     * 例外を生成します。
+     * 
+     * @param messageCode メッセージコード
      */
-    public DeployFailedException(String code) {
-        super(code);
+    public DeployFailedException(String messageCode) {
+        super(messageCode);
     }
 
     /**
-     * {@inheritDoc}
+     * 例外を生成します。
+     * 
+     * @param messageCode メッセージコード
+     * @param args メッセージ引数
      */
-    public DeployFailedException(String code, Object[] args) {
-        super(code, args);
+    public DeployFailedException(String messageCode, Object[] args) {
+        super(messageCode, args);
     }
 
     /**
-     * {@inheritDoc}
+     * 例外を生成します。
+     * 
+     * @param messageCode メッセージコード
+     * @param args メッセージ引数
+     * @param cause 原因
      */
-    public DeployFailedException(String code, Object[] args, Throwable cause) {
-        super(code, args, cause);
+    public DeployFailedException(String messageCode, Object[] args,
+            Throwable cause) {
+        super(messageCode, args, cause);
     }
 }

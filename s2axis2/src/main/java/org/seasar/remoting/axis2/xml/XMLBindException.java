@@ -15,22 +15,47 @@
  */
 package org.seasar.remoting.axis2.xml;
 
+/**
+ * XMLのバインドに失敗した際にスローされる例外です。
+ * 
+ * @author takanori
+ *
+ */
 public class XMLBindException extends Exception {
 
     private static final long serialVersionUID = -5327653989591900577L;
 
+    /**
+     * 例外を生成します。
+     */
     public XMLBindException() {
         super();
     }
 
+    /**
+     * 例外を生成します。
+     * 
+     * @param message メッセージ
+     */
     public XMLBindException(String message) {
         super(message);
     }
 
+    /**
+     * 例外を生成します。
+     * 
+     * @param cause 原因
+     */
     public XMLBindException(Throwable cause) {
         super(cause);
     }
 
+    /**
+     * 例外を生成します。
+     * 
+     * @param message メッセージ
+     * @param cause 原因
+     */
     public XMLBindException(String message, Throwable cause) {
         super(message, cause);
     }

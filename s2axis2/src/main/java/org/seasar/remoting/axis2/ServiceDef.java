@@ -162,7 +162,7 @@ public class ServiceDef {
      * サービスがデフォルトで使用するMessageReceiverを追加します。
      * 
      * @param mep MEP
-     * @param receiver MessageReceiver
+     * @param receiverClass MessageReceiverのクラス
      */
     public void addMessageReceiver(String mep, Class receiverClass) {
         if (this.messageReceivers == null) {

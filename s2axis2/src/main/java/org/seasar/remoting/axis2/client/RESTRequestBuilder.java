@@ -110,11 +110,12 @@ public class RESTRequestBuilder implements RequestBuilder {
     }
 
     /**
+     * JavaBeanから、リクエスト情報を生成します。
      * 
-     * @param method
-     * @param bean
-     * @param options
-     * @return
+     * @param method 呼び出し対象のメソッド
+     * @param bean リクエストの情報となるJavaBean
+     * @param options Axis2のオプション
+     * @return リクエスト情報
      */
     protected OMElement createRequestByBean(Method method,
                                             Object bean,
@@ -145,10 +146,11 @@ public class RESTRequestBuilder implements RequestBuilder {
     }
 
     /**
+     * 指定されたOMElementに、JavaBeanの要素を追加します。
      * 
-     * @param bean
-     * @param ns
-     * @param parent
+     * @param bean JavaBean
+     * @param ns 名前空間
+     * @param parent 親のOMElement
      */
     protected void addBeanElement(Object bean, OMNamespace ns, OMElement parent) {
 
@@ -187,11 +189,12 @@ public class RESTRequestBuilder implements RequestBuilder {
     }
 
     /**
+     * パラメータから、リクエスト情報を生成します。
      * 
-     * @param method
-     * @param args
-     * @param options
-     * @return
+     * @param method 呼び出し対象のメソッド
+     * @param args リクエストの情報となるパラメータ
+     * @param options Axis2のオプション
+     * @return リクエスト情報
      */
     protected OMElement createRequestByParameters(Method method,
                                                   Object[] args,
@@ -229,10 +232,11 @@ public class RESTRequestBuilder implements RequestBuilder {
     }
 
     /**
+     * メソッドを指定して、リクエストのルートとなるOMElementを生成します。
      * 
-     * @param method
-     * @return
-     * @throws Exception
+     * @param method 呼び出し対象のメソッド
+     * @return OMElement
+     * @throws Exception OMElementの生成に失敗した場合
      */
     protected OMElement createRootElement(Method method) throws Exception {
 
