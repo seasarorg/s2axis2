@@ -1,0 +1,5 @@
+/target
+/.djunitplugin
+/.fbwarnings
+/repo
+/jcoverage.ser
